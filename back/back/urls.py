@@ -15,10 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from notes import urls as notes_urls
-
+from rega import urls as rega_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(notes_urls)),
+    path('api/', include(rega_urls)),
 ]

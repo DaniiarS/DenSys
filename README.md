@@ -16,4 +16,5 @@
 - python version 3.10.8
 - django version 4.1.3
 - vue/cli version 5.0.8
-- vue/cli version 5.0.8
+- vue version 3.2.41
+

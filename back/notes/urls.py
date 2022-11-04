@@ -7,4 +7,6 @@ router.register(r'notes', NotesViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('notes/', NotesViewSet.ItemsView),
+    path('notes/<int:nm>/', NotesViewSet.ItemView),
 ]
