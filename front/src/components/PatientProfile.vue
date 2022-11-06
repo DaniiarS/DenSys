@@ -5,7 +5,7 @@
         <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-slate-200 border-0">
           <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
             <div class="text-slate-800 text-center py-3 font-bold">
-              Patient Registration Form
+              Patient Information
             </div>
             <form class="flex-wrap"
                   id="app"
@@ -209,7 +209,7 @@
                         outline-none focus:outline-none
                         ease-linear transition-all duration-150"
                         type="submit">
-                  Register A New Patient
+                  Update Patient Information
                 </button>
               </div>
             </form>
@@ -222,7 +222,7 @@
 
 
 <script>
-//import ToggleButton from "@/components/Cards/ToggleButton.vue"
+import axios from 'axios'
 import RadioForm from "@/components/RadioForm.vue"
 import DatePick from '@/components/vueDatePick.vue';
 
@@ -359,9 +359,23 @@ export default {
 
       e.preventDefault()
     },
+  },
+  mounted () {
+    console.log(this.$route.params.iin)
+    axios
+      .get(`http://localhost:8000/api/patients/${this.$route.params.iin}`)
+      .then((response) => {
+        console.log(response.data)
+        this.patient_reg = response.data
+      })
+      .catch(function (error) {
+        alert("Could not load patient")
+        console.log(error)
+      })
   }
 };
 </script>
 
 <style>
 </style>
+

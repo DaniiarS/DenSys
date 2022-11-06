@@ -784,11 +784,6 @@ export default {
       landing,
     };
   },
-  methods: {
-    updateBloudGroup(bloud_group) {
-      this.patient_reg.bloud_group = bloud_group
-    }
-  },
   components: {
     IndexNavbar,
     FooterComponent,

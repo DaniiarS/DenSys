@@ -19,6 +19,10 @@ import Auth from "@/layouts/AuthLayout.vue";
 // views for Admin layout
 
 import PatientRegister from "@/components/PatientRegister.vue";
+import DoctorRegister  from "@/components/DoctorRegister.vue";
+import PatientsTable   from "@/components/PatientsTable.vue";
+import PatientProfile  from "@/components/PatientProfile.vue";
+
 import Dashboard from "@/views/admin/DashboardPage.vue";
 import Settings from "@/views/admin/SettingsPage.vue";
 import Tables from "@/views/admin/TablesPage.vue";
@@ -45,6 +49,22 @@ const routes = [
       {
         path: "/admin/patient-register",
         component: PatientRegister,
+      },
+      {
+        path: "/admin/doctor-register",
+        component: DoctorRegister
+      },
+      {
+        path: "/admin/patients/:iin",
+        component: PatientProfile,
+      },
+      {
+        path: "/admin/patients",
+        component: PatientsTable,
+      },
+      {
+        path: "/admin/doctors",
+        component: PatientsTable,
       },
       {
         path: "/admin/dashboard",
@@ -91,7 +111,7 @@ const routes = [
     path: "/",
     component: Index,
   },
-  { path: "/:pathMatch(.*)*", redirect: "/" },
+  { path: "/:pathMatch(.*)*", redirect: "/admin" },
 ];
 
 const router = createRouter({
