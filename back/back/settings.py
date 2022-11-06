@@ -42,8 +42,10 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'corsheaders',
-    'notes',
-    'rega'
+
+    'accounts',
+    'patients',
+    'doctors',
 ]
 
 MIDDLEWARE = [
@@ -92,7 +94,9 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
-
+DATE_FORMAT = ['%d.%m.%Y']
+DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')
+AUTH_USER_MODEL = 'accounts.User'
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',

@@ -7,23 +7,19 @@
             <div class="text-slate-800 text-center py-3 font-bold">
               Patient Information
             </div>
-            <form class="flex-wrap"
-                  id="app"
-                  @submit="checkForm"
-                  action="http://localhost:8080/admin/patient-register"
-                  method="post">
+            <div class="flex-wrap">
               <div class="w-full lg:w-4/12 px-4 inline-block relative mb-3">
                 <div class="flex-wrap block uppercase text-slate-600 text-xs font-bold mb-2">
                   Name <div class="inline-block text-rose-700 fa-2xs fa-solid fa-circle"></div>
                   <div class="inline-block px-4 text-rose-700"
-                       v-if="errors.get('name') && !validName(patient_reg.name)">
+                       v-if="errors.get('name') && !validName(patient.name)">
                     {{errors.get('name')}}
                   </div>
                 </div>
                 <input type="text"
-                       v-model="patient_reg.name"
+                       v-model="patient.name"
                        class="w-full relative border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring ease-linear transition-all duration-150"
-                       :class="[errors.size && !validName(patient_reg.name) ? 'border-2 border-rose-700' : 'border-0' ]"
+                       :class="[errors.size && !validName(patient.name) ? 'border-2 border-rose-700' : 'border-0' ]"
                        placeholder="Name"/>
 
               </div>
@@ -31,105 +27,106 @@
                 <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
                   Surname <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
                   <div class="inline-block px-4 text-rose-700"
-                       v-if="errors.get('surname') && !validName(patient_reg.surname)">
+                       v-if="errors.get('surname') && !validName(patient.surname)">
                     {{errors.get('surname')}}
                   </div>
                 </label>
                 <input type="text"
-                       v-model="patient_reg.surname"
+                       v-model="patient.surname"
                        class="w-full relative border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring ease-linear transition-all duration-150"
-                       :class="[errors.size && !validName(patient_reg.surname) ? 'border-2 border-rose-700' : 'border-0' ]"
+                       :class="[errors.size && !validName(patient.surname) ? 'border-2 border-rose-700' : 'border-0' ]"
                        placeholder="Surname"/>
               </div>
               <div class="w-full lg:w-4/12 px-4 inline-block relative mb-3">
                 <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
                   Middlename <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
                   <div class="inline-block px-4 text-rose-700"
-                       v-if="errors.get('middlename') && !validName(patient_reg.middlename)">
+                       v-if="errors.get('middlename') && !validName(patient.middlename)">
                     {{errors.get('middlename')}}
                   </div>
                 </label>
                 <input type="text"
-                       v-model="patient_reg.middlename"
+                       v-model="patient.middlename"
                        class="w-full relative border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring ease-linear transition-all duration-150"
-                       :class="[errors.size && !validName(patient_reg.middlename) ? 'border-2 border-rose-700' : 'border-0' ]"
+                       :class="[errors.size && !validName(patient.middlename) ? 'border-2 border-rose-700' : 'border-0' ]"
                        placeholder="Middlename"/>
               </div>
               <div class="w-full lg:w-4/12 px-4 inline-block relative mb-3">
                 <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
-                  Date of Birth<div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
+                  Date of Birth<div class="text-slate-600 fa-2xs fa-solid fa-circle"></div>
                   <div class="inline-block px-4 text-rose-700"
-                       v-if="errors.get('date') && !validDate(patient_reg.date)">
+                       v-if="errors.get('date') && !validDate(patient.date)">
                     {{errors.get('date')}}
                   </div>
                 </label>
-                <date-pick v-model:value="patient_reg.date"
+                <date-pick v-model:value="patient.date"
+                           :isDisabled="true"
                            :selectableYearRange="{from: 1930, to: 2022}"
                            :format="'DD.MM.YYYY'"/>
               </div>
               <div class="w-full lg:w-4/12 px-4 inline-block relative mb-3">
                 <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
-                  IIN number <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
+                  IIN number <div class="text-slate-600 fa-2xs fa-solid fa-circle"></div>
                   <div class="inline-block px-4 text-rose-700"
-                       v-if="errors.get('IIN') && !validID(patient_reg.IIN)">
-                    {{errors.get('IIN')}}
+                       v-if="errors.get('iin') && !validID(patient.iin)">
+                    {{errors.get('iin')}}
                   </div>
                 </label>
                 <input type="text"
-                       v-model="patient_reg.IIN"
-                       class="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                       :class="[errors.size && !validID(patient_reg.IIN) ? 'border-2 border-rose-700' : 'border-0' ]"
-                       oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                       v-model="patient.iin"
+                       disabled
+                       class="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 disabled:text-slate-300"
+                       :class="[errors.size && !validID(patient.iin) ? 'border-2 border-rose-700' : 'border-0' ]"
                        placeholder="IIN number"/>
               </div>
               <div class="w-full lg:w-4/12 px-4 inline-block relative mb-3">
                 <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
                   ID number <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
                   <div class="inline-block px-4 text-rose-700"
-                       v-if="errors.get('ID') && !validID(patient_reg.ID)">
-                    {{errors.get('ID')}}
+                       v-if="errors.get('id') && !validID(patient.id)">
+                    {{errors.get('id')}}
                   </div>
                 </label>
                 <input type="text"
-                       v-model="patient_reg.ID"
+                       v-model="patient.id"
                        class="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                       :class="[errors.size && !validID(patient_reg.ID) ? 'border-2 border-rose-700' : 'border-0' ]"
+                       :class="[errors.size && !validID(patient.id) ? 'border-2 border-rose-700' : 'border-0' ]"
                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
-                       placeholder="ID number"/>
+                       placeholder="id number"/>
               </div>
               <div class="px-4 relative w-full mb-3">
                 <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
                   Blood Type <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
                   <div class="inline-block px-4 text-rose-700"
-                       v-if="errors.get('blood_type') && !(patient_reg.blood_type)">
+                       v-if="errors.get('blood_type') && !(patient.blood_type)">
                     {{errors.get('blood_type')}}
                   </div>
                 </label>
-                 <radio-form :class="[errors.size && !patient_reg.blood_type ? 'border-2 border-rose-700' : 'border-0' ]" :buttons="['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']" v-model:input_type="patient_reg.blood_type"/>
+                 <radio-form :class="[errors.size && !patient.blood_type ? 'border-2 border-rose-700' : 'border-0' ]" :buttons="['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']" v-model:input_type="patient.blood_type"/>
               </div>
               <div class="px-4 relative w-full mb-3">
                 <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
                   Marital Status <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
                   <div class="inline-block px-4 text-rose-700"
-                       v-if="errors.get('marital_status') && !(patient_reg.marital_status)">
+                       v-if="errors.get('marital_status') && !(patient.marital_status)">
                     {{errors.get('marital_status')}}
                   </div>
                 </label>
-                <radio-form :class="[errors.size && !patient_reg.marital_status ? 'border-2 border-rose-700' : 'border-0' ]" :buttons="['Married', 'Single', 'Divorced', 'Widowed']" v-model:input_type="patient_reg.marital_status"/>
+                <radio-form :class="[errors.size && !patient.marital_status ? 'border-2 border-rose-700' : 'border-0' ]" :buttons="['Married', 'Single', 'Divorced', 'Widowed']" v-model:input_type="patient.marital_status"/>
               </div>
 
               <div class="w-full lg:w-6/12 px-4 inline-block relative mb-3">
                 <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
                   Contact Number <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
                   <div class="inline-block px-4 text-rose-700"
-                       v-if="errors.get('contact_number') && !(patient_reg.contact_number)">
+                       v-if="errors.get('contact_number') && !(patient.contact_number)">
                     {{errors.get('contact_number')}}
                   </div>
                 </label>
                 <input type="text"
-                       v-model="patient_reg.contact_number"
+                       v-model="patient.contact_number"
                        class="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                       :class="[errors.size && !(patient_reg.contact_number) ? 'border-2 border-rose-700' : 'border-0' ]"
+                       :class="[errors.size && !(patient.contact_number) ? 'border-2 border-rose-700' : 'border-0' ]"
                        placeholder="Contact Number"
                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
               </div>
@@ -137,14 +134,14 @@
                 <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
                   Emergency Contact Number <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
                   <div class="inline-block px-4 text-rose-700"
-                       v-if="errors.get('emergency_contact_number') && !(patient_reg.emergency_contact_number)">
+                       v-if="errors.get('emergency_contact_number') && !(patient.emergency_contact_number)">
                     {{errors.get('emergency_contact_number')}}
                   </div>
                 </label>
                 <input type="text"
-                       v-model="patient_reg.emergency_contact_number"
+                       v-model="patient.emergency_contact_number"
                        class="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                       :class="[errors.size && !(patient_reg.emergency_contact_number) ? 'border-2 border-rose-700' : 'border-0' ]"
+                       :class="[errors.size && !(patient.emergency_contact_number) ? 'border-2 border-rose-700' : 'border-0' ]"
                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                        placeholder="Emergency Contact Number"/>
               </div>
@@ -153,7 +150,7 @@
                   Email (Optional)
                 </label>
                 <input type="email"
-                       v-model="patient_reg.email"
+                       v-model="patient.email"
                        class="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                        placeholder="Email"/>
               </div>
@@ -161,13 +158,13 @@
                 <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
                   Address <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
                   <div class="inline-block px-4 text-rose-700"
-                       v-if="errors.get('address') && !(patient_reg.address)">
+                       v-if="errors.get('address') && !(patient.address)">
                     {{errors.get('address')}}
                   </div>
                 </label>
                 <input type="text"
-                       v-model="patient_reg.address"
-                       :class="[errors.size && !patient_reg.address ? 'border-2 border-rose-700' : 'border-0' ]"
+                       v-model="patient.address"
+                       :class="[errors.size && !patient.address ? 'border-2 border-rose-700' : 'border-0' ]"
                        class="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                        placeholder="Address"/>
               </div>
@@ -175,13 +172,13 @@
                 <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
                   Password <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
                   <div class="inline-block px-4 text-rose-700"
-                       v-if="errors.get('password') && (!patient_reg.password || patient_reg.password !== repeat_password)">
+                       v-if="errors.get('password') && (!patient.password || patient.password !== repeat_password)">
                     {{errors.get('password')}}
                   </div>
                 </label>
-                <input type="password"
-                       v-model="patient_reg.password"
-                       :class="[errors.size && (!patient_reg.password || patient_reg.password !== repeat_password) ? 'border-2 border-rose-700' : 'border-0' ]"
+                <input type="text"
+                       v-model="patient.password"
+                       :class="[errors.size && !patient.password ? 'border-2 border-rose-700' : 'border-0' ]"
                        class="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                        placeholder="Password"/>
               </div>
@@ -189,13 +186,13 @@
                 <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
                   Repeat Password <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
                   <div class="inline-block px-4 text-rose-700"
-                       v-if="errors.get('repeat') && patient_reg.password !== repeat_password">
+                       v-if="errors.get('repeat') && patient.password !== repeat_password">
                     {{errors.get('repeat')}}
                   </div>
                 </label>
-                <input type="password"
-                       v-model="repeat_password"
-                       :class="[errors.size && !validPassword(patient_reg.password, repeat_password) ? 'border-2 border-rose-700' : 'border-0' ]"
+                <input type="text"
+                       v-model="patient.password"
+                       :class="[errors.size && !patient.password ? 'border-2 border-rose-700' : 'border-0' ]"
                        class="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                        placeholder="Password"/>
               </div>
@@ -208,11 +205,12 @@
                         shadow hover:shadow-lg
                         outline-none focus:outline-none
                         ease-linear transition-all duration-150"
-                        type="submit">
+                        @click="checkForm"
+                        type="button">
                   Update Patient Information
                 </button>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>
@@ -233,19 +231,19 @@ export default {
     return {
       test: '',
       errors: new Map(),
-      patient_reg: {
-        name: 'One',
-        surname: 'Two',
-        middlename: 'Three',
-        date: '06.10.2001',
-        IIN: '123456789321',
-        ID: '123456789123',
+      patient: {
+        name: '',
+        surname: '',
+        middlename: '',
+        date: '',
+        iin: '',
+        id: '',
         blood_type: '',
         marital_status: '',
-        contact_number: '87010001122',
-        emergency_contact_number: '87013331122',
+        contact_number: '',
+        emergency_contact_number: '',
         email: '',
-        address: 'Astana, Here street',
+        address: '',
         password: '',
       },
       repeat_password: ''
@@ -297,63 +295,73 @@ export default {
     validPassword(pswrd, repeat) {
       return pswrd===repeat
     },
-    validID(ID) {
-      return ID.length == 12
+    validID(id) {
+      return id.length == 12
     },
     checkForm(e) {
       this.errors = new Map()
-      if (!this.patient_reg.name) {
+      if (!this.patient.name) {
         this.errors.set('name', "required")
-      } else if (!this.validName(this.patient_reg.name)) {
+      } else if (!this.validName(this.patient.name)) {
         this.errors.set('name', "not valid")
       }
-      if (!this.patient_reg.surname) {
+      if (!this.patient.surname) {
         this.errors.set('surname', "required")
-      } else if (!this.validName(this.patient_reg.surname)) {
+      } else if (!this.validName(this.patient.surname)) {
         this.errors.set('surname', "not valid")
       }
-      if (!this.patient_reg.middlename) {
+      if (!this.patient.middlename) {
         this.errors.set('middlename', "required")
-      } else if (!this.validName(this.patient_reg.middlename)) {
+      } else if (!this.validName(this.patient.middlename)) {
         this.errors.set('middlename', "not valid")
       }
-      if (!this.patient_reg.date) {
+      if (!this.patient.date) {
         this.errors.set('date', "date required.")
-      } else if (!this.validDate(this.patient_reg.date)) {
+      } else if (!this.validDate(this.patient.date)) {
         this.errors.set('date', "not valid")
       }
-      if (!this.patient_reg.IIN) {
-        this.errors.set('IIN', "IIN required.")
-      } else if (!this.validID(this.patient_reg.IIN)) {
-        this.errors.set('IIN', "not valid")
+      if (!this.patient.iin) {
+        this.errors.set('iin', "iin required.")
+      } else if (!this.validID(this.patient.iin)) {
+        this.errors.set('iin', "not valid")
       }
-      if (!this.patient_reg.ID) {
-        this.errors.set('ID', "required")
-      } else if (!this.validID(this.patient_reg.IIN)) {
-        this.errors.set('ID', "not valid")
+      if (!this.patient.id) {
+        this.errors.set('id', "required")
+      } else if (!this.validID(this.patient.iin)) {
+        this.errors.set('id', "not valid")
       }
-      if (!this.patient_reg.blood_type) {
+      if (!this.patient.blood_type) {
         this.errors.set('blood_type', "required.")
       }
-      if (!this.patient_reg.marital_status) {
+      if (!this.patient.marital_status) {
         this.errors.set('marital_status', "required.")
       }
-      if (!this.patient_reg.contact_number) {
+      if (!this.patient.contact_number) {
         this.errors.set('contact_number', "required.")
       }
-      if (!this.patient_reg.emergency_contact_number) {
+      if (!this.patient.emergency_contact_number) {
         this.errors.set('emergency_contact_number', "required.")
       }
-      if (!this.patient_reg.address) {
+      if (!this.patient.address) {
         this.errors.set('address', "required.")
       }
-      if (!this.patient_reg.password) {
+      if (!this.patient.password) {
         this.errors.set('password', "required.")
-      } else if (!this.validPassword(this.patient_reg.password, this.repeat_password)) {
+      } else if (!this.validPassword(this.patient.password, this.patient.password)) {
         this.errors.set('repeat', "does not match.")
       }
 
       if (!this.errors.size) {
+        axios
+          .put(`http://localhost:8000/api/patient/${this.$route.params.iin}/`, this.patient)
+          .then((response) => {
+            alert("Success")
+            console.log(response)
+          })
+          .catch(function (error) {
+            alert("Error")
+            console.log(error)
+          })
         return true
       }
 
@@ -363,10 +371,10 @@ export default {
   mounted () {
     console.log(this.$route.params.iin)
     axios
-      .get(`http://localhost:8000/api/patients/${this.$route.params.iin}`)
+      .get(`http://localhost:8000/api/patient/${this.$route.params.iin}`)
       .then((response) => {
         console.log(response.data)
-        this.patient_reg = response.data
+        this.patient = response.data
       })
       .catch(function (error) {
         alert("Could not load patient")

@@ -2,19 +2,18 @@
   <div class="flex-wrap inline-block">
     <div class="inline-flex shadow-md hover:shadow-lg focus:shadow-lg" role="group"
          v-for="(buttn,idx) in buttons" :key="idx">
-      <toggle-button :toggleButtonName = "buttn" v-model:active_type="active_type" @click="updateActive"/>
+      <toggle-button :aactive="input_type===buttn" :toggleButtonName = "buttn" @toggle="updateActive"/>
     </div>
   </div>
 </template>
 
 <script>
-import ToggleButton from "@/components/Cards/ToggleButton.vue"
+import ToggleButton from "@/components/ToggleButton.vue"
 
 export default {
   name: "radio-form",
   data() {
     return {
-      active_type: '',
     };
   },
   model: {
@@ -26,8 +25,8 @@ export default {
     ToggleButton
   },
   methods: {
-    updateActive() {
-      this.$emit('update:input_type', this.active_type)
+    updateActive(type) {
+      this.$emit('update:input_type', type)
     }
   }
 };

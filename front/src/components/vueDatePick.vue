@@ -9,7 +9,8 @@
             :valueToInputFormat="valueToInputFormat"
         >
             <input
-                class="w-full relative border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring ease-linear transition-all duration-150"
+                :disabled="isDisabled"
+                class="w-full relative border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring ease-linear transition-all duration-150 disabled:text-slate-300"
                 v-if="hasInputElement"
                 type="text"
                 v-bind="inputAttributes"
@@ -169,6 +170,10 @@ const AMPMClockRE = /A/;
 export default {
 
     props: {
+        isDisabled: {
+            type: Boolean,
+            default: false
+        },
         value: {
             type: String,
             default: ''

@@ -3,7 +3,6 @@ import { createWebHistory, createRouter } from "vue-router";
 
 // styles
 
-// import "@/assets/styles/tailwind.css";
 import "@/output.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
@@ -20,23 +19,14 @@ import Auth from "@/layouts/AuthLayout.vue";
 
 import PatientRegister from "@/components/PatientRegister.vue";
 import DoctorRegister  from "@/components/DoctorRegister.vue";
+
 import PatientsTable   from "@/components/PatientsTable.vue";
+import DoctorsTable    from "@/components/DoctorsTable.vue";
+
 import PatientProfile  from "@/components/PatientProfile.vue";
-
-import Dashboard from "@/views/admin/DashboardPage.vue";
-import Settings from "@/views/admin/SettingsPage.vue";
-import Tables from "@/views/admin/TablesPage.vue";
-import Maps from "@/views/admin/MapsPage.vue";
-
-// views for Auth layout
-
-import Login from "@/views/auth/LoginPage.vue";
-import Register from "@/views/auth/RegisterPage.vue";
-
+import DoctorProfile  from "@/components/DoctorProfile.vue";
 // views without layouts
 
-import Landing from "@/views/LandingPage.vue";
-import Profile from "@/views/ProfilePage.vue";
 import Index from "@/views/IndexPage.vue";
 
 // routes
@@ -47,12 +37,20 @@ const routes = [
     component: Admin,
     children: [
       {
+        path: "/admin/login",
+        component: Auth,
+      },
+      {
         path: "/admin/patient-register",
         component: PatientRegister,
       },
       {
         path: "/admin/doctor-register",
         component: DoctorRegister
+      },
+      {
+        path: "/admin/doctors/:iin",
+        component: DoctorProfile,
       },
       {
         path: "/admin/patients/:iin",
@@ -64,48 +62,9 @@ const routes = [
       },
       {
         path: "/admin/doctors",
-        component: PatientsTable,
-      },
-      {
-        path: "/admin/dashboard",
-        component: Dashboard,
-      },
-      {
-        path: "/admin/settings",
-        component: Settings,
-      },
-      {
-        path: "/admin/tables",
-        component: Tables,
-      },
-      {
-        path: "/admin/maps",
-        component: Maps,
+        component: DoctorsTable,
       },
     ],
-  },
-  {
-    path: "/auth",
-    redirect: "/auth/login",
-    component: Auth,
-    children: [
-      {
-        path: "/auth/login",
-        component: Login,
-      },
-      {
-        path: "/auth/register",
-        component: Register,
-      },
-    ],
-  },
-  {
-    path: "/landing",
-    component: Landing,
-  },
-  {
-    path: "/profile",
-    component: Profile,
   },
   {
     path: "/",
