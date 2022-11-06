@@ -1,6 +1,7 @@
 # DenSys
 ## Frontend Details
 - Frontend is written with Vue 3 and TailwindCSS 3
+- To download dependencies, inside of `front` folder type `npm install`
 - To start frontend server, inside of `front` folder type `npm run serve`
 - If you change some css in the frontend you need to recompile css by `npx tailwindcss -i ./src/input.css -o ./src/output.css --watch`. It will stay as server and listens to changes in css and automatically recompile it
 - Index Page has nothing yet. Go straight to '<homepage>/admin'
@@ -16,6 +17,7 @@
 
 ## Backend Details
 - Backend is written with Django 4 and REST framework
+- To download dependencies, inside of `back` folder type `pip install django djangorestframework`
 - To start backend server, inside of `back` folder type `python manage.py runserver`
 - Backend has custom User model in /back/accounts, both Patient and Doctor inherit from it
 - IIN is the primary key for User
