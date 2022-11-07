@@ -35,12 +35,14 @@
 - Any request to the api does not require permissions yet
 
 ## Some git commands
-To work in bk branch
+To work in bk branch:
 - `git push --set-upstream origin bk` \# was needed to push change
 - `git checkout bk` \# switch to bk branch
+
 To get this repo:
 - `git clone https://github.com/DaniiarS/DenSys.git`
 - `cd DenSys`
+
 To change something:
 - `git remote add DenSys https://github.com/DaniiarS/DenSys.git` \# sometimes needed to push changes
 - `git add <some files>`
