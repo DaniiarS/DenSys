@@ -5,6 +5,7 @@
         <div class="text-slate-800 text-center py-3 font-bold">
           Patient Registration Form
         </div>
+        <hr class="pb-4 border-t-1 border-slate-300" />
         <div class="flex-wrap">
           <div class="w-full lg:w-4/12 px-4 inline-block relative mb-3">
             <div class="flex-wrap block uppercase text-slate-600 text-xs font-bold mb-2">

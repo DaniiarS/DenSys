@@ -70,7 +70,7 @@
                         <thead>
                             <tr>
                                 <th class="vdpHeadCell" v-for="(weekday, weekdayIndex) in weekdaysSorted" :key="weekdayIndex">
-                                    <span class="text-slate-100 text-sm">{{weekday}}</span>
+                                    <span class="text-slate-400 text-sm">{{weekday}}</span>
                                 </th>
                             </tr>
                         </thead>

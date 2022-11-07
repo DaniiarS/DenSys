@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 
 # Create your models here.
 class UserManager(BaseUserManager):
+    use_in_migrations = True
     def _create_user(self, iin, password, is_superuser, **extra_fields):
         now = timezone.now()
         if not iin:

@@ -5,6 +5,7 @@
         <div class="text-slate-800 text-center py-3 font-bold">
           Doctor Registration Form
         </div>
+        <hr class="pb-4 border-t-1 border-slate-300" />
         <div class="flex-wrap">
           <div class="w-full lg:w-4/12 px-4 inline-block relative mb-3">
             <div class="flex-wrap block uppercase text-slate-600 text-xs font-bold mb-2">
@@ -91,6 +92,7 @@
                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                    placeholder="id number"/>
           </div>
+          <div class="w-full lg:w-8/12 inline-block">
           <div class="px-4 relative w-full mb-3">
             <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
               Education <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
@@ -134,8 +136,27 @@
               :buttons="['Second', 'First', 'Highest', 'None']"
               v-model:input_type="doctor_reg.category"/>
           </div>
+        </div>
+        <div class="w-full lg:w-4/12 inline-block item-center px-4">
+        <photo-upload
+          :enableEdits="true"
+          :photoDefault="defaultPhoto"
+          buttonClass="bg-slate-800 text-slate-100
+                       active:bg-slate-600
+                       text-sm font-bold uppercase
+                       px-4 py-2 mx-3 rounded
+                       shadow-slate-900
+                       disabled:bg-slate-600
+                       disabled:shadow-none
+                       shadow hover:shadow-sm
+                       outline-none focus:outline-none
+                       ease-linear transition-all duration-150"
+          :showMessages="false"
+          @photo-submit="photo_upload"
+          @photo-change="photo_changed"/>
+        </div>
 
-          <div class="w-full lg:w-6/12 px-4 inline-block relative mb-3">
+        <div class="w-full lg:w-6/12 px-4 inline-block relative mb-3">
             <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
               Contact Number <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
               <div class="inline-block px-4 text-rose-700"
@@ -163,7 +184,6 @@
                    v-model="doctor_reg.experience"
                    class="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                    :class="[errors.size && !(doctor_reg.experience) ? 'border-2 border-rose-700' : 'border-0' ]"
-                   @input="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                    placeholder="Experience in years"/>
           </div>
           <div class="w-full lg:w-6/12 px-4 inline-block relative mb-3">
@@ -219,11 +239,12 @@
           </div>
 
           <div class="text-center px-4 mt-6" >
-            <button class="bg-slate-800 text-white
+            <button class="bg-slate-800 text-slate-100
                            active:bg-slate-600
                            text-sm font-bold uppercase
                            px-6 py-3 rounded mr-1 mb-1 w-full
-                           shadow hover:shadow-lg
+                           shadow hover:shadow-sm
+                           shadow-slate-900
                            outline-none focus:outline-none
                            ease-linear transition-all duration-150"
                     @click="checkForm"
@@ -242,12 +263,15 @@
 import axios from 'axios'
 import RadioForm from "@/components/RadioForm.vue"
 import DatePick from '@/components/vueDatePick.vue';
+import PhotoUpload from '@/components/PhotoUpload.vue';
+
+import blankDoctor from "@/assets/img/blankDoctor.jpg";
 
 export default {
-  name: "doctor_reg-register",
+  name: "doctor-register",
   data() {
     return {
-      test: '',
+      defaultPhoto: blankDoctor,
       errors: new Map(),
       doctor_reg: {
         name: 'One',
@@ -266,14 +290,29 @@ export default {
         address: 'Astana, Here street',
         password: '12345',
       },
+      photo: null,
       repeat_password: '12345'
     };
   },
   components: {
+    PhotoUpload,
     RadioForm,
     DatePick,
   },
   methods: {
+    photo_upload(e, file){
+      this.defaultPhoto = URL.createObjectURL(file)
+      this.photo = file
+      console.log(e,file)
+    },
+    photo_changed(e, file){
+      console.log(e,file)
+    },
+    uploadImage(e) {
+      const file = e.target.files[0]
+      this.item.image = file
+      this.item.imageUrl = URL.createObjectURL(file)
+    },
     validDate(inputText) {
       var dateformat = /^(0?[1-9]|[12][0-9]|3[01])[.](0?[1-9]|1[012])[.]\d{4}$/;
       // Match the date format through regular expression
@@ -377,8 +416,28 @@ export default {
       }
 
       if (!this.errors.size) {
+        const formData = new FormData()
+        formData.append("name", this.doctor_reg.name)
+        formData.append("surname", this.doctor_reg.surname)
+        formData.append("middlename", this.doctor_reg.middlename)
+        formData.append("date", this.doctor_reg.date)
+        formData.append("iin", this.doctor_reg.iin)
+        formData.append("id", this.doctor_reg.id)
+        formData.append("education", this.doctor_reg.education)
+        formData.append("departament", this.doctor_reg.departament)
+        formData.append("specialization", this.doctor_reg.specialization)
+        formData.append("category", this.doctor_reg.category)
+        formData.append("contact_number", this.doctor_reg.contact_number)
+        formData.append("experience", this.doctor_reg.experience)
+        formData.append("homepage", this.doctor_reg.homepage)
+        formData.append("address", this.doctor_reg.address)
+        formData.append("password", this.doctor_reg.password)
+        formData.append("photo", this.photo)
+        console.log(formData)
         axios
-          .post('http://localhost:8000/api/doctors/', this.doctor_reg)
+          .post('http://localhost:8000/api/doctors/',
+            formData,
+            { headers: {"Content-Type": "multipart/form-data"} })
           .then((response) => {
             alert("Success")
             console.log(response)

@@ -26,6 +26,7 @@
     "gulp-append-prepend": "1.0.8",
     "vue": "^3.2.13",
     "vue-date-pick": "^1.5.1",
+    "vue-photo-upload": "^1.0.4",
     "vue-router": "^4.0.5"
   },
   "devDependencies": {

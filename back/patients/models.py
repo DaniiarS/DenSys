@@ -54,21 +54,22 @@ class AccountManager(BaseUserManager):
         return self._create_user(email, name, phone, password, **extra_fields)
 
 class Patient(User):
-     name = models.CharField(max_length=200)
-     surname = models.CharField(max_length=200)
-     middlename = models.CharField(max_length=200)
-     date = models.CharField(max_length=10)
-     reg_date = models.DateField(auto_now_add=True)
-     #iin = models.CharField(max_length=12, primary_key=True)
-     id = models.CharField(max_length=12)
-     blood_type = models.CharField(max_length=3)
-     marital_status = models.CharField(max_length=8)
-     contact_number = models.CharField(max_length=12)
-     emergency_contact_number = models.CharField(max_length=12)
-     email = models.CharField(max_length=200, blank=True)
-     address = models.CharField(max_length=200)
+    use_in_migrations = True
+    name = models.CharField(max_length=200)
+    surname = models.CharField(max_length=200)
+    middlename = models.CharField(max_length=200)
+    date = models.CharField(max_length=10)
+    reg_date = models.DateField(auto_now_add=True)
+    #iin = models.CharField(max_length=12, primary_key=True)
+    id = models.CharField(max_length=12)
+    blood_type = models.CharField(max_length=3)
+    marital_status = models.CharField(max_length=8)
+    contact_number = models.CharField(max_length=12)
+    emergency_contact_number = models.CharField(max_length=12)
+    email = models.CharField(max_length=200, blank=True)
+    address = models.CharField(max_length=200)
 
-     USERNAME_FIELD = "iin"
-     REQUIRED_FIELD = ["name", "surname", "middlename", "date", "id", "blood_type", "marital_status", "contact_number", "emergency_contact_number", "address", "password"]
-     objects=AccountManager()
+    USERNAME_FIELD = "iin"
+    REQUIRED_FIELD = ["name", "surname", "middlename", "date", "id", "blood_type", "marital_status", "contact_number", "emergency_contact_number", "address", "password"]
+    objects=AccountManager()
 
