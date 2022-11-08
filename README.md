@@ -17,7 +17,7 @@
 
 ## Backend Details
 - Backend is written with Django 4 and REST framework
-- To download dependencies, inside of `back` folder type `pip install django djangorestframework`
+- To download dependencies, inside of `back` folder type `pip install django djangorestframework django-cors-headers`
 - To start backend server, inside of `back` folder type `python manage.py runserver`
 - Backend has custom User model in /back/accounts, both Patient and Doctor inherit from it
 - IIN is the primary key for User
