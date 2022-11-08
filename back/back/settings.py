@@ -98,7 +98,7 @@ DATABASES = {
 DATE_FORMAT = ['%d.%m.%Y']
 DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')
 
-MEDIA_URL = "/media/"
+MEDIA_URL = "/api/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 AUTH_USER_MODEL = 'accounts.User'

@@ -72,6 +72,7 @@
 <script>
 
 import axios from 'axios'
+import {server_url} from '@/api.js'
 
 import TableDropdown from "@/components/TableDropdown.vue";
 
@@ -93,7 +94,7 @@ export default {
       const nm = e.target.parentNode.id.match(/\d+/)
       if (nm) {
         const at = parseInt(nm)
-        this.activePhoto = 'http://localhost:8000'+this.doctors[at].photo
+        this.activePhoto =server_url+this.doctors[at].photo
       } else {
         this.activePhoto =null
       }
@@ -101,7 +102,7 @@ export default {
   },
   mounted () {
     axios
-      .get('http://localhost:8000/api/doctors')
+      .get(server_url+'/api'+'/doctors')
       .then((response) => {
         this.doctors = response.data
         //console.log(response)

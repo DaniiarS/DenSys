@@ -218,6 +218,8 @@
 
 <script>
 import axios from 'axios'
+import {server_url} from '@/api.js'
+
 import RadioForm from "@/components/RadioForm.vue"
 import DatePick from '@/components/vueDatePick.vue';
 
@@ -350,7 +352,7 @@ export default {
 
       if (!this.errors.size) {
         axios
-          .put(`http://localhost:8000/api/patient/${this.$route.params.iin}/`, this.patient)
+          .put(`${server_url}/api/patient/${this.$route.params.iin}/`, this.patient)
           .then((response) => {
             alert("Success")
             console.log(response)
@@ -368,7 +370,7 @@ export default {
   mounted () {
     console.log(this.$route.params.iin)
     axios
-      .get(`http://localhost:8000/api/patient/${this.$route.params.iin}`)
+      .get(`${server_url}/api/patient/${this.$route.params.iin}`)
       .then((response) => {
         console.log(response.data)
         this.patient = response.data

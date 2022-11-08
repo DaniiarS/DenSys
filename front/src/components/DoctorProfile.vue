@@ -263,6 +263,8 @@
 
 <script>
 import axios from 'axios'
+import {server_url} from '@/api.js'
+
 import RadioForm from "@/components/RadioForm.vue"
 import DatePick from '@/components/vueDatePick.vue';
 import PhotoUpload from '@/components/PhotoUpload.vue';
@@ -293,6 +295,7 @@ export default {
         address: '',
         password: '',
       },
+      photo: null
     };
   },
   components: {
@@ -303,7 +306,7 @@ export default {
   methods: {
     photo_upload(e, file){
       this.defaultPhoto = URL.createObjectURL(file)
-      this.doctor.photo = file
+      this.photo = file
     },
     photo_changed(e, file){
       console.log(e,file)
@@ -414,7 +417,6 @@ export default {
         formData.append("surname", this.doctor.surname)
         formData.append("middlename", this.doctor.middlename)
         formData.append("date", this.doctor.date)
-        formData.append("iin", this.doctor.iin)
         formData.append("id", this.doctor.id)
         formData.append("education", this.doctor.education)
         formData.append("departament", this.doctor.departament)
@@ -425,10 +427,12 @@ export default {
         formData.append("homepage", this.doctor.homepage)
         formData.append("address", this.doctor.address)
         formData.append("password", this.doctor.password)
-        formData.append("photo", this.doctor.photo)
+        if (this.photo) {
+          formData.append("photo", this.photo)
+        }
         console.log(formData)
         axios
-          .put(`http://localhost:8000/api/doctor/${this.$route.params.iin}/`,
+          .put(`${server_url}/api/doctor/${this.$route.params.iin}/`,
             formData,
             { headers: {"Content-Type": "multipart/form-data"} })
           .then((response) => {
@@ -448,11 +452,11 @@ export default {
   mounted () {
     console.log(this.$route.params.iin)
     axios
-      .get(`http://localhost:8000/api/doctor/${this.$route.params.iin}`)
+      .get(`${server_url}/api/doctor/${this.$route.params.iin}`)
       .then((response) => {
         this.doctor = response.data
         console.log(this.doctor.photo)
-        this.defaultPhoto = 'http://localhost:8000' + this.doctor.photo
+        this.defaultPhoto = server_url + this.doctor.photo
       })
       .catch(function (error) {
         alert("Could not load Doctor")

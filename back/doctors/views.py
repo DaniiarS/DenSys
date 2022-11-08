@@ -42,7 +42,7 @@ class DoctorViewSet(APIView):
             doctor = Doctor.objects.get(iin = iin)
         except Doctor.DoesNotExist:
             raise Http404('Not found')
-        serializer = DoctorSerializer(doctor, data=request.data)
+        serializer = DoctorSerializer(doctor, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data)

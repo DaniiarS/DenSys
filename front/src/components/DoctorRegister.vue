@@ -261,6 +261,8 @@
 
 <script>
 import axios from 'axios'
+import {server_url} from '@/api.js'
+
 import RadioForm from "@/components/RadioForm.vue"
 import DatePick from '@/components/vueDatePick.vue';
 import PhotoUpload from '@/components/PhotoUpload.vue';
@@ -435,7 +437,7 @@ export default {
         formData.append("photo", this.photo)
         console.log(formData)
         axios
-          .post('http://localhost:8000/api/doctors/',
+          .post(server_url+'/api/doctors/',
             formData,
             { headers: {"Content-Type": "multipart/form-data"} })
           .then((response) => {

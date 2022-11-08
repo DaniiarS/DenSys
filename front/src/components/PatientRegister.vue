@@ -217,6 +217,8 @@
 
 <script>
 import axios from 'axios'
+import {server_url} from '@/api.js'
+
 import RadioForm from "@/components/RadioForm.vue"
 import DatePick from '@/components/vueDatePick.vue';
 
@@ -372,7 +374,7 @@ export default {
 
       if (!this.errors.size) {
         axios
-          .post('http://localhost:8000/api/patients/', this.patient_reg)
+          .post(server_url+'/api/patients/', this.patient_reg)
           .then((response) => {
             alert("Success")
             console.log(response)

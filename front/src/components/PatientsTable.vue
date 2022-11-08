@@ -63,7 +63,9 @@
   </div>
 </template>
 <script>
+
 import axios from 'axios'
+import {server_url} from '@/api.js'
 
 import TableDropdown from "@/components/TableDropdown.vue";
 
@@ -81,7 +83,7 @@ export default {
   mounted () {
     console.log(this.$route.params.iin)
     axios
-      .get('http://localhost:8000/api/patients')
+      .get(server_url+'/api/patients')
       .then((response) => {
         console.log(response.data)
         this.patients = response.data
