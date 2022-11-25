@@ -12,8 +12,8 @@ import App from "@/App.vue";
 
 // layouts
 
-import Admin from "@/layouts/AdminLayout.vue";
-import Auth from "@/layouts/AuthLayout.vue";
+import Admin      from "@/layouts/AdminLayout.vue";
+import AdminLogin from "@/views/AdminLogin.vue";
 
 // views for Admin layout
 
@@ -24,7 +24,7 @@ import PatientsTable   from "@/components/PatientsTable.vue";
 import DoctorsTable    from "@/components/DoctorsTable.vue";
 
 import PatientProfile  from "@/components/PatientProfile.vue";
-import DoctorProfile  from "@/components/DoctorProfile.vue";
+import DoctorProfile   from "@/components/DoctorProfile.vue";
 // views without layouts
 
 import Index from "@/views/IndexPage.vue";
@@ -36,10 +36,6 @@ const routes = [
     path: "/admin",
     component: Admin,
     children: [
-      {
-        path: "/admin/login",
-        component: Auth,
-      },
       {
         path: "/admin/patient-register",
         component: PatientRegister,
@@ -65,6 +61,10 @@ const routes = [
         component: DoctorsTable,
       },
     ],
+  },
+  {
+    path: "/admin/login",
+    component: AdminLogin,
   },
   {
     path: "/",

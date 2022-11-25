@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'rest_framework.authtoken',
     'rest_framework',
     'corsheaders',
 
@@ -47,6 +48,8 @@ INSTALLED_APPS = [
     'patients',
     'doctors',
 ]
+REST_FRAMEWORK = {
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',

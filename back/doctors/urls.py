@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import DoctorViewSet, DoctorsView, DoctorView
+from .views import DoctorList, DoctorRUD
 
 urlpatterns = [
-    path('doctors/', DoctorViewSet.as_view(), name='doctors'),
-    path('doctor/<iin>/', DoctorViewSet.as_view(), name='doctor'),
+    path('doctors/',     DoctorList.as_view(), name='doctors'),
+    path('doctor/<pk>/', DoctorRUD.as_view(), name='doctor'),
 ]

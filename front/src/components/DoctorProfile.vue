@@ -451,17 +451,19 @@ export default {
   },
   mounted () {
     console.log(this.$route.params.iin)
-    axios
-      .get(`${server_url}/api/doctor/${this.$route.params.iin}`)
-      .then((response) => {
-        this.doctor = response.data
-        console.log(this.doctor.photo)
-        this.defaultPhoto = server_url + this.doctor.photo
-      })
-      .catch(function (error) {
-        alert("Could not load Doctor")
-        console.log(error)
-      })
+    if (localStorage.access_token) {
+      axios
+        .get(`${server_url}/api/doctor/${this.$route.params.iin}`)
+        .then((response) => {
+          this.doctor = response.data
+          console.log(this.doctor.photo)
+          this.defaultPhoto = server_url + this.doctor.photo
+        })
+        .catch(function (error) {
+          alert("Could not load Doctor")
+          console.log(error)
+        })
+    }
   }
 };
 </script>

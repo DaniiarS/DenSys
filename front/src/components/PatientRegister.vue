@@ -86,7 +86,9 @@
               </div>
             </label>
             <input type="text"
+
                    v-model="patient_reg.id"
+
                    class="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                    :class="[errors.size && !validID(patient_reg.id) ? 'border-2 border-rose-700' : 'border-0' ]"
                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
@@ -227,7 +229,6 @@ export default {
   name: "patient-register",
   data() {
     return {
-      test: '',
       errors: new Map(),
       patient_reg: {
         name: 'a',
@@ -235,7 +236,7 @@ export default {
         middlename: 'c',
         date: '',
         iin: '',
-        id: '102030405060',
+        id: '',
         blood_type: '',
         marital_status: '',
         contact_number: '87005553535',
@@ -256,8 +257,8 @@ export default {
     iinDateInput(event) {
       // 0123456789     012345
       // 06.10.2001 <-> 011006******
-      if (event.target.value.length != 12) return;
       this.patient_reg.iin = event.target.value
+      if (event.target.value.length != 12) return;
       var date = ''
       date += this.patient_reg.iin[4]
       date += this.patient_reg.iin[5]
@@ -373,16 +374,18 @@ export default {
       }
 
       if (!this.errors.size) {
-        axios
-          .post(server_url+'/api/patients/', this.patient_reg)
-          .then((response) => {
-            alert("Success")
-            console.log(response)
-          })
-          .catch(function (error) {
-            alert("Fail")
-            console.log(error)
-          })
+        if (localStorage.access_token) {
+          axios
+            .post(server_url+'/api/patients/', this.patient_reg)
+            .then((response) => {
+              alert("Success")
+              console.log(response)
+            })
+            .catch(function (error) {
+              alert("Fail")
+              console.log(error)
+            })
+        }
         return true
       }
 

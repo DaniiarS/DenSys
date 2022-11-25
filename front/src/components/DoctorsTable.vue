@@ -14,21 +14,11 @@
       <table class="items-center w-full border-collapse">
         <thead>
           <tr class="align-middle border border-solid text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center text-slate-200 bg-slate-800 border-blueGray-100">
-            <th class="px-6 py-3">
-              Name
-            </th>
-            <th class="px-6 py-3">
-              IIN
-            </th>
-            <th class="px-6 py-3">
-              Contact Number
-            </th>
-            <th class="px-6 py-3">
-              Departament
-            </th>
-            <th class="px-6 py-3">
-              Specialization
-            </th>
+            <th class="px-6 py-3"> Name </th>
+            <th class="px-6 py-3"> IIN </th>
+            <th class="px-6 py-3"> Contact Number </th>
+            <th class="px-6 py-3"> Departament </th>
+            <th class="px-6 py-3"> Specialization </th>
             <th class="px-6 py-3"></th>
           </tr>
         </thead>
@@ -41,7 +31,7 @@
             active:bg-slate-600 transition duration-150 ease-in-out
             border-t-1 border border-solid border-slate-200 border-l-0 border-r-0"
               v-for="(doctor, didx) in doctors" :key="didx" :id="'r'+didx"
-              @mouseover="updatePhoto"
+              @mouseover="updatePhoto(didx)"
               @click="$router.push({path: `/admin/doctors/${doctor.iin}`})">
             <td class="block p-4 px-6"> {{doctor.name}} {{doctor.middlename}} {{doctor.surname}} </td>
             <td class="p-4 px-6"> {{doctor.iin}} </td>
@@ -88,29 +78,24 @@ export default {
     TableDropdown,
   },
   methods: {
-    updatePhoto(e) {
-      e = e || window.event;
-      console.log(e.target.parentNode.id)
-      const nm = e.target.parentNode.id.match(/\d+/)
-      if (nm) {
-        const at = parseInt(nm)
-        this.activePhoto =server_url+this.doctors[at].photo
-      } else {
-        this.activePhoto =null
-      }
+    updatePhoto(didx) {
+      this.activePhoto = server_url+this.doctors[didx].photo
     }
   },
   mounted () {
-    axios
-      .get(server_url+'/api'+'/doctors')
-      .then((response) => {
-        this.doctors = response.data
-        //console.log(response)
-      })
-      .catch(function (error) {
-        alert("Fail")
-        console.log(error)
-      })
+    if (localStorage.access_token) {
+      console.log({Authorization: 'Token ' + localStorage.access_token})
+      axios
+        .get( server_url+'/api'+'/doctors/', { headers: {"Authorization": 'Token ' + localStorage.access_token} } )
+        .then((response) => {
+          this.doctors = response.data
+          //console.log(response)
+        })
+        .catch(function (error) {
+          alert("Fail")
+          console.log(error)
+        })
+    }
   }
 };
 </script>

@@ -369,16 +369,18 @@ export default {
   },
   mounted () {
     console.log(this.$route.params.iin)
-    axios
-      .get(`${server_url}/api/patient/${this.$route.params.iin}`)
-      .then((response) => {
-        console.log(response.data)
-        this.patient = response.data
-      })
-      .catch(function (error) {
-        alert("Could not load patient")
-        console.log(error)
-      })
+    if (localStorage.access_token) {
+      axios
+        .get(`${server_url}/api/patient/${this.$route.params.iin}`)
+        .then((response) => {
+          console.log(response.data)
+          this.patient = response.data
+        })
+        .catch(function (error) {
+          alert("Could not load patient")
+          console.log(error)
+        })
+    }
   }
 };
 </script>

@@ -82,16 +82,18 @@ export default {
   },
   mounted () {
     console.log(this.$route.params.iin)
-    axios
-      .get(server_url+'/api/patients')
-      .then((response) => {
-        console.log(response.data)
-        this.patients = response.data
-      })
-      .catch(function (error) {
-        alert("Could not load patient")
-        console.log(error)
-      })
+    if (localStorage.access_token) {
+      axios
+        .get(server_url+'/api/patients')
+        .then((response) => {
+          console.log(response.data)
+          this.patients = response.data
+        })
+        .catch(function (error) {
+          alert("Could not load patient")
+          console.log(error)
+        })
+    }
   }
 };
 </script>

@@ -24,5 +24,11 @@ export default {
     FooterAdmin,
    // HeaderStats,
   },
+  mounted () {
+    if (!localStorage.access_token) {
+      this.$router.push({path: '/admin/login'})
+    }
+    console.log(localStorage.access_token)
+  }
 };
 </script>

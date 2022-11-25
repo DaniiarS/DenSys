@@ -19,9 +19,11 @@ from django.conf.urls.static import static
 from django.conf import settings
 from patients import urls as patients_urls
 from doctors import urls as doctors_urls
+from accounts import urls as accounts_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(patients_urls)),
     path('api/', include(doctors_urls)),
+    path('api/', include(accounts_urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

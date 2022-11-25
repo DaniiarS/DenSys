@@ -322,7 +322,7 @@ export default {
         // Extract the string into month, date and year
         var pdate = inputText.split('.')
         var dd = parseInt(pdate[0]);
-        var mm  = parseInt(pdate[1]);
+        var mm = parseInt(pdate[1]);
         var yy = parseInt(pdate[2]);
         // Create list of days of a month [assume there is no leap year by default]
         var ListofDays = [31,28,31,30,31,30,31,31,30,31,30,31];
@@ -418,36 +418,38 @@ export default {
       }
 
       if (!this.errors.size) {
-        const formData = new FormData()
-        formData.append("name", this.doctor_reg.name)
-        formData.append("surname", this.doctor_reg.surname)
-        formData.append("middlename", this.doctor_reg.middlename)
-        formData.append("date", this.doctor_reg.date)
-        formData.append("iin", this.doctor_reg.iin)
-        formData.append("id", this.doctor_reg.id)
-        formData.append("education", this.doctor_reg.education)
-        formData.append("departament", this.doctor_reg.departament)
-        formData.append("specialization", this.doctor_reg.specialization)
-        formData.append("category", this.doctor_reg.category)
-        formData.append("contact_number", this.doctor_reg.contact_number)
-        formData.append("experience", this.doctor_reg.experience)
-        formData.append("homepage", this.doctor_reg.homepage)
-        formData.append("address", this.doctor_reg.address)
-        formData.append("password", this.doctor_reg.password)
-        formData.append("photo", this.photo)
-        console.log(formData)
-        axios
-          .post(server_url+'/api/doctors/',
-            formData,
-            { headers: {"Content-Type": "multipart/form-data"} })
-          .then((response) => {
-            alert("Success")
-            console.log(response)
-          })
-          .catch(function (error) {
-            alert("Fail")
-            console.log(error)
-          })
+        if (localStorage.access_token) {
+          const formData = new FormData()
+          formData.append("name", this.doctor_reg.name)
+          formData.append("surname", this.doctor_reg.surname)
+          formData.append("middlename", this.doctor_reg.middlename)
+          formData.append("date", this.doctor_reg.date)
+          formData.append("iin", this.doctor_reg.iin)
+          formData.append("id", this.doctor_reg.id)
+          formData.append("education", this.doctor_reg.education)
+          formData.append("departament", this.doctor_reg.departament)
+          formData.append("specialization", this.doctor_reg.specialization)
+          formData.append("category", this.doctor_reg.category)
+          formData.append("contact_number", this.doctor_reg.contact_number)
+          formData.append("experience", this.doctor_reg.experience)
+          formData.append("homepage", this.doctor_reg.homepage)
+          formData.append("address", this.doctor_reg.address)
+          formData.append("password", this.doctor_reg.password)
+          formData.append("photo", this.photo)
+          console.log(formData)
+          axios
+            .post(server_url+'/api/doctors/',
+              formData,
+              { headers: {"Content-Type": "multipart/form-data"} })
+            .then((response) => {
+              alert("Success")
+              console.log(response)
+            })
+            .catch(function (error) {
+              alert("Fail")
+              console.log(error)
+            })
+        }
         return true
       }
 

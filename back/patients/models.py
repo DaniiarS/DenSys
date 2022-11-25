@@ -44,15 +44,6 @@ class AccountManager(BaseUserManager):
                                     contact_number, emergency_contact_number,
                                     address, password, **extra_fields)
 
-    def create_superuser(self, email, name, phone, password=None, **extra_fields):
-
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True.')
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser must have is_superuser=True.')
-
-        return self._create_user(email, name, phone, password, **extra_fields)
-
 class Patient(User):
     use_in_migrations = True
     name = models.CharField(max_length=200)
