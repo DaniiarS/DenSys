@@ -434,6 +434,7 @@ export default {
         axios
           .put(`${server_url}/api/doctor/${this.$route.params.iin}/`,
             formData,
+            { headers: {"Authorization": 'Token ' + localStorage.access_token} },
             { headers: {"Content-Type": "multipart/form-data"} })
           .then((response) => {
             alert("Success")
@@ -453,7 +454,7 @@ export default {
     console.log(this.$route.params.iin)
     if (localStorage.access_token) {
       axios
-        .get(`${server_url}/api/doctor/${this.$route.params.iin}`)
+        .get(`${server_url}/api/doctor/${this.$route.params.iin}`, { headers: {"Authorization": 'Token ' + localStorage.access_token} })
         .then((response) => {
           this.doctor = response.data
           console.log(this.doctor.photo)

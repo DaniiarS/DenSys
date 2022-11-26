@@ -352,7 +352,7 @@ export default {
 
       if (!this.errors.size) {
         axios
-          .put(`${server_url}/api/patient/${this.$route.params.iin}/`, this.patient)
+          .put(`${server_url}/api/patient/${this.$route.params.iin}/`, this.patient, { headers: {"Authorization": 'Token ' + localStorage.access_token} })
           .then((response) => {
             alert("Success")
             console.log(response)
@@ -371,7 +371,7 @@ export default {
     console.log(this.$route.params.iin)
     if (localStorage.access_token) {
       axios
-        .get(`${server_url}/api/patient/${this.$route.params.iin}`)
+        .get(`${server_url}/api/patient/${this.$route.params.iin}`, { headers: {"Authorization": 'Token ' + localStorage.access_token} })
         .then((response) => {
           console.log(response.data)
           this.patient = response.data

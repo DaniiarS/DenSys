@@ -81,10 +81,10 @@ export default {
     TableDropdown,
   },
   mounted () {
-    console.log(this.$route.params.iin)
     if (localStorage.access_token) {
+      console.log({Authorization: 'Token ' + localStorage.access_token})
       axios
-        .get(server_url+'/api/patients')
+        .get(server_url+'/api/patients', { headers: {"Authorization": 'Token ' + localStorage.access_token} } )
         .then((response) => {
           console.log(response.data)
           this.patients = response.data

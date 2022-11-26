@@ -440,7 +440,8 @@ export default {
           axios
             .post(server_url+'/api/doctors/',
               formData,
-              { headers: {"Content-Type": "multipart/form-data"} })
+              { headers: {"Content-Type": "multipart/form-data"} },
+              { headers: {"Authorization": 'Token ' + localStorage.access_token} })
             .then((response) => {
               alert("Success")
               console.log(response)

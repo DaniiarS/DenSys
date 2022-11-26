@@ -26,7 +26,8 @@ class PatientRUD(generics.RetrieveUpdateDestroyAPIView):
     queryset               = Patient.objects.all()
     serializer_class       = PatientSerializer
     authentication_classes = [TokenAuthentication]
-    permission_classes     = [IsAdminUser]
+    permission_classes     = [IsAdminUser,]
+
     def get(self, request, pk, format=None):
         print(request.auth)
         try:

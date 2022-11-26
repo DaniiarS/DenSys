@@ -236,9 +236,9 @@ export default {
         middlename: 'c',
         date: '',
         iin: '',
-        id: '',
-        blood_type: '',
-        marital_status: '',
+        id: '123456789123',
+        blood_type: 'A+',
+        marital_status: 'Married',
         contact_number: '87005553535',
         emergency_contact_number: '87004443434',
         email: '',
@@ -255,6 +255,7 @@ export default {
   },
   methods: {
     iinDateInput(event) {
+      // This should be changed
       // 0123456789     012345
       // 06.10.2001 <-> 011006******
       this.patient_reg.iin = event.target.value
@@ -376,7 +377,7 @@ export default {
       if (!this.errors.size) {
         if (localStorage.access_token) {
           axios
-            .post(server_url+'/api/patients/', this.patient_reg)
+            .post(server_url+'/api/patients/', this.patient_reg, { headers: {"Authorization": 'Token ' + localStorage.access_token} })
             .then((response) => {
               alert("Success")
               console.log(response)

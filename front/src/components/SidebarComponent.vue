@@ -96,6 +96,23 @@
               </a>
             </router-link>
           </li>
+          <li class="items-center">
+            <router-link to="/admin/login"
+                         v-slot="{ href, navigate, isActive, }">
+              <a :href="href"
+                 @click="logout(); navigate"
+                 class="text-xs uppercase py-3 font-bold block"
+                :class="[
+                  isActive
+                    ? 'text-emerald-500 hover:text-emerald-600'
+                    : 'text-blueGray-700 hover:text-blueGray-500']">
+                <i class="fas fa-right-from-bracket mr-2 text-sm fa-2x fa-fw"
+                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']" >
+                </i>
+                Logout
+              </a>
+            </router-link>
+          </li>
         </ul>
       </div>
     </div>
@@ -115,6 +132,9 @@ export default {
     };
   },
   methods: {
+    logout() {
+      localStorage.removeItem('access_token')
+    },
     toggleCollapseShow: function (classes) {
       this.collapseShow = classes;
     },
