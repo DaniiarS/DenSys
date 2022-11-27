@@ -6,8 +6,7 @@
             :toggle="toggle"
             :inputValue="inputValue"
             :processUserInput="processUserInput"
-            :valueToInputFormat="valueToInputFormat"
-        >
+            :valueToInputFormat="valueToInputFormat">
             <input
                 :disabled="isDisabled"
                 class="w-full relative border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring ease-linear transition-all duration-150 disabled:text-slate-300"
@@ -19,9 +18,9 @@
                 placeholder="DD.MM.YYYY"
                 @input="editable && processUserInput($event.target.value)"
                 @focus="editable && open()"
-                @click="editable && open()"
-            >
+                @click="editable && open()">
         </slot>
+
         <transition name="vdp-toggle-calendar">
             <div
                 v-if="opened"
@@ -42,7 +41,8 @@
                             type="button"
                             :title="nextMonthCaption"
                             @click="incrementMonth(1)"
-                        >{{ nextMonthCaption }}</button>
+                        > {{ nextMonthCaption }}</button>
+
                         <div class="vdpPeriodControls">
                             <div class="vdpPeriodControl">
                                 <button :class="directionClass" :key="currentPeriod.month" type="button">
@@ -76,8 +76,7 @@
                         </thead>
                         <tbody
                             :key="currentPeriod.year + '-' + currentPeriod.month"
-                            :class="directionClass"
-                        >
+                            :class="directionClass">
                             <tr class="vdpRow" v-for="(week, weekIndex) in currentPeriodDates" :key="weekIndex">
                                 <td
                                     class="vdpCell"
@@ -93,11 +92,9 @@
                                     :key="item.dateKey"
                                     @click="editable && selectDateItem(item)"
                                 >
-                                    <slot name="cellContent" v-bind:item="item">
-                                        <div
-                                            class="vdpCellContent"
-                                        >{{ item.date.getDate() }}</div>
-                                    </slot>
+                                <div class="vdpCellContent">
+                                    {{ item.date.getDate() }}
+                                </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -601,9 +598,7 @@ export default {
         },
 
         toggle() {
-
             return this.opened ? this.close() : this.open();
-
         },
 
         open() {
@@ -621,14 +616,12 @@ export default {
         },
 
         close() {
-
             if (this.opened) {
                 this.opened = false;
                 this.direction = undefined;
                 this.removeCloseEvents();
                 this.teardownPosition();
             }
-
         },
 
         closeViaOverlay(e) {

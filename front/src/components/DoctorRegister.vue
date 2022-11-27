@@ -54,11 +54,11 @@
             <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
               Date of Birth<div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
               <div class="inline-block px-4 text-rose-700"
-                   v-if="errors.get('date') && !validDate(doctor_reg.date)">
-                {{errors.get('date')}}
+                   v-if="errors.get('bddate') && !validDate(doctor_reg.bddate)">
+                {{errors.get('bddate')}}
               </div>
             </label>
-            <date-pick v-model:value="doctor_reg.date"
+            <date-pick v-model:value="doctor_reg.bddate"
                        :selectableYearRange="{from: 1930, to: 2022}"
                        :format="'DD.MM.YYYY'"/>
           </div>
@@ -154,6 +154,46 @@
           :showMessages="false"
           @photo-submit="photo_upload"
           @photo-change="photo_changed"/>
+        </div>
+
+        <div class="w-full lg:w-4/12 px-4 inline-block relative mb-3">
+          <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
+            Working Hours <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
+            <div class="inline-block px-4 text-rose-700" v-if="errors.get('bddate') && !validDate(doctor_reg.bddate)">
+              {{errors.get('bddate')}}
+            </div>
+          </label>
+          <week-time-pick v-model:value="doctor_reg.working_hours"/>
+        </div>
+        <div class="w-full lg:w-4/12 px-4 inline-block relative mb-3">
+          <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
+            Appointment Duration <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
+            <div class="inline-block px-4 text-rose-700" v-if="errors.get('duration') && !validDate(doctor_reg.duration)">
+              {{errors.get('duration')}}
+            </div>
+          </label>
+          <input type="number"
+                 step="5" min="0"
+                 v-model="doctor_reg.duration"
+                 class="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                 :class="[errors.size && !(doctor_reg.duration) ? 'border-2 border-rose-700' : 'border-0' ]"
+                 placeholder="Appointment Duration"
+                 />
+        </div>
+        <div class="w-full lg:w-4/12 px-4 inline-block relative mb-3">
+          <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
+            Appointment Price <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
+            <div class="inline-block px-4 text-rose-700" v-if="errors.get('price') && !validDate(doctor_reg.price)">
+              {{errors.get('price')}}
+            </div>
+          </label>
+          <input type="number"
+                 step="200" min="0"
+                 v-model="doctor_reg.price"
+                 class="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                 :class="[errors.size && !(doctor_reg.price) ? 'border-2 border-rose-700' : 'border-0' ]"
+                 placeholder="Appointment Price"
+                 />
         </div>
 
         <div class="w-full lg:w-6/12 px-4 inline-block relative mb-3">
@@ -263,9 +303,10 @@
 import axios from 'axios'
 import {server_url} from '@/api.js'
 
-import RadioForm from "@/components/RadioForm.vue"
-import DatePick from '@/components/vueDatePick.vue';
-import PhotoUpload from '@/components/PhotoUpload.vue';
+import RadioForm    from "@/components/RadioForm.vue"
+import DatePick     from '@/components/vueDatePick.vue';
+import PhotoUpload  from '@/components/PhotoUpload.vue';
+import WeekTimePick from '@/components/WeekTimePick.vue';
 
 import blankDoctor from "@/assets/img/blankDoctor.jpg";
 
@@ -279,7 +320,7 @@ export default {
         name: 'One',
         surname: 'Two',
         middlename: 'Three',
-        date: '06.10.2001',
+        bddate: '06.10.2001',
         iin: '',
         id: '123456789123',
         education: 'PhD',
@@ -291,6 +332,17 @@ export default {
         homepage: '',
         address: 'Astana, Here street',
         password: '12345',
+        duration: '15',
+        price:    '7800',
+        working_hours: [
+          ['00:00 - 10:00'],
+          ['00:00 - 10:00'],
+          ['00:00 - 10:00'],
+          ['00:00 - 10:00'],
+          ['00:00 - 10:00'],
+          [],
+          ['00:00 - 19:00'],
+        ],
       },
       photo: null,
       repeat_password: '12345'
@@ -300,6 +352,7 @@ export default {
     PhotoUpload,
     RadioForm,
     DatePick,
+    WeekTimePick,
   },
   methods: {
     photo_upload(e, file){
@@ -375,10 +428,10 @@ export default {
       } else if (!this.validName(this.doctor_reg.middlename)) {
         this.errors.set('middlename', "not valid")
       }
-      if (!this.doctor_reg.date) {
-        this.errors.set('date', "date required.")
-      } else if (!this.validDate(this.doctor_reg.date)) {
-        this.errors.set('date', "not valid")
+      if (!this.doctor_reg.bddate) {
+        this.errors.set('bddate', "date required.")
+      } else if (!this.validDate(this.doctor_reg.bddate)) {
+        this.errors.set('bddate', "not valid")
       }
       if (!this.doctor_reg.iin) {
         this.errors.set('iin', "IIN required.")
@@ -423,7 +476,7 @@ export default {
           formData.append("name", this.doctor_reg.name)
           formData.append("surname", this.doctor_reg.surname)
           formData.append("middlename", this.doctor_reg.middlename)
-          formData.append("date", this.doctor_reg.date)
+          formData.append("bddate", this.doctor_reg.bddate)
           formData.append("iin", this.doctor_reg.iin)
           formData.append("id", this.doctor_reg.id)
           formData.append("education", this.doctor_reg.education)
@@ -436,6 +489,9 @@ export default {
           formData.append("address", this.doctor_reg.address)
           formData.append("password", this.doctor_reg.password)
           formData.append("photo", this.photo)
+          formData.append("working_hours", JSON.stringify(this.doctor_reg.working_hours))
+          formData.append("duration", this.doctor_reg.duration)
+          formData.append("price", this.doctor_reg.price)
           console.log(formData)
           axios
             .post(server_url+'/api/doctors/',

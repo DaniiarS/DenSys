@@ -54,11 +54,11 @@
             <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
               Date of Birth<div class="text-slate-600 fa-2xs fa-solid fa-circle"></div>
               <div class="inline-block px-4 text-rose-700"
-                   v-if="errors.get('date') && !validDate(doctor.date)">
-                {{errors.get('date')}}
+                   v-if="errors.get('bddate') && !validDate(doctor.bddate)">
+                {{errors.get('bddate')}}
               </div>
             </label>
-            <date-pick v-model:value="doctor.date"
+            <date-pick v-model:value="doctor.bddate"
                        :isDisabled="true"
                        :selectableYearRange="{from: 1930, to: 2022}"
                        :format="'DD.MM.YYYY'"/>
@@ -157,6 +157,45 @@
             :showMessages="false"
             @photo-submit="photo_upload"
             @photo-change="photo_changed"/>
+        </div>
+        <div class="w-full lg:w-4/12 px-4 inline-block relative mb-3">
+          <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
+            Working Hours <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
+            <div class="inline-block px-4 text-rose-700" v-if="errors.get('bddate') && !validDate(doctor.bddate)">
+              {{errors.get('bddate')}}
+            </div>
+          </label>
+          <week-time-pick v-model:value="doctor.working_hours"/>
+        </div>
+        <div class="w-full lg:w-4/12 px-4 inline-block relative mb-3">
+          <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
+            Appointment Duration <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
+            <div class="inline-block px-4 text-rose-700" v-if="errors.get('duration') && !validDate(doctor.duration)">
+              {{errors.get('duration')}}
+            </div>
+          </label>
+          <input type="number"
+                 step="5" min="0"
+                 v-model="doctor.duration"
+                 class="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                 :class="[errors.size && !(doctor.duration) ? 'border-2 border-rose-700' : 'border-0' ]"
+                 placeholder="Appointment Duration"
+                 />
+        </div>
+        <div class="w-full lg:w-4/12 px-4 inline-block relative mb-3">
+          <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
+            Appointment Price <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
+            <div class="inline-block px-4 text-rose-700" v-if="errors.get('price') && !validDate(doctor.price)">
+              {{errors.get('price')}}
+            </div>
+          </label>
+          <input type="number"
+                 step="200" min="0"
+                 v-model="doctor.price"
+                 class="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                 :class="[errors.size && !(doctor.price) ? 'border-2 border-rose-700' : 'border-0' ]"
+                 placeholder="Appointment Price"
+                 />
         </div>
 
           <div class="w-full lg:w-6/12 px-4 inline-block relative mb-3">
@@ -268,6 +307,7 @@ import {server_url} from '@/api.js'
 import RadioForm from "@/components/RadioForm.vue"
 import DatePick from '@/components/vueDatePick.vue';
 import PhotoUpload from '@/components/PhotoUpload.vue';
+import WeekTimePick from '@/components/WeekTimePick.vue';
 
 import blankDoctor from "@/assets/img/blankDoctor.jpg";
 
@@ -281,7 +321,7 @@ export default {
         name: '',
         surname: '',
         middlename: '',
-        date: '',
+        bddate: '',
         iin: '',
         id: '',
         education: '',
@@ -289,6 +329,9 @@ export default {
         specialization: '',
         category: '',
         photo: null,
+        working_hours: [[],[],[],[],[],[],[]],
+        duration: '',
+        price: '',
         contact_number: '',
         experience: '',
         homepage: '',
@@ -302,6 +345,7 @@ export default {
     RadioForm,
     DatePick,
     PhotoUpload,
+    WeekTimePick,
   },
   methods: {
     photo_upload(e, file){
@@ -371,10 +415,10 @@ export default {
       } else if (!this.validName(this.doctor.middlename)) {
         this.errors.set('middlename', "not valid")
       }
-      if (!this.doctor.date) {
-        this.errors.set('date', "required.")
-      } else if (!this.validDate(this.doctor.date)) {
-        this.errors.set('date', "not valid")
+      if (!this.doctor.bddate) {
+        this.errors.set('bddate', "required.")
+      } else if (!this.validDate(this.doctor.bddate)) {
+        this.errors.set('bddate', "not valid")
       }
       if (!this.doctor.iin) {
         this.errors.set('iin', "required.")
@@ -416,7 +460,7 @@ export default {
         formData.append("name", this.doctor.name)
         formData.append("surname", this.doctor.surname)
         formData.append("middlename", this.doctor.middlename)
-        formData.append("date", this.doctor.date)
+        formData.append("bddate", this.doctor.bddate)
         formData.append("id", this.doctor.id)
         formData.append("education", this.doctor.education)
         formData.append("departament", this.doctor.departament)
@@ -427,6 +471,9 @@ export default {
         formData.append("homepage", this.doctor.homepage)
         formData.append("address", this.doctor.address)
         formData.append("password", this.doctor.password)
+        formData.append("working_hours", JSON.stringify(this.doctor.working_hours))
+        formData.append("duration", this.doctor.duration)
+        formData.append("price", this.doctor.price)
         if (this.photo) {
           formData.append("photo", this.photo)
         }
@@ -457,7 +504,6 @@ export default {
         .get(`${server_url}/api/doctor/${this.$route.params.iin}`, { headers: {"Authorization": 'Token ' + localStorage.access_token} })
         .then((response) => {
           this.doctor = response.data
-          console.log(this.doctor.photo)
           this.defaultPhoto = server_url + this.doctor.photo
         })
         .catch(function (error) {

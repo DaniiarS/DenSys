@@ -18,11 +18,23 @@ class DoctorList(generics.ListCreateAPIView):
     serializer_class       = DoctorSerializer
     authentication_classes = [TokenAuthentication, BasicAuthentication]
     permission_classes     = [IsAdminUser,]
+
     def get(self, request, format=None):
         print(request.auth)
         doctors = Doctor.objects.all()
         serializer = DoctorSerializer(doctors, many=True)
         return JsonResponse(serializer.data, safe=False)
+
+    def post(self, request, format=None):
+
+        print(request.data)
+        serializer = DoctorSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+        print(serializer.errors)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class DoctorRUD(generics.RetrieveUpdateDestroyAPIView):
     queryset               = Doctor.objects.all()
@@ -37,6 +49,7 @@ class DoctorRUD(generics.RetrieveUpdateDestroyAPIView):
             raise Http404('Not found')
         serializer = DoctorSerializer(doctor)
         return JsonResponse(serializer.data, safe=False)
+
 
     def put(self, request, pk, format=None):
         try:

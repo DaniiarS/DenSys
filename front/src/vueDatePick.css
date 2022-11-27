@@ -103,32 +103,6 @@
 .vdp-toggle-calendar-leave-active.vdpPositionFixed {
     animation: d 0.3s reverse;
 }
-.vdpClearInput {
-    font-size: 1em;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    width: 3em;
-}
-.vdpClearInput:before {
-    content: "\D7";
-    width: 1.4em;
-    height: 1.4em;
-    line-height: 1.1em;
-    box-sizing: border-box;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin: -0.7em 0 0 -0.7em;
-    color: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 50%;
-    background-color: #fff;
-}
-.vdpClearInput:hover:before {
-    box-shadow: 0 0.2em 0.5em rgba(0, 0, 0, 0.15);
-}
 .vdpOuterWrap.vdpFloating {
     position: absolute;
     padding: 0.5em 0;
@@ -150,10 +124,8 @@
     background-color: rgba(0, 0, 0, 0.3);
 }
 .vdpFloating .vdpInnerWrap {
-    max-width: 30em;
 }
 .vdpPositionFixed .vdpInnerWrap {
-    max-width: 30em;
     margin: 0 auto;
     border: 0;
     -webkit-animation: c 0.3s;
@@ -320,17 +292,26 @@
     animation: a 0.5s;
 }
 .vdpCell,
+.wtpCell,
+.wtpHeadCell,
 .vdpHeadCell {
     color: #94a3b8;
     font-size:1.1em;
     text-align: center;
-    box-sizing: border-box;
 }
 .vdpCell {
     padding: 0.5em 0;
 }
+
+.wtpCell {
+    padding: 0.5em 0;
+}
 .vdpHeadCell {
     padding: 0.3em 0.5em 1.8em;
+}
+.wtpHeadCell {
+    width: 6.0em;
+    padding: 0.3em 1.5em 1.0em;
 }
 .vdpHeadCellContent {
     font-weight: 400;
@@ -342,7 +323,6 @@
     font-size: 1.4em;
     display: block;
     margin: 0 auto;
-    width: 1.857em;
     line-height: 1.857em;
     text-align: center;
     border-radius: 100%;

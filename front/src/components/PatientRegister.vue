@@ -54,11 +54,11 @@
             <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
               Date of Birth<div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
               <div class="inline-block px-4 text-rose-700"
-                   v-if="errors.get('date') && !validDate(patient_reg.date)">
-                {{errors.get('date')}}
+                   v-if="errors.get('bddate') && !validDate(patient_reg.bddate)">
+                {{errors.get('bddate')}}
               </div>
             </label>
-            <date-pick v-model:value="patient_reg.date"
+            <date-pick v-model:value="patient_reg.bddate"
                        :selectableYearRange="{from: 1923, to: 2022}"
                        :format="'DD.MM.YYYY'"/>
           </div>
@@ -234,7 +234,7 @@ export default {
         name: 'a',
         surname: 'b',
         middlename: 'c',
-        date: '',
+        bddate: '',
         iin: '',
         id: '123456789123',
         blood_type: 'A+',
@@ -276,7 +276,7 @@ export default {
       }
       date += this.patient_reg.iin[0]
       date += this.patient_reg.iin[1]
-      this.patient_reg.date = date
+      this.patient_reg.bddate = date
     },
     validDate(inputText) {
       var dateformat = /^(0?[1-9]|[12][0-9]|3[01])[.](0?[1-9]|1[012])[.]\d{4}$/;
@@ -338,10 +338,10 @@ export default {
       } else if (!this.validName(this.patient_reg.middlename)) {
         this.errors.set('middlename', "not valid")
       }
-      if (!this.patient_reg.date) {
-        this.errors.set('date', "required.")
-      } else if (!this.validDate(this.patient_reg.date)) {
-        this.errors.set('date', "not valid")
+      if (!this.patient_reg.bddate) {
+        this.errors.set('bddate', "required.")
+      } else if (!this.validDate(this.patient_reg.bddate)) {
+        this.errors.set('bddate', "not valid")
       }
       if (!this.patient_reg.iin) {
         this.errors.set('iin', "required.")
