@@ -1,6 +1,6 @@
 <template>
-  <div class="flex-wrap inline-block">
-    <div class="inline-flex shadow-md hover:shadow-lg focus:shadow-lg" role="group"
+  <div class="flex flex-wrap inline-block">
+    <div class=" flex-1 shadow-md hover:shadow-lg focus:shadow-lg" role="group"
          v-for="(buttn,idx) in buttons" :key="idx">
       <toggle-button :aactive="input_type===buttn" :toggleButtonName = "buttn" @toggle="updateActive"/>
     </div>

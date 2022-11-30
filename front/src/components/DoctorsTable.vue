@@ -53,7 +53,7 @@
       </div>
     </div>
   </div>
-  <img v-show="activePhoto" class="absolute w-32 h-32 top-1 left-1" :src="activePhoto"/>
+  <img v-show="activePhoto" class="absolute w-24 h-32 top-1 left-1" :src="activePhoto"/>
 
   <div id="tooltip" role="tooltip">
     <div id="arrow" data-popper-arrow></div>

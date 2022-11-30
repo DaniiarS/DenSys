@@ -1,12 +1,12 @@
 <template>
   <div class="container mx-auto h-full flex content-center items-center justify-center w-full lg:w-full">
     <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-slate-200 border-0">
-      <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
+      <div class="flex flex-col px-4 lg:px-10 py-10 pt-0">
         <div class="text-slate-800 text-center py-3 font-bold">
           Doctor Registration Form
         </div>
         <hr class="pb-4 border-t-1 border-slate-300" />
-        <div class="flex-wrap">
+        <div class="flex flex-wrap">
           <div class="w-full lg:w-4/12 px-4 inline-block relative mb-3">
             <div class="flex-wrap block uppercase text-slate-600 text-xs font-bold mb-2">
               Name <div class="inline-block text-rose-700 fa-2xs fa-solid fa-circle"></div>
@@ -92,7 +92,7 @@
                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                    placeholder="id number"/>
           </div>
-          <div class="w-full lg:w-8/12 inline-block">
+          <div class="flex-auto inline-block">
           <div class="px-4 relative w-full mb-3">
             <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
               Education <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
@@ -137,14 +137,14 @@
               v-model:input_type="doctor_reg.category"/>
           </div>
         </div>
-        <div class="w-full lg:w-4/12 inline-block item-center px-4">
+        <div class="flex-none inline-block item-center px-4">
         <photo-upload
           :enableEdits="true"
           :photoDefault="defaultPhoto"
           buttonClass="bg-slate-800 text-slate-100
                        active:bg-slate-600
                        text-sm font-bold uppercase
-                       px-4 py-2 mx-3 rounded
+                       px-2 py-2 mx-1 rounded
                        shadow-slate-900
                        disabled:bg-slate-600
                        disabled:shadow-none
@@ -278,7 +278,7 @@
                    placeholder="Password"/>
           </div>
 
-          <div class="text-center px-4 mt-6" >
+          <div class="w-full text-center px-4 mt-6" >
             <button class="bg-slate-800 text-slate-100
                            active:bg-slate-600
                            text-sm font-bold uppercase
@@ -493,11 +493,11 @@ export default {
           formData.append("duration", this.doctor_reg.duration)
           formData.append("price", this.doctor_reg.price)
           console.log(formData)
+          console.log(localStorage.access_token)
           axios
             .post(server_url+'/api/doctors/',
               formData,
-              { headers: {"Content-Type": "multipart/form-data"} },
-              { headers: {"Authorization": 'Token ' + localStorage.access_token} })
+              { headers: {"Authorization": 'Token ' + localStorage.access_token, "Content-Type": "multipart/form-data"} })
             .then((response) => {
               alert("Success")
               console.log(response)

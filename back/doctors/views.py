@@ -1,17 +1,33 @@
 # Create your views here.
-from rest_framework.parsers import JSONParser
-from rest_framework.parsers import MultiPartParser, FormParser
+from django.shortcuts import Http404
+from django.http import HttpResponse,JsonResponse
+
 from rest_framework import generics
 from rest_framework import status
 
 from rest_framework.authentication import TokenAuthentication, BasicAuthentication
 from rest_framework.permissions    import IsAuthenticated, IsAdminUser
+from rest_framework.pagination     import LimitOffsetPagination
 from rest_framework.response       import Response
 
-from django.http import HttpResponse,JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from .models import Doctor
-from .serializers import DoctorSerializer
+from .models import *
+from .serializers import *
+
+class DoctorIINList(generics.ListAPIView):
+    queryset               = Doctor.objects.all()
+    serializer_class       = DoctorSerializer
+    authentication_classes = [TokenAuthentication, BasicAuthentication]
+    permission_classes     = [IsAdminUser,]
+    pagination_class       = LimitOffsetPagination
+
+    def get(self, request, specialization, limit, offset, format=None):
+        print("auth:", request.auth)
+        print("spec:", specialization)
+        doctors    = Doctor.objects.filter(specialization__iexact=specialization).values('iin')
+        count      = doctors.count()
+        to_return  = doctors[offset:offset+limit]
+        serializer = DoctorIINSerializer(to_return, many=True)
+        return Response({'doctors': serializer.data, 'count': count})#JsonResponse(serializer.data, safe=False)
 
 class DoctorList(generics.ListCreateAPIView):
     queryset               = Doctor.objects.all()
@@ -26,7 +42,7 @@ class DoctorList(generics.ListCreateAPIView):
         return JsonResponse(serializer.data, safe=False)
 
     def post(self, request, format=None):
-
+        print(request.auth)
         print(request.data)
         serializer = DoctorSerializer(data=request.data)
         if serializer.is_valid():
@@ -59,6 +75,18 @@ class DoctorRUD(generics.RetrieveUpdateDestroyAPIView):
         serializer = DoctorSerializer(doctor, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
+            return JsonResponse(serializer.data)
+        print(serializer.errors)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        try:
+            doctor = Doctor.objects.get(iin = pk)
+        except Doctor.DoesNotExist:
+            raise Http404('Not What found')
+        serializer = DoctorSerializer(doctor, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.delete()
             return JsonResponse(serializer.data)
         print(serializer.errors)
         return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

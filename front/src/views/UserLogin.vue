@@ -3,18 +3,18 @@
     <div class="w-full lg:w-4/12 shadow-lg rounded-lg bg-slate-200 border-0">
       <div class="px-4 lg:px-10 py-10 pt-0">
         <div class="text-slate-800 text-center py-3 font-bold">
-              Admin Login
+              Login
         </div>
         <form>
           <div class="relative w-full mb-3">
             <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
-              Name
+              IIN
             </label>
             <input
               type="text"
               v-model="iin"
               class="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-              placeholder="Name"/>
+              placeholder="IIN"/>
           </div>
           <div class="relative w-full mb-3">
             <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
@@ -60,9 +60,13 @@ export default {
         .then(response => {
           console.log(response.data)
           localStorage.setItem('access_token', response.data.token)
-          console.log(localStorage.getItem('access_token'))
+          localStorage.setItem('user_iin',     response.data.user_iin)
           axios.defaults.headers.common['Authorization'] = `Token ${localStorage.getItem('access_token')}`;
-          this.$router.push({path: '/admin'})
+          if (response.data.who === "patient") {
+            this.$router.push({path: '/patient'})
+          } else if (response.data.who === 'doctor') {
+            this.$router.push({path: '/doctor'})
+          }
         })
         .catch(function (error) {
           alert("Fail")

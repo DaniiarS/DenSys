@@ -6,7 +6,7 @@
           Doctor Information
         </div>
         <hr class="pb-4 border-t-1 border-slate-300" />
-        <div class="flex-wrap">
+        <div class="flex flex-wrap">
           <div class="w-full lg:w-4/12 px-4 inline-block relative mb-3">
             <div class="flex-wrap block uppercase text-slate-600 text-xs font-bold mb-2">
               Name <div class="inline-block text-rose-700 fa-2xs fa-solid fa-circle"></div>
@@ -94,7 +94,7 @@
                    placeholder="id number"/>
           </div>
 
-          <div class="w-full lg:w-8/12 inline-block">
+          <div class="flex-auto inline-block">
           <div class="px-4 relative w-full mb-3">
             <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
               Education <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
@@ -140,14 +140,14 @@
           </div>
         </div>
 
-          <div class="w-full lg:w-4/12 inline-block item-center px-4">
+          <div class="flex-none inline-block item-center px-4">
           <photo-upload
             :enableEdits="true"
             :photoDefault="defaultPhoto"
             buttonClass="bg-slate-800 text-slate-100
                          active:bg-slate-600
                          text-sm font-bold uppercase
-                         px-4 py-2 mx-3 rounded
+                         px-2 py-2 mx-1 rounded
                          shadow-slate-900
                          disabled:bg-slate-600
                          disabled:shadow-none
@@ -252,36 +252,7 @@
                    class="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                    placeholder="Address"/>
           </div>
-          <div class="w-full lg:w-6/12 px-4 inline-block relative mb-3">
-            <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
-              Password <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
-              <div class="inline-block px-4 text-rose-700"
-                   v-if="errors.get('password') && !doctor.password">
-                {{errors.get('password')}}
-              </div>
-            </label>
-            <input type="text"
-                   v-model="doctor.password"
-                   :class="[errors.size && !doctor.password ? 'border-2 border-rose-700' : 'border-0' ]"
-                   class="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                   placeholder="Password"/>
-          </div>
-          <div class="w-full lg:w-6/12 px-4 inline-block relative mb-3">
-            <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
-              Repeat Password <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
-              <div class="inline-block px-4 text-rose-700"
-                   v-if="errors.get('password') && !doctor.password">
-                {{errors.get('password')}}
-              </div>
-            </label>
-            <input type="text"
-                   v-model="doctor.password"
-                   :class="[errors.size && !doctor.password ? 'border-2 border-rose-700' : 'border-0' ]"
-                   class="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                   placeholder="Password"/>
-          </div>
-
-          <div class="text-center px-4 mt-6" >
+          <div class="w-full text-center px-4 mt-6" >
             <button class="bg-slate-800 text-white
                            active:bg-slate-600
                            text-sm font-bold uppercase

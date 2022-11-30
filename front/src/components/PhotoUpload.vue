@@ -1,11 +1,11 @@
 <template>
     <div class="vue-photo-upload">
-        <form class="vue-photo-upload-form w-64" @submit.prevent="photo_submit">
-            <div class="border-2 border-slate-300 w-64 h-64">
+        <form class="vue-photo-upload-form w-48" @submit.prevent="photo_submit">
+            <div class="border-2 border-slate-300 w-48 h-64">
                 <canvas
                     v-show="(vue_photo_selected && enableEdits)"
                     id="vue-photo-upload-canvas"
-                        class="rounded-circle m-auto large-profilePicture" width="256" height="256">
+                        class="rounded-circle m-auto large-profilePicture" width="192" height="256">
                 </canvas>
 
                 <img v-show="!(vue_photo_selected && enableEdits)"

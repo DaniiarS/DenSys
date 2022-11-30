@@ -1,5 +1,5 @@
 <template>
-  <button class="inline-block px-6 py-2.5
+  <button class="w-full px-6 py-2.5
                  border-2 border-emerald-500
                  font-medium text-xs leading-tight uppercase
                  hover:text-white hover:bg-emerald-600

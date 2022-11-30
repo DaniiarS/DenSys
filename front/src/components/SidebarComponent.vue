@@ -13,103 +13,34 @@
                           mr-0 pb-2 p-4 px-0
                           whitespace-nowrap"
                    to="/">
-        DenSys Admin
+        {{header}}
       </router-link>
       </div>
       <!-- Collapse -->
-      <div class="flex flex-col items-stretch opacity-100 relative mt-4 shadow-none absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-auto h-auto items-center flex-1 rounded"
-           v-bind:class="collapseShow">
+      <div class="flex flex-col items-stretch opacity-100 relative mt-4 shadow-none absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-auto h-auto items-center flex-1 rounded">
         <!-- Divider -->
         <hr class="my-4 min-w-full" />
         <!-- Heading -->
         <h6 class="min-w-full text-slate-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-          Admin Actions
+          {{subheader}}
         </h6>
         <!-- Navigation -->
 
         <ul class="flex-col min-w-full flex flex-col list-none">
-          <li class="items-center">
-            <router-link to="/admin/patient-register"
+          <li class="items-center" v-for="(btn, bidx) in buttons" :key="bidx">
+            <router-link :to="btn.link"
                          v-slot="{ href, navigate, isActive, }">
               <a :href="href"
-                 @click="navigate"
+                 @click="if (btn.click) {btn.click()}; navigate"
                  class="text-xs uppercase py-3 font-bold block"
                 :class="[
                   isActive
                     ? 'text-emerald-500 hover:text-emerald-600'
-                    : 'text-blueGray-700 hover:text-blueGray-500']">
-                <i class="fas fa-clipboard-user mr-2 text-sm fa-2x fa-fw"
-                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']" >
+                    : 'text-slate-700 hover:text-slate-500']">
+                <i class="mr-2 text-sm fa-2x fa-fw"
+                   :class="[isActive ? 'opacity-75' : 'text-slate-300', btn.icon]" >
                 </i>
-                Patient Registration
-              </a>
-            </router-link>
-          </li>
-          <li class="items-center">
-            <router-link to="/admin/doctor-register"
-                         v-slot="{ href, navigate, isActive, }">
-              <a :href="href"
-                 @click="navigate"
-                 class="text-xs uppercase py-3 font-bold block"
-                :class="[
-                  isActive
-                    ? 'text-emerald-500 hover:text-emerald-600'
-                    : 'text-blueGray-700 hover:text-slate-500']">
-                <i class="fas fa-stethoscope mr-2 text-sm fa-fw fa-2x"
-                   :class="[isActive ? 'opacity-75' : 'text-slate-300']" >
-                </i>
-                Doctor Registration
-              </a>
-            </router-link>
-          </li>
-          <li class="items-center">
-            <router-link to="/admin/patients"
-                         v-slot="{ href, navigate, isActive, }">
-              <a :href="href"
-                 @click="navigate"
-                 class="text-xs uppercase py-3 font-bold block"
-                :class="[
-                  isActive
-                    ? 'text-emerald-500 hover:text-emerald-600'
-                    : 'text-blueGray-700 hover:text-blueGray-500']">
-                <i class="fas fa-user mr-2 text-sm fa-2x fa-fw"
-                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']" >
-                </i>
-                Patients
-              </a>
-            </router-link>
-          </li>
-          <li class="items-center">
-            <router-link to="/admin/doctors"
-                         v-slot="{ href, navigate, isActive, }">
-              <a :href="href"
-                 @click="navigate"
-                 class="text-xs uppercase py-3 font-bold block"
-                :class="[
-                  isActive
-                    ? 'text-emerald-500 hover:text-emerald-600'
-                    : 'text-blueGray-700 hover:text-blueGray-500']">
-                <i class="fas fa-user-doctor mr-2 text-sm fa-2x fa-fw"
-                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']" >
-                </i>
-                Doctors
-              </a>
-            </router-link>
-          </li>
-          <li class="items-center">
-            <router-link to="/admin/login"
-                         v-slot="{ href, navigate, isActive, }">
-              <a :href="href"
-                 @click="logout(); navigate"
-                 class="text-xs uppercase py-3 font-bold block"
-                :class="[
-                  isActive
-                    ? 'text-emerald-500 hover:text-emerald-600'
-                    : 'text-blueGray-700 hover:text-blueGray-500']">
-                <i class="fas fa-right-from-bracket mr-2 text-sm fa-2x fa-fw"
-                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']" >
-                </i>
-                Logout
+                {{btn.name}}
               </a>
             </router-link>
           </li>
@@ -125,18 +56,34 @@
 //import UserDropdown from "@/components/Dropdowns/UserDropdown.vue";
 
 export default {
+  props: {
+    buttons: {
+      type: Array,
+      default: () => [{
+        name: 'Name',
+        link: '/admin',
+        click: '',
+        icon: 'fas fa-user',
+      },
+      ]
+    },
+    header: {
+      type: String,
+      default: 'header'
+    },
+    subheader: {
+      type: String,
+      default: 'subheader'
+    },
+  },
 
   data() {
     return {
-      collapseShow: "active",
     };
   },
   methods: {
     logout() {
       localStorage.removeItem('access_token')
-    },
-    toggleCollapseShow: function (classes) {
-      this.collapseShow = classes;
     },
   },
   components: {

@@ -43,7 +43,7 @@
               @click="$router.push({path: `/admin/patients/${patient.iin}`})">
             <td class="block p-4 px-6"> {{patient.name}} {{patient.middlename}} {{patient.surname}} </td>
             <td class="p-4 px-6"> {{patient.iin}} </td>
-            <td class="p-4 px-6"> {{patient.date}} </td>
+            <td class="p-4 px-6"> {{patient.bddate}} </td>
             <td class="p-4 px-6"> {{patient.contact_number}} </td>
             <td class="p-4 px-6"> {{patient.address}} </td>
             <td class="p-4 text-right"> <table-dropdown /> </td>

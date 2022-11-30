@@ -12,8 +12,11 @@ import App from "@/App.vue";
 
 // layouts
 
-import Admin      from "@/layouts/AdminLayout.vue";
-import AdminLogin from "@/views/AdminLogin.vue";
+import Admin              from "@/layouts/AdminLayout.vue";
+import AdminLogin         from "@/views/AdminLogin.vue";
+import UserLogin          from "@/views/UserLogin.vue";
+import Patient            from "@/layouts/PatientLayout.vue";
+import MakeAppointment    from "@/components/MakeAppointment.vue";
 
 // views for Admin layout
 
@@ -28,6 +31,7 @@ import DoctorProfile   from "@/components/DoctorProfile.vue";
 // views without layouts
 
 import Index from "@/views/IndexPage.vue";
+
 
 // routes
 
@@ -67,10 +71,28 @@ const routes = [
     component: AdminLogin,
   },
   {
+    path: "/patient",
+    component: Patient,
+    children: [
+      {
+        path: "/patient/make-appointment",
+        component: MakeAppointment,
+      },
+      {
+        path: "/patient/profile",
+        component: PatientProfile,
+      },
+    ],
+  },
+  {
+    path: "/login",
+    component: UserLogin,
+  },
+  {
     path: "/",
     component: Index,
   },
-  { path: "/:pathMatch(.*)*", redirect: "/admin" },
+  { path: "/:pathMatch(.*)*", redirect: "/" },
 ];
 
 const router = createRouter({

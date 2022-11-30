@@ -54,11 +54,11 @@
             <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
               Date of Birth<div class="text-slate-600 fa-2xs fa-solid fa-circle"></div>
               <div class="inline-block px-4 text-rose-700"
-                   v-if="errors.get('date') && !validDate(patient.date)">
-                {{errors.get('date')}}
+                   v-if="errors.get('bddate') && !validDate(patient.bddate)">
+                {{errors.get('bddate')}}
               </div>
             </label>
-            <date-pick v-model:value="patient.date"
+            <date-pick v-model:value="patient.bddate"
                        :isDisabled="true"
                        :selectableYearRange="{from: 1930, to: 2022}"
                        :format="'DD.MM.YYYY'"/>
@@ -234,7 +234,7 @@ export default {
         name: '',
         surname: '',
         middlename: '',
-        date: '',
+        bddate: '',
         iin: '',
         id: '',
         blood_type: '',
@@ -314,10 +314,10 @@ export default {
       } else if (!this.validName(this.patient.middlename)) {
         this.errors.set('middlename', "not valid")
       }
-      if (!this.patient.date) {
-        this.errors.set('date', "date required.")
-      } else if (!this.validDate(this.patient.date)) {
-        this.errors.set('date', "not valid")
+      if (!this.patient.bddate) {
+        this.errors.set('bddate', "date required.")
+      } else if (!this.validDate(this.patient.bddate)) {
+        this.errors.set('bddate', "not valid")
       }
       if (!this.patient.iin) {
         this.errors.set('iin', "iin required.")

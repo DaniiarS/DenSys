@@ -1,4 +1,7 @@
 # Create your views here.
+from django.shortcuts import Http404
+from django.http import HttpResponse,JsonResponse
+
 from rest_framework import generics
 from rest_framework import status
 
@@ -6,10 +9,8 @@ from rest_framework.authentication import TokenAuthentication, BasicAuthenticati
 from rest_framework.permissions    import IsAuthenticated, IsAdminUser
 from rest_framework.response       import Response
 
-from django.http import HttpResponse,JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from .models import Patient
-from .serializers import PatientSerializer
+from .models      import *
+from .serializers import *
 
 class PatientList(generics.ListCreateAPIView):
     queryset               = Patient.objects.all()
