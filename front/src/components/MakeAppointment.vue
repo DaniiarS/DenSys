@@ -160,6 +160,9 @@ export default {
   methods: {
     ChooseDoctor(iin) {
       this.chosen_iin = iin
+      this.weekat=0
+      this.dateat=0
+      this.timeat=undefined
       axios
         .get(`${server_url}/api/doctor/schedule/${this.chosen_iin}/`, { headers: {"Authorization": 'Token ' + localStorage.access_token} })
         .then((response) => {
