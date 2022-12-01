@@ -13,7 +13,7 @@
       <!-- Projects table -->
       <table class="items-center w-full border-collapse">
         <thead>
-          <tr class="align-middle border border-solid text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center text-slate-200 bg-slate-800 border-blueGray-100">
+          <tr class="align-middle border border-solid text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center text-slate-200 bg-slate-800 border-slate-100">
             <th class="px-6 py-3"> Name </th>
             <th class="px-6 py-3"> IIN </th>
             <th class="px-6 py-3"> Contact Number </th>

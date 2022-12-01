@@ -307,7 +307,6 @@ export default {
         experience: '',
         homepage: '',
         address: '',
-        password: '',
       },
       photo: null
     };
@@ -422,9 +421,6 @@ export default {
       if (!this.doctor.address) {
         this.errors.set('address', "required.")
       }
-      if (!this.doctor.password) {
-        this.errors.set('password', "required.")
-      }
 
       if (!this.errors.size) {
         const formData = new FormData()
@@ -441,7 +437,6 @@ export default {
         formData.append("experience", this.doctor.experience)
         formData.append("homepage", this.doctor.homepage)
         formData.append("address", this.doctor.address)
-        formData.append("password", this.doctor.password)
         formData.append("working_hours", JSON.stringify(this.doctor.working_hours))
         formData.append("duration", this.doctor.duration)
         formData.append("price", this.doctor.price)
@@ -450,7 +445,7 @@ export default {
         }
         console.log(formData)
         axios
-          .put(`${server_url}/api/doctor/${this.$route.params.iin}/`,
+          .put(`${server_url}/api/doctor/update/${this.$route.params.iin}/`,
             formData,
             { headers: {"Authorization": 'Token ' + localStorage.access_token} },
             { headers: {"Content-Type": "multipart/form-data"} })

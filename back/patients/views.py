@@ -37,12 +37,16 @@ class PatientRUD(generics.RetrieveUpdateDestroyAPIView):
     queryset               = Patient.objects.all()
     serializer_class       = PatientSerializer
     authentication_classes = [TokenAuthentication]
-    permission_classes     = [IsAdminUser,]
+    permission_classes     = [IsAuthenticated,]
 
     def get(self, request, pk, format=None):
         print(request.auth)
         try:
             patient = Patient.objects.get(iin = pk)
+            print(request.user)
+            print(patient)
+            if (patient.iin != request.user.iin):
+                return Response({'response': "Not permitted"})
         except Patient.DoesNotExist:
             raise Http404('Not found')
         serializer = PatientSerializer(patient)

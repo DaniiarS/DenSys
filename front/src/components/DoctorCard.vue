@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-auto mb-8 px-4 lg:max-w-6/12 break-words">
+  <div class="flex-auto mb-2 px-4 lg:max-w-6/12 break-words">
     <div class="relative flex px-4 py-3 bg-slate-100 rounded items-center
                 shadow-lg cursor-pointer hover:shadow-none
                 ease-linear transition-all duration-150 ">

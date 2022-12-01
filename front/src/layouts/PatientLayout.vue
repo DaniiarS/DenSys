@@ -5,7 +5,8 @@
              :buttons="[
                 {name: 'Profile',          icon: 'fas fa-id-card',       link: '/patient/profile'},
                 {name: 'Make Appointment', icon: 'fas fa-calendar-plus', link: '/patient/make-appointment'},
-                         {name: 'Logout',   icon: 'fas fa-right-from-bracket', link: '/login', click:logout},
+                {name: 'Appointments', icon: 'fas fa-clipboard-list', link: '/patient/appointments'},
+                {name: 'Logout',   icon: 'fas fa-right-from-bracket', link: '/login', click:logout},
               ]"
     />
     <div class="relative ml-64 bg-slate-100 py-10 min-h-screen">

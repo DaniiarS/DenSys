@@ -4,6 +4,7 @@ from django.db import models
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, PermissionsMixin
 from accounts.models import User
+from patients.models import Patient
 
 class AccountManager(BaseUserManager):
     use_in_migrations = True
@@ -70,3 +71,11 @@ class Doctor(User):
     REQUIRED_FIELD = ["name", "surname", "middlename", "bddate", "id", "education", "departament", "specialization", "category", "photo", "working_hours", "duration", "price", "contact_number", "experience", "address", "password"]
     objects=AccountManager()
 
+class Appointment(models.Model):
+    use_in_migrations = True
+    when_made   = models.DateTimeField(auto_now_add=True)
+    is_active   = models.BooleanField(default=True)
+    patient     = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    doctor      = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    date        = models.DateField()
+    time        = models.CharField(max_length=12)

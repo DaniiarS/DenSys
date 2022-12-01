@@ -9,4 +9,5 @@ class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patient
         fields = ["name", "surname", "middlename", "bddate", "iin", "id", "blood_type", "marital_status", "contact_number", "emergency_contact_number", "email", "address", "password"]
+        extra_kwargs = {'password': {'write_only': True}}
 

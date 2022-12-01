@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Doctor
+from .models import *
 from django.contrib.auth.hashers import make_password
 
 class DoctorIINSerializer(serializers.ModelSerializer):
@@ -15,3 +15,11 @@ class DoctorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Doctor
         fields = ["name", "surname", "middlename", "bddate", "iin", "id", "education", "departament", "specialization", "category", "photo", "working_hours", "duration", "price", "contact_number", "experience", "address", "password"]
+        extra_kwargs = {'password': {'write_only': True}}
+
+class AppointmentSerializer(serializers.ModelSerializer):
+    doctor = DoctorSerializer()
+    class Meta:
+        model = Appointment
+        fields = ["when_made", "is_active", "patient", "doctor", "date", "time"]
+

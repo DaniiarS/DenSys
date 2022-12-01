@@ -167,34 +167,6 @@
                    class="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                    placeholder="Address"/>
           </div>
-          <div class="w-full lg:w-6/12 px-4 inline-block relative mb-3">
-            <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
-              Password <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
-              <div class="inline-block px-4 text-rose-700"
-                   v-if="errors.get('password') && (!patient.password || patient.password !== repeat_password)">
-                {{errors.get('password')}}
-              </div>
-            </label>
-            <input type="text"
-                   v-model="patient.password"
-                   :class="[errors.size && !patient.password ? 'border-2 border-rose-700' : 'border-0' ]"
-                   class="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                   placeholder="Password"/>
-          </div>
-          <div class="w-full lg:w-6/12 px-4 inline-block relative mb-3">
-            <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
-              Repeat Password <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
-              <div class="inline-block px-4 text-rose-700"
-                   v-if="errors.get('repeat') && patient.password !== repeat_password">
-                {{errors.get('repeat')}}
-              </div>
-            </label>
-            <input type="text"
-                   v-model="patient.password"
-                   :class="[errors.size && !patient.password ? 'border-2 border-rose-700' : 'border-0' ]"
-                   class="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                   placeholder="Password"/>
-          </div>
 
           <div class="text-center px-4 mt-6" >
             <button class="bg-slate-800 text-white
@@ -228,7 +200,7 @@ export default {
   name: "patient-register",
   data() {
     return {
-      test: '',
+      iin: '',
       errors: new Map(),
       patient: {
         name: '',
@@ -243,9 +215,7 @@ export default {
         emergency_contact_number: '',
         email: '',
         address: '',
-        password: '',
       },
-      repeat_password: ''
     };
   },
   components: {
@@ -344,15 +314,10 @@ export default {
       if (!this.patient.address) {
         this.errors.set('address', "required.")
       }
-      if (!this.patient.password) {
-        this.errors.set('password', "required.")
-      } else if (!this.validPassword(this.patient.password, this.patient.password)) {
-        this.errors.set('repeat', "does not match.")
-      }
 
       if (!this.errors.size) {
         axios
-          .put(`${server_url}/api/patient/${this.$route.params.iin}/`, this.patient, { headers: {"Authorization": 'Token ' + localStorage.access_token} })
+          .put(`${server_url}/api/patient/${this.iin}/`, this.patient, { headers: {"Authorization": 'Token ' + localStorage.access_token} })
           .then((response) => {
             alert("Success")
             console.log(response)
@@ -369,9 +334,13 @@ export default {
   },
   mounted () {
     console.log(this.$route.params.iin)
+    this.iin = localStorage.user_iin
+    if (this.$route.params.iin) {
+      this.iin = this.$route.params.iin
+    }
     if (localStorage.access_token) {
       axios
-        .get(`${server_url}/api/patient/${this.$route.params.iin}`, { headers: {"Authorization": 'Token ' + localStorage.access_token} })
+        .get(`${server_url}/api/patient/${this.iin}`, { headers: {"Authorization": 'Token ' + localStorage.access_token} })
         .then((response) => {
           console.log(response.data)
           this.patient = response.data

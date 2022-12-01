@@ -5,13 +5,13 @@ module.exports = {
   content: {
     enabled: true,
     content: [
-      "./**/*.html",
-      "./*.html",
-      "./**/*.js",
-      "./*.js",
-      "./**/*.vue",
-      "./**/**/*.vue",
-      "./*.vue",
+      "src/**/*.html",
+      "src/*.html",
+      "src/**/*.js",
+      "src/*.js",
+      "src/**/*.vue",
+      "src/**/**/*.vue",
+      "src/*.vue",
     ],
     options: {
       safelist: [],

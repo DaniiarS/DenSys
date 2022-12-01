@@ -4,8 +4,7 @@
       <div>
       <!-- Toggler -->
       <button class="inline-block cursor-pointer text-black opacity-50 px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
-              type="button"
-              v-on:click="toggleCollapseShow('')">
+              type="button">
         <i class="fas fa-bars"></i>
       </button>
       <!-- Brand -->

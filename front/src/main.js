@@ -24,10 +24,11 @@ import PatientRegister from "@/components/PatientRegister.vue";
 import DoctorRegister  from "@/components/DoctorRegister.vue";
 
 import PatientsTable   from "@/components/PatientsTable.vue";
+import Appointments    from "@/components/AppointmentTable.vue";
 import DoctorsTable    from "@/components/DoctorsTable.vue";
 
-import PatientProfile  from "@/components/PatientProfile.vue";
-import DoctorProfile   from "@/components/DoctorProfile.vue";
+import PatientInfo  from "@/components/PatientProfile.vue";
+import DoctorInfo   from "@/components/DoctorProfile.vue";
 // views without layouts
 
 import Index from "@/views/IndexPage.vue";
@@ -50,11 +51,11 @@ const routes = [
       },
       {
         path: "/admin/doctors/:iin",
-        component: DoctorProfile,
+        component: DoctorInfo,
       },
       {
         path: "/admin/patients/:iin",
-        component: PatientProfile,
+        component: PatientInfo,
       },
       {
         path: "/admin/patients",
@@ -80,7 +81,11 @@ const routes = [
       },
       {
         path: "/patient/profile",
-        component: PatientProfile,
+        component: PatientInfo,
+      },
+      {
+        path: "/patient/appointments",
+        component: Appointments,
       },
     ],
   },
