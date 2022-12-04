@@ -4,16 +4,16 @@
       :header="'DenSys Patient'"
       :subheader="'Patient Actions'"
       :buttons="[
-        { name: 'Profile', icon: 'fas fa-id-card', link: '/patient/profile' },
+        { name: 'Profile', icon: 'fas fa-id-card', link: '/doctor/profile' },
         {
-          name: 'Make Appointment',
-          icon: 'fas fa-calendar-plus',
-          link: '/patient/make-appointment',
+          name: 'My Appointments',
+          icon: 'fas fa-clipboard-list',
+          link: '/doctor/my-appointment',
         },
         {
-          name: 'Appointments',
+          name: 'My Patients',
           icon: 'fas fa-clipboard-list',
-          link: '/patient/appointments',
+          link: '/doctor/my-patients',
         },
         {
           name: 'Logout',
@@ -38,7 +38,6 @@ import FooterAdmin from "@/components/FooterMain.vue";
 //import HeaderStats from "@/components/Headers/HeaderStats.vue"
 
 export default {
-  name: "admin-layout",
   components: {
     //AdminNavbar,
     Sidebar,

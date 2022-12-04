@@ -1,29 +1,23 @@
 <template>
-  <index-navbar />
-  <div
-    class="flex bg-slate-100 m-auto items-center justify-center w-screen h-screen"
-  ></div>
+  <div class="relative">
+    <index-navbar />
+    <div class="pt-24">
+      <router-view />
+    </div>
+    <footer-main />
+  </div>
 </template>
 
 <script>
 import IndexNavbar from "@/components/IndexNavbar.vue";
+import FooterMain from "@/components/FooterMain.vue";
 export default {
-  name: "radio-form",
   data() {
     return {};
   },
-  model: {
-    prop: "input_type",
-    event: "update:input_type",
-  },
-  props: ["buttons", "input_type"],
   components: {
     IndexNavbar,
-  },
-  methods: {
-    updateActive(type) {
-      this.$emit("update:input_type", type);
-    },
+    FooterMain,
   },
 };
 </script>
