@@ -17,12 +17,14 @@ import AdminLogin         from "@/views/AdminLogin.vue";
 import UserLogin          from "@/views/UserLogin.vue";
 import Patient            from "@/layouts/PatientLayout.vue";
 import MakeAppointment    from "@/components/MakeAppointment.vue";
+import ServiceRequest     from "@/components/ServiceRequest.vue";
 
 // views for Admin layout
-
+import ServiceRegister from "@/components/ServiceRegister.vue";
 import PatientRegister from "@/components/PatientRegister.vue";
 import DoctorRegister  from "@/components/DoctorRegister.vue";
 
+import ServiceTable   from "@/components/ServicesTable.vue";
 import PatientsTable   from "@/components/PatientsTable.vue";
 import Appointments    from "@/components/AppointmentTable.vue";
 import DoctorsTable    from "@/components/DoctorsTable.vue";
@@ -44,6 +46,14 @@ const routes = [
       {
         path: "/admin/patient-register",
         component: PatientRegister,
+      },
+      {
+        path: "/admin/service-register",
+        component: ServiceRegister,
+      },
+      {
+        path: "/admin/service",
+        component: ServiceTable,
       },
       {
         path: "/admin/doctor-register",
@@ -79,6 +89,10 @@ const routes = [
         path: "/patient/make-appointment",
         component: MakeAppointment,
       },
+      {
+        path: "/patient/service-request",
+        component: ServiceRequest,
+      }, 
       {
         path: "/patient/profile",
         component: PatientInfo,

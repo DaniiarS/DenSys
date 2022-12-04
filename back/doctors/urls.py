@@ -11,4 +11,5 @@ urlpatterns = [
     path('doctor/<pk>/', DoctorR.as_view(),    name='doctorR'),
     path('doctors/<specialization>/<int:limit>/<int:offset>/', DoctorIINList.as_view(), name='doctors_spec_limit'),
     path('doctors/<specialization>', DoctorIINList.as_view(), name='doctors_spec'),
+    path('service/',     ServiceList.as_view(), name='services'),
 ]

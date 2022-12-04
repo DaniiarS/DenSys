@@ -23,3 +23,8 @@ class AppointmentSerializer(serializers.ModelSerializer):
         model = Appointment
         fields = ["when_made", "is_active", "patient", "doctor", "date", "time"]
 
+class ServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Service
+        fields = ["name", "department", "price", "working_hours", "duration"]
+    

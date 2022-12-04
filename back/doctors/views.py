@@ -1,8 +1,8 @@
 # Create your views here.
 import math
 import datetime
-from django.shortcuts import Http404
-from django.http import HttpResponse,JsonResponse
+from django.shortcuts   import Http404
+from django.http        import HttpResponse,JsonResponse
 
 from rest_framework import generics
 from rest_framework import status
@@ -12,9 +12,9 @@ from rest_framework.permissions    import IsAuthenticated, IsAdminUser
 from rest_framework.pagination     import LimitOffsetPagination
 from rest_framework.response       import Response
 
-from .models import *
-from patients.models import Patient
-from .serializers import *
+from .models            import *
+from patients.models    import Patient
+from .serializers       import *
 
 class AppointmentList(generics.ListAPIView):
     queryset               = Appointment.objects.all()
@@ -115,6 +115,28 @@ class DoctorList(generics.ListCreateAPIView):
         print(request.auth)
         print(request.data)
         serializer = DoctorSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+        print(serializer.errors)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ServiceList(generics.ListCreateAPIView):
+    queryset               = Service.objects.all()
+    serializer_class       = ServiceSerializer
+    authentication_classes = [TokenAuthentication, BasicAuthentication]
+    permission_classes     = [IsAdminUser,]
+
+    def get(self, request, format=None):
+        print(request.auth)
+        Services = Service.objects.all()
+        serializer = ServiceSerializer(Services, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+    def post(self, request, format=None):
+        print(request.auth)
+        print(request.data)
+        serializer = ServiceSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
