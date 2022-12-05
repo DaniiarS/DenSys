@@ -31,11 +31,28 @@
         <ul class="flex flex-col lg:flex-row list-none mr-auto">
           <li class="flex items-center">
             <button
-              @click="this.$router.push({ path: '/make-appointment' })"
-              class="bg-emerald-500 text-white active:bg-emerald-600 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
+              @click="selectButton('make-appointment')"
+              class="active:bg-emerald-600 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
+              :class="
+                selected == 'make-appointment'
+                  ? 'bg-slate-200 text-emerald-500'
+                  : 'bg-emerald-500 text-white'
+              "
               type="button"
             >
               Make Appointment
+            </button>
+            <button
+              @click="selectButton('service-request')"
+              class="active:bg-emerald-600 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
+              :class="
+                selected == 'service-request'
+                  ? 'bg-slate-200 text-emerald-500'
+                  : 'bg-emerald-500 text-white'
+              "
+              type="button"
+            >
+              Service Request
             </button>
           </li>
         </ul>
@@ -54,11 +71,11 @@
           </li>
           <li v-if="logged" class="flex items-center">
             <button
-              @click="this.$router.push({ path: '/patient/profile' })"
+              @click="this.$router.push({ path: '/' + logged })"
               class="bg-emerald-500 text-white active:bg-emerald-600 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
               type="button"
             >
-              Profile
+              {{ logged + " Profile" }}
             </button>
           </li>
         </ul>
@@ -75,15 +92,20 @@ export default {
     return {
       logged: "",
       navbarOpen: false,
+      selected: "",
     };
   },
   methods: {
     setNavbarOpen: function () {
       this.navbarOpen = !this.navbarOpen;
     },
+    selectButton: function (name) {
+      this.selected = name;
+      this.$router.push({ path: "/" + name });
+    },
   },
   mounted() {
-    this.logged = localStorage.getItem("user_iin");
+    this.logged = localStorage.getItem("who");
   },
   components: {
     // IndexDropdown,

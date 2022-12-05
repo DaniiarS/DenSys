@@ -4,8 +4,8 @@
     <div class="pt-24">
       <router-view />
     </div>
-    <footer-main />
   </div>
+  <footer-main />
 </template>
 
 <script>
