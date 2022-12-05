@@ -1,6 +1,6 @@
 # Create your views here.
 import math
-import datetime
+from datetime import datetime, timedelta
 from django.shortcuts import Http404
 from django.http import HttpResponse,JsonResponse
 
@@ -25,16 +25,12 @@ class AppointmentList(generics.ListAPIView):
 class MakeAppointment(generics.CreateAPIView):
 
     def post(self, request, piin, diin, weekat, dateat, time, format=None):
-        print("piin:  ", piin)
-        print("diin:  ", diin)
-        print("weekat:", weekat)
-        print("dateat:", dateat)
-        print("time:  ", time)
         today  = datetime.date.today()
         patient = Patient.objects.get(iin=piin)
         doctor  = Doctor.objects.get(iin=diin)
-        date = (today + datetime.timedelta(days=-today.weekday()+dateat, weeks=weekat))
+        date = (today + timedelta(days=-today.weekday()+dateat, weeks=weekat))
         appointment = Appointment(patient=patient, doctor=doctor, date=date, time=time)
+        status = AppointmentStatus(aid=appointment.id)
         appointment.save()
         #serializer = AppointmentSerializer(appointment, partial=True)
         return Response({'message':"ok"})
@@ -61,42 +57,58 @@ class DoctorSchedule(generics.ListAPIView):
     permission_classes     = [IsAuthenticated,]
 
     def get(self, request, iin, format=None):
-        print("auth:", request.auth)
-        print("iin:",  iin)
         doctor    = Doctor.objects.get(iin=iin)
-        appointments = Appointment.objects.filter(doctor=doctor)
-        response = self.generate_schedule(doctor.working_hours, doctor.duration)
+        response = self.generate_schedule(doctor)
         return Response({'message': response})
 
-    def generate_schedule(self, working_hours, duration):
+    def generate_schedule(self, doctor):
         a = []
+        working_hours = doctor.working_hours
+        duration      = int(doctor.duration)
+        appointments = Appointment.objects.filter(doctor=doctor)
         for w in range(2):
-            today  = datetime.date.today()
-            monday = (today + datetime.timedelta(days=-today.weekday(), weeks=w))
-            a.append([])
+            today  = datetime.now() + timedelta(hours=6)
+            monday = (today + timedelta(days=-today.weekday(), weeks=w))
+            month  = (today + timedelta(weeks=w)).strftime("%B")
+            year   = (today + timedelta(weeks=w)).year
+            a.append({'month':month, 'year':year, 'days':[]})
             for d, wh in enumerate(working_hours):
                 times = []
-                day = (monday + datetime.timedelta(days=d)).day
-                for time in wh:
-                    # 00:00 - 11:00
-                    # 0123456789012
-                    hs = int(time[0:2])
-                    ms = int(time[3:5])
-                    he = int(time[8:10])
-                    me = int(time[11:13])
-                    while (hs + ms/60 < he + me/60):
-                        shs =str(hs)
-                        sms =str(ms)
-                        if (hs < 10):
-                            shs = '0'+shs
-                        if (ms < 10):
-                            sms = '0'+sms
-                        times.append(shs+':'+sms)
-                        ms = ms+int(duration)
-                        if (ms >= 60):
-                            hs = hs+math.floor(ms/60)
-                            ms = ms % 60
-                a[w].append({"date":str(day), "times":times})
+                date = (monday + timedelta(days=d))
+                day  = date.day
+                print(date, ">=", today, ":", date>=today)
+                if (date >= today) :
+                    for time in wh:
+                        # 00:00 - 11:00
+                        # 0123456789012
+                        hs = int(time[0:2])
+                        ms = int(time[3:5])
+                        he = int(time[8:10])
+                        me = int(time[11:13])
+                        h  = hs
+                        m  = ms
+                        if (date==today
+                        and (h < today.hour or (h == today.hour and m < today.minute))):
+                            dt = (today.hour + today.minute/60) - (hs + ms/60)
+                            n  = math.ceil(dt/(duration/60))
+                            m = m + n * duration
+                            h = hs + math.floor(m/60)
+                            m = m % 60
+                        while (h + (m+duration)/60 <= he + me/60):
+                            sh =str(h)
+                            sm =str(m)
+                            if (h < 10):
+                                sh = '0'+sh
+                            if (m < 10):
+                                sm = '0'+sm
+                            time = sh+':'+sm
+                            if (not appointments.filter(time=time).exists()) :
+                                times.append(sh+':'+sm)
+                            m = m+int(duration)
+                            if (m >= 60):
+                                h = h+math.floor(m/60)
+                                m = m % 60
+                a[w]['days'].append({"date":str(day), "times":times})
         return a
 
 class DoctorList(generics.ListCreateAPIView):
@@ -106,14 +118,11 @@ class DoctorList(generics.ListCreateAPIView):
     permission_classes     = [IsAdminUser,]
 
     def get(self, request, format=None):
-        print(request.auth)
         doctors = Doctor.objects.all()
         serializer = DoctorSerializer(doctors, many=True)
         return JsonResponse(serializer.data, safe=False)
 
     def post(self, request, format=None):
-        print(request.auth)
-        print(request.data)
         serializer = DoctorSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -127,7 +136,6 @@ class DoctorR(generics.RetrieveAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes     = [IsAuthenticated,]
     def get(self, request, pk, format=None):
-        print(request.auth)
         try:
             doctor = Doctor.objects.get(iin = pk)
         except Doctor.DoesNotExist:

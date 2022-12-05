@@ -73,9 +73,14 @@ class Doctor(User):
 
 class Appointment(models.Model):
     use_in_migrations = True
-    when_made   = models.DateTimeField(auto_now_add=True)
-    is_active   = models.BooleanField(default=True)
+    status      = models.IntegerField(default=0)
     patient     = models.ForeignKey(Patient, on_delete=models.CASCADE)
     doctor      = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     date        = models.DateField()
     time        = models.CharField(max_length=12)
+
+class AppointmentStatus(models.Model):
+    use_in_migrations = True
+    aid       = models.ForeignKey(Appointment, on_delete=models.CASCADE)
+    when_made = models.DateTimeField(auto_now_add=True)
+    status    = models.IntegerField()

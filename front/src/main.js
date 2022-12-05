@@ -25,6 +25,7 @@ import DoctorRegister  from "@/components/DoctorRegister.vue";
 
 import PatientsTable   from "@/components/PatientsTable.vue";
 import Appointments    from "@/components/AppointmentTable.vue";
+import AppointmentCard from "@/components/AppointmentCard.vue";
 import DoctorsTable    from "@/components/DoctorsTable.vue";
 
 import PatientInfo  from "@/components/PatientProfile.vue";
@@ -78,6 +79,10 @@ const routes = [
       {
         path: "/patient/make-appointment",
         component: MakeAppointment,
+      },
+      {
+        path: "/patient/appointments/:id",
+        component: AppointmentCard,
       },
       {
         path: "/patient/profile",

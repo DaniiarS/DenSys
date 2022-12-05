@@ -24,9 +24,6 @@
               Time
             </th>
             <th class="px-6 py-3">
-              Made
-            </th>
-            <th class="px-6 py-3">
               Status
             </th>
             <th class="px-6 py-3"></th>
@@ -40,11 +37,10 @@
             active:bg-slate-600 transition duration-150 ease-in-out
             border-t-1 border-solid border-slate-200 border-l-0 border-r-0"
               v-for="(appointment, pidx) in appointments" :key="pidx"
-              @click="$router.push({path: `/admin/appointments/${appointment.id}`})">
+              @click="$router.push({path: `/patient/appointments/${appointment.id}`})">
             <td class="block p-4 px-6"> {{appointment.doctor.name}} {{appointment.doctor.surname}} </td>
             <td class="p-4 px-6"> {{appointment.date}} </td>
             <td class="p-4 px-6"> {{appointment.time}} </td>
-            <td class="p-4 px-6"> {{appointment.when_made}} </td>
             <td class="p-4 px-6"> {{appointment.is_active}} </td>
             <td class="p-4 text-right"> <table-dropdown /> </td>
           </tr>

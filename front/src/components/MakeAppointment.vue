@@ -14,17 +14,16 @@
 
             <radio-form :buttons="['General','Pediatrist', 'Surgeon', 'Oculist', 'Neurologist']" v-model:input_type="specialization" @click="UpdateSpecialization"/>
           </div>
-          <div class="w-full px-4 inline-block relative">
+          <div v-if="doctors_iins.length > 1" class="w-full px-4 inline-block relative">
             <div class="flex-wrap block uppercase text-slate-600 text-xs font-bold mb-2">
               Doctor <div class="inline-block text-rose-700 fa-2xs fa-solid fa-circle"></div>
             </div>
-          </div>
           <div class="flex flex-wrap item-center">
             <doctor-card v-for="doctor in doctors_iins" :key="doctor.iin" :doctor_iin="doctor.iin"
               @click="ChooseDoctor(doctor.iin)" :isActive="doctor.iin == chosen_iin"/>
           </div>
 
-          <div v-if="doctors_iins.length > 1" class="flex flex-nowrap px-4">
+          <div class="flex flex-nowrap px-4">
           <button class="flex-auto relative rounded transparent hover:shadow-lg py-3 w-3/12 fas fa-caret-left  fa-xl" @click="DecrementPage"></button>
           <div class="flex-none inline-block w-min-content">
             <button class="px-1 far fa-circle" :class="page == p ? 'fas' : ''" @click="UpdatePage(p)" v-for="(_, p) in pages" :key="p">
@@ -42,7 +41,7 @@
               <button class="flex-auto relative rounded transparent hover:shadow-lg py-3 w-3/12 fas fa-caret-left  fa-xl" @click="PrevWeek"></button>
               <div class="flex-none inline-block w-min-content">
                 <div class="px-2">
-                  December 2022
+                  {{week_schedules[weekat].month}} {{week_schedules[weekat].year}}
                 </div>
               </div>
               <button class="flex-auto relative rounded transparent hover:shadow-lg py-3 w-3/12 fas fa-caret-right fa-xl" @click="NextWeek"></button>
@@ -59,7 +58,7 @@
 
                 <tbody class="">
                   <tr class="">
-                    <td class="text-center align-middle" v-for="(week, didx) in week_schedules[weekat]" :key="didx" >
+                    <td class="text-center align-middle" v-for="(week, didx) in week_schedules[weekat].days" :key="didx" >
                       <button class="rounded-full w-8 h-8"
                               :class="dateat === didx
                                         ? 'bg-emerald-500 text-slate-200'
@@ -78,8 +77,9 @@
                     :class="timeat==time
                                         ? 'shadow border-emerald-500 text-emerald-500'
                                         : 'hover:shadow hover:border-slate-500 hover:text-slate-500 text-slate-600' "
-                    v-for="(time,tidx) in week_schedules[weekat][dateat].times" :key="tidx" @click="timeat=time">{{time}}</button>
-            <div v-if="week_schedules[weekat][dateat].times.length == 0">No time</div>
+                    v-for="(time,tidx) in week_schedules[weekat].days[dateat].times" :key="tidx" @click="timeat=time">{{time}}</button>
+            <div v-if="week_schedules[weekat].days[dateat].times.length == 0">No time</div>
+          </div>
           </div>
           </div>
 
@@ -110,6 +110,7 @@ import {server_url} from '@/api.js'
 import RadioForm  from "@/components/RadioForm.vue"
 import DoctorCard from '@/components/DoctorCard.vue';
 
+const today = new Date()
 
 export default {
   data() {
@@ -121,29 +122,35 @@ export default {
       chosen_iin:   '',
 
       week_schedules: [
-        [
-          { date: '28', times: ['00:00', '00:15'], },
-          { date: '29', times: ['00:00', '00:15'], },
-          { date: '30', times: ['00:00', '00:30', '00:45'], },
-          { date: '1', times: ['00:00', '00:15'], },
-          { date: '2', times: ['00:00', '00:15', '00:30'], },
-          { date: '3', times: ['00:00', '00:15'], },
-          { date: '4', times: ['00:00', '00:30'], },
-        ],
-        [
-          { date: '5', times: ['00:00', '00:15'], },
-          { date: '6', times: ['00:00', '00:15'], },
-          { date: '7', times: ['00:00', '00:30', '00:45'], },
-          { date: '9', times: ['00:00', '00:15'], },
-          { date: '10', times: ['00:00', '00:15', '00:30'], },
-          { date: '11', times: ['00:00', '00:15'], },
-          { date: '12', times: ['00:00', '00:30'], },
-        ],
+        { month: 'October',
+          year: '2022',
+          days: [
+            { date: '28', times: ['00:00', '00:15'], },
+            { date: '29', times: ['00:00', '00:15'], },
+            { date: '30', times: ['00:00', '00:30', '00:45'], },
+            { date: '1', times: ['00:00', '00:15'], },
+            { date: '2', times: ['00:00', '00:15', '00:30'], },
+            { date: '3', times: ['00:00', '00:15'], },
+            { date: '4', times: ['00:00', '00:30'], },
+          ],
+        },
+        { month: 'November',
+          year: '2022',
+          days: [
+              { date: '5', times: ['00:00', '00:15'], },
+              { date: '6', times: ['00:00', '00:15'], },
+              { date: '7', times: ['00:00', '00:30', '00:45'], },
+              { date: '9', times: ['00:00', '00:15'], },
+              { date: '10', times: ['00:00', '00:15', '00:30'], },
+              { date: '11', times: ['00:00', '00:15'], },
+              { date: '12', times: ['00:00', '00:30'], },
+          ],
+        },
       ],
       weekdays:['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
 
       weekat: 0,
-      dateat: 0,
+      dateat: 0, // getDate starts from Sunday so make it 7 and substract 1
       timeat: undefined,
 
 
@@ -162,7 +169,8 @@ export default {
     ChooseDoctor(iin) {
       this.chosen_iin = iin
       this.weekat=0
-      this.dateat=0
+      console.log(today.getDay())
+      this.dateat=(today.getDay() || 7)-1
       this.timeat=undefined
       axios
         .get(`${server_url}/api/doctor/schedule/${this.chosen_iin}/`, { headers: {"Authorization": 'Token ' + localStorage.access_token} })
