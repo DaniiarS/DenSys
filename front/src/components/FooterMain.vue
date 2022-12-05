@@ -22,8 +22,17 @@
           <ul class="flex flex-wrap list-none md:justify-end justify-center">
             <li>
               <a
-                href="http://localhost:8080/admin/aboutus"
-                class="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3">
+                href="http://localhost:8080/contactus"
+                class="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
+              >
+                Contact Us
+              </a>
+            </li>
+            <li>
+              <a
+                href="http://localhost:8080/aboutus"
+                class="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
+              >
                 About Us
               </a>
             </li>

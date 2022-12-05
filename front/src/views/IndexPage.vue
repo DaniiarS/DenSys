@@ -1,11 +1,23 @@
 <template>
-  <div class="flex bg-slate-100 m-auto items-center justify-center w-screen h-screen">
-    <button @click="this.$router.push({path: '/login'})">
-
-      Login
-    </button>
+  <div class="relative">
+    <index-navbar />
+    <div class="pt-24">
+      <router-view />
+    </div>
+    <footer-main />
   </div>
 </template>
 
 <script>
+import IndexNavbar from "@/components/IndexNavbar.vue";
+import FooterMain from "@/components/FooterMain.vue";
+export default {
+  data() {
+    return {};
+  },
+  components: {
+    IndexNavbar,
+    FooterMain,
+  },
+};
 </script>

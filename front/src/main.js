@@ -12,29 +12,31 @@ import App from "@/App.vue";
 
 // layouts
 
-import Admin              from "@/layouts/AdminLayout.vue";
-import AdminLogin         from "@/views/AdminLogin.vue";
-import UserLogin          from "@/views/UserLogin.vue";
-import Patient            from "@/layouts/PatientLayout.vue";
-import MakeAppointment    from "@/components/MakeAppointment.vue";
+import Admin from "@/layouts/AdminLayout.vue";
+import AdminLogin from "@/views/AdminLogin.vue";
+import UserLogin from "@/views/UserLogin.vue";
+import Patient from "@/layouts/PatientLayout.vue";
+import Doctor from "@/layouts/DoctorLayout.vue";
+import MakeAppointment from "@/components/MakeAppointment.vue";
 
 // views for Admin layout
 
 import PatientRegister from "@/components/PatientRegister.vue";
-import DoctorRegister  from "@/components/DoctorRegister.vue";
+import DoctorRegister from "@/components/DoctorRegister.vue";
 
 import PatientsTable   from "@/components/PatientsTable.vue";
 import Appointments    from "@/components/AppointmentTable.vue";
 import AppointmentCard from "@/components/AppointmentCard.vue";
 import DoctorsTable    from "@/components/DoctorsTable.vue";
 
-import PatientInfo  from "@/components/PatientProfile.vue";
-import DoctorInfo   from "@/components/DoctorProfile.vue";
+import PatientInfo from "@/components/PatientProfile.vue";
+import DoctorInfo from "@/components/DoctorProfile.vue";
 // views without layouts
 
 import Index from "@/views/IndexPage.vue";
 
-
+import ContactUs from "@/components/ContactUs.vue";
+import AboutUs from "@/components/AboutUs.vue";
 // routes
 
 const routes = [
@@ -48,7 +50,7 @@ const routes = [
       },
       {
         path: "/admin/doctor-register",
-        component: DoctorRegister
+        component: DoctorRegister,
       },
       {
         path: "/admin/doctors/:iin",
@@ -95,12 +97,44 @@ const routes = [
     ],
   },
   {
+    path: "/doctor",
+    component: Doctor,
+    children: [
+      {
+        path: "/doctor/my-patients",
+        component: DoctorInfo,
+      },
+      {
+        path: "/doctor/profile",
+        component: DoctorInfo,
+      },
+      {
+        path: "/doctor/my-appointments",
+        component: DoctorInfo,
+      },
+    ],
+  },
+  {
     path: "/login",
     component: UserLogin,
   },
   {
     path: "/",
     component: Index,
+    children: [
+      {
+        path: "/make-appointment",
+        component: MakeAppointment,
+      },
+      {
+        path: "/contactus",
+        component: ContactUs,
+      },
+      {
+        path: "/aboutus",
+        component: AboutUs,
+      },
+    ],
   },
   { path: "/:pathMatch(.*)*", redirect: "/" },
 ];

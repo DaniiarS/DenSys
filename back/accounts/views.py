@@ -16,7 +16,7 @@ class UserObtainAuthToken(ObtainAuthToken):
         token, created = Token.objects.get_or_create(user=user)
         try:
             doctor = Doctor.objects.get(iin = user.iin)
-            return Response({'token': token.key, 'who': 'doctor', 'user': user.iin})
+            return Response({'token': token.key, 'who': 'doctor', 'user_iin': user.iin})
         except Doctor.DoesNotExist:
             try:
                 patient = Patient.objects.get(iin = user.iin)
