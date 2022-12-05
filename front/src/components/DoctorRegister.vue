@@ -92,6 +92,16 @@
                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                    placeholder="id number"/>
           </div>
+          <div class="px-4 relative w-full mb-3">
+            <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
+              Deparament <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
+              <div class="inline-block px-4 text-rose-700"
+                   v-if="errors.get('department') && !(doctor_reg.department)">
+                {{errors.get('department')}}
+              </div>
+            </label>
+            <radio-form :class="[errors.size && !doctor_reg.department ? 'border-2 border-rose-700' : 'border-0' ]" :buttons="['Surgery','Gynecology', 'Obstetrics', 'Pediatrics', 'Radiology', 'Eye', 'ENT', 'Dental', 'Orthopedics', 'Neurology', 'Cardiology', 'Psychiatry', 'Skin']" v-model:input_type="doctor_reg.department"/>
+          </div>
           <div class="flex-auto inline-block">
           <div class="px-4 relative w-full mb-3">
             <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
@@ -102,16 +112,6 @@
               </div>
             </label>
             <radio-form :class="[errors.size && !doctor_reg.education ? 'border-2 border-rose-700' : 'border-0' ]" :buttons="['MD', 'PhD', 'DO']" v-model:input_type="doctor_reg.education"/>
-          </div>
-          <div class="px-4 relative w-full mb-3">
-            <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
-              Deparament <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
-              <div class="inline-block px-4 text-rose-700"
-                   v-if="errors.get('department') && !(doctor_reg.department)">
-                {{errors.get('department')}}
-              </div>
-            </label>
-            <radio-form :class="[errors.size && !doctor_reg.department ? 'border-2 border-rose-700' : 'border-0' ]" :buttons="['Surgery','Gynecology', 'Obstetrics', 'Pediatrics', 'Radiology', 'Eye', 'ENT', 'Dental', 'Orthopedics', 'Neurology', 'Cardiology', 'Psychiatry', 'Skin']" v-model:input_type="doctor_reg.department"/>
           </div>
           <div class="px-4 relative w-full mb-3">
             <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
