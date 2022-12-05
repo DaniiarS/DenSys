@@ -231,9 +231,9 @@ export default {
     return {
       errors: new Map(),
       patient_reg: {
-        name: 'a',
-        surname: 'b',
-        middlename: 'c',
+        name: 'UserName',
+        surname: 'UserSurname',
+        middlename: 'UserMiddleName',
         bddate: '',
         iin: '',
         id: '123456789123',
@@ -241,7 +241,7 @@ export default {
         marital_status: 'Married',
         contact_number: '87005553535',
         emergency_contact_number: '87004443434',
-        email: '',
+        email: 'UserName@densys.com',
         address: 'Astana',
         password: '12345',
       },

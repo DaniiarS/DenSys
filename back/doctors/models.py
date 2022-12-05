@@ -84,3 +84,11 @@ class AppointmentStatus(models.Model):
     aid       = models.ForeignKey(Appointment, on_delete=models.CASCADE)
     when_made = models.DateTimeField(auto_now_add=True)
     status    = models.IntegerField()
+
+class Service(models.Model):
+    use_in_migrations = True
+    name            = models.CharField(max_length=200)
+    department      = models.CharField(max_length=200)
+    price           = models.CharField(max_length=10)
+    working_hours   = models.JSONField(default=list)
+    duration       = models.CharField(max_length=5)
