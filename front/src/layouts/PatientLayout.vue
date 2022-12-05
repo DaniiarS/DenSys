@@ -8,7 +8,7 @@
                  {name: 'Services',         icon: 'fas fa-kit-medical',        link: '/patient/service-request'},
                  {name: 'Make Appointment', icon: 'fas fa-calendar-plus',      link: '/patient/make-appointment'},
                  {name: 'Requests',     icon: 'fas fa-clipboard-list',         link: '/patient/requests'},
-                 {name: 'Logout',           icon: 'fas fa-right-from-bracket', link: '/login', click:logout},
+                 {name: 'Logout',           icon: 'fas fa-right-from-bracket', link: '/', click:logout},
                ]"
     />
     <div class="relative ml-64 bg-slate-100 py-10 min-h-screen">
@@ -43,6 +43,7 @@ export default {
     logout() {
       localStorage.removeItem("access_token");
       localStorage.removeItem("user_iin");
+      localStorage.removeItem("who");
     },
   },
 };

@@ -1,8 +1,8 @@
 <template>
   <div>
     <sidebar
-      :header="'DenSys Patient'"
-      :subheader="'Patient Actions'"
+      :header="'DenSys Doctor'"
+      :subheader="'Doctor Actions'"
       :buttons="[
         { name: 'Profile', icon: 'fas fa-id-card', link: '/doctor/profile' },
         {
@@ -18,7 +18,7 @@
         {
           name: 'Logout',
           icon: 'fas fa-right-from-bracket',
-          link: '/login',
+          link: '/',
           click: logout,
         },
       ]"
@@ -54,6 +54,7 @@ export default {
     logout() {
       localStorage.removeItem("access_token");
       localStorage.removeItem("user_iin");
+      localStorage.removeItem("who");
     },
   },
 };

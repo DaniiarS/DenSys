@@ -1,5 +1,5 @@
 <template>
-  <footer class="block py-4 absolute right-0 left-0 bottom-0">
+  <footer class="block py-4 md:flex md:items-center">
     <div class="container mx-auto px-4">
       <hr class="mb-4 border-b-1 border-blueGray-200" />
       <div
@@ -11,7 +11,7 @@
           >
             Copyright © {{ date }}
             <a
-              href="https://www.creative-tim.com?ref=vn-footer-admin"
+              href="/"
               class="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1"
             >
               DenSys
@@ -22,7 +22,7 @@
           <ul class="flex flex-wrap list-none md:justify-end justify-center">
             <li>
               <a
-                href="http://localhost:8080/contactus"
+                href="/contactus"
                 class="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
               >
                 Contact Us
@@ -30,7 +30,7 @@
             </li>
             <li>
               <a
-                href="http://localhost:8080/aboutus"
+                href="/aboutus"
                 class="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
               >
                 About Us

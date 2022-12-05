@@ -21,15 +21,16 @@ import MakeAppointment from "@/components/MakeAppointment.vue";
 import ServiceRequest  from "@/components/ServiceRequest.vue";
 
 // views for Admin layout
-import ServiceRegister from "@/components/ServiceRegister.vue";
 import PatientRegister from "@/components/PatientRegister.vue";
+import ServiceRegister from "@/components/ServiceRegister.vue";
 import DoctorRegister  from "@/components/DoctorRegister.vue";
 
 import ServiceTable    from "@/components/ServicesTable.vue";
 import PatientsTable   from "@/components/PatientsTable.vue";
-import PatientRequests from "@/components/PatientRequests.vue";
-import AppointmentCard from "@/components/AppointmentCard.vue";
 import DoctorsTable    from "@/components/DoctorsTable.vue";
+import PatientRequests from "@/components/PatientRequests.vue";
+
+import AppointmentCard from "@/components/AppointmentCard.vue";
 
 import PatientInfo     from "@/components/PatientProfile.vue";
 import DoctorInfo      from "@/components/DoctorProfile.vue";
@@ -37,9 +38,9 @@ import DoctorInfo      from "@/components/DoctorProfile.vue";
 
 import Index     from "@/views/IndexPage.vue";
 
-import ContactUs from "@/components/ContactUs.vue";
-import AboutUs   from "@/components/AboutUs.vue";
-// routes
+import ContactUs   from "@/components/ContactUs.vue";
+import AboutUs     from "@/components/AboutUs.vue";
+import TeamMembers from "@/components/TeamMembers.vue";
 
 const routes = [
   {
@@ -141,12 +142,20 @@ const routes = [
         component: MakeAppointment,
       },
       {
+        path: "/service-request",
+        component: ServiceRequest,
+      },
+      {
         path: "/contactus",
         component: ContactUs,
       },
       {
         path: "/aboutus",
         component: AboutUs,
+      },
+      {
+        path: "/",
+        component: TeamMembers,
       },
     ],
   },
