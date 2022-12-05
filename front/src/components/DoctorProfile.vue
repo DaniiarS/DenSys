@@ -193,14 +193,14 @@
                 <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
                 <div
                   class="inline-block px-4 text-rose-700"
-                  v-if="errors.get('departament') && !doctor.departament"
+                  v-if="errors.get('department') && !doctor.department"
                 >
-                  {{ errors.get("departament") }}
+                  {{ errors.get("department") }}
                 </div>
               </label>
               <radio-form
                 :class="[
-                  errors.size && !doctor.departament
+                  errors.size && !doctor.department
                     ? 'border-2 border-rose-700'
                     : 'border-0',
                 ]"
@@ -211,7 +211,7 @@
                   'Neurology',
                   'Oncology',
                 ]"
-                v-model:input_type="doctor.departament"
+                v-model:input_type="doctor.department"
               />
             </div>
             <div class="px-4 relative w-full mb-3">
@@ -493,7 +493,7 @@ export default {
         iin: "",
         id: "",
         education: "",
-        departament: "",
+        department: "",
         specialization: "",
         category: "",
         photo: null,
@@ -600,8 +600,8 @@ export default {
       if (!this.doctor.education) {
         this.errors.set("education", "required.");
       }
-      if (!this.doctor.departament) {
-        this.errors.set("departament", "required.");
+      if (!this.doctor.department) {
+        this.errors.set("department", "required.");
       }
       if (!this.doctor.specialization) {
         this.errors.set("specialization", "required.");
@@ -627,7 +627,7 @@ export default {
         formData.append("bddate", this.doctor.bddate);
         formData.append("id", this.doctor.id);
         formData.append("education", this.doctor.education);
-        formData.append("departament", this.doctor.departament);
+        formData.append("department", this.doctor.department);
         formData.append("specialization", this.doctor.specialization);
         formData.append("category", this.doctor.category);
         formData.append("contact_number", this.doctor.contact_number);

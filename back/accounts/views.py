@@ -14,6 +14,8 @@ class UserObtainAuthToken(ObtainAuthToken):
         user           = serializer.validated_data['user']
         print(user.iin)
         token, created = Token.objects.get_or_create(user=user)
+        if (user.is_superuser) :
+            return Response({'token': token.key, 'who': 'admin', 'user_iin': user.iin})
         try:
             doctor = Doctor.objects.get(iin = user.iin)
             return Response({'token': token.key, 'who': 'doctor', 'user_iin': user.iin})

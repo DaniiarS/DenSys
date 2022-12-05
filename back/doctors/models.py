@@ -11,10 +11,10 @@ class AccountManager(BaseUserManager):
 
     def _create_doctor(self, name, surname, middlename,
                         bddate, iin, id,
-                        education, departament, specialization, category, photo, working_hours, duration, price,
+                        education, department, specialization, category, photo, working_hours, duration, price,
                         contact_number, experience,
                         address, password, **extra_fields):
-        values = [name, surname, middlename, bddate, id, education, departament, specialization, category, photo,
+        values = [name, surname, middlename, bddate, id, education, department, specialization, category, photo,
                   working_hours, duration, price, contact_number, experience, address, password]
         field_value_map = dict(zip(self.model.REQUIRED_FIELDS, values))
         for field_name, value in field_value_map.items():
@@ -24,7 +24,7 @@ class AccountManager(BaseUserManager):
         user = self.model(
             name=name, surname=surname, middlename=middlename,
             bddate=bddate, iin=iin, id=id,
-            education=education, departament=departament, specialization=specialization, category=category, photo=photo,
+            education=education, department=department, specialization=specialization, category=category, photo=photo,
             working_hours=working_hours, duration=duration, price=price,
             contact_number=contact_number, experience=experience,
             address=address,
@@ -36,13 +36,13 @@ class AccountManager(BaseUserManager):
 
     def create_doctor(self, name, surname, middlename,
                         bddate, iin, id,
-                        education, departament, category, photo,
+                        education, department, category, photo,
                         working_hours, duration, price, specialization,
                         contact_number, experience,
                         address, password, **extra_fields):
         return self._create_doctor(self, name, surname, middlename,
                         bddate, iin, id,
-                        education, departament, category, photo,
+                        education, department, category, photo,
                         working_hours, duration, price, specialization,
                         contact_number, experience,
                         address, password, **extra_fields)
@@ -55,7 +55,7 @@ class Doctor(User):
     bddate         = models.CharField(max_length=10)
     id             = models.CharField(max_length=12)
     education      = models.CharField(max_length=3)
-    departament    = models.CharField(max_length=200)
+    department     = models.CharField(max_length=200)
     specialization = models.CharField(max_length=200)
     category       = models.CharField(max_length=200)
     photo          = models.FileField(upload_to='images/')
@@ -68,7 +68,7 @@ class Doctor(User):
     address        = models.CharField(max_length=200)
 
     USERNAME_FIELD = "iin"
-    REQUIRED_FIELD = ["name", "surname", "middlename", "bddate", "id", "education", "departament", "specialization", "category", "photo", "working_hours", "duration", "price", "contact_number", "experience", "address", "password"]
+    REQUIRED_FIELD = ["name", "surname", "middlename", "bddate", "id", "education", "department", "specialization", "category", "photo", "working_hours", "duration", "price", "contact_number", "experience", "address", "password"]
     objects=AccountManager()
 
 class Appointment(models.Model):
@@ -91,4 +91,18 @@ class Service(models.Model):
     department      = models.CharField(max_length=200)
     price           = models.CharField(max_length=10)
     working_hours   = models.JSONField(default=list)
-    duration       = models.CharField(max_length=5)
+    duration        = models.CharField(max_length=5)
+
+class ServiceRequest(models.Model):
+    use_in_migrations = True
+    status      = models.IntegerField(default=0)
+    patient     = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    service     = models.ForeignKey(Service, on_delete=models.CASCADE)
+    date        = models.DateField()
+    time        = models.CharField(max_length=12)
+
+class ServiceRequestStatus(models.Model):
+    use_in_migrations = True
+    srid      = models.ForeignKey(Appointment, on_delete=models.CASCADE)
+    when_made = models.DateTimeField(auto_now_add=True)
+    status    = models.IntegerField()

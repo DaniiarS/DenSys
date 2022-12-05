@@ -22,18 +22,18 @@
                      :class="[errors.size && !validName(service_reg.name) ? 'border-2 border-rose-700' : 'border-0' ]"
                      placeholder="Service Name"/>
             </div>
-            
+
             <div class="px-4 relative w-full mb-3">
               <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
-                Deparament <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
+                Department <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
                 <div class="inline-block px-4 text-rose-700"
-                     v-if="errors.get('departament') && !(service_reg.departament)">
-                  {{errors.get('departament')}}
+                     v-if="errors.get('department') && !(service_reg.department)">
+                  {{errors.get('department')}}
                 </div>
               </label>
-              <radio-form :class="[errors.size && !service_reg.departament ? 'border-2 border-rose-700' : 'border-0' ]" :buttons="['Cardiology', 'Surgery', 'Gynecology', 'Neurology', 'Oncology']" v-model:input_type="service_reg.departament"/>
+              <radio-form :class="[errors.size && !service_reg.department ? 'border-2 border-rose-700' : 'border-0' ]" :buttons="['Surgery','Gynecology', 'Obstetrics', 'Pediatrics', 'Radiology', 'Eye', 'ENT', 'Dental', 'Orthopedics', 'Neurology', 'Cardiology', 'Psychiatry', 'Skin']" v-model:input_type="service_reg.department"/>
             </div>
-  
+
           <div class="w-full lg:w-4/12 px-4 inline-block relative mb-3">
             <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
               Working Hours <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
@@ -74,7 +74,7 @@
                    placeholder="Service Price"
                    />
           </div>
-  
+
             <div class="w-full text-center px-4 mt-6" >
               <button class="bg-slate-800 text-slate-100
                              active:bg-slate-600
@@ -94,16 +94,16 @@
       </div>
     </div>
   </template>
-  
-  
+
+
   <script>
   import axios from 'axios'
   import {server_url} from '@/api.js'
-  
+
   import RadioForm    from "@/components/RadioForm.vue";
   import WeekTimePick from '@/components/WeekTimePick.vue';
-  
-  
+
+
   export default {
 
     data() {
@@ -111,7 +111,7 @@
         errors: new Map(),
         service_reg: {
           name: '',
-          departament: '',
+          department: '',
           price:    '',
           duration:  '',
           working_hours: [
@@ -130,7 +130,7 @@
     components: {
       RadioForm,
       WeekTimePick,
-      
+
     },
 
     methods: {
@@ -147,16 +147,16 @@
           this.errors.set('name', "required")
         }
 
-        if (!this.service_reg.departament) {
-          this.errors.set('departament', "required.")
+        if (!this.service_reg.department) {
+          this.errors.set('department', "required.")
         }
-  
+
         if (!this.errors.size) {
           if (localStorage.access_token) {
             const formData = new FormData()
 
             formData.append("name", this.service_reg.name)
-            formData.append("department", this.service_reg.departament)
+            formData.append("department", this.service_reg.department)
             formData.append("working_hours", JSON.stringify(this.service_reg.working_hours))
             formData.append("price", this.service_reg.price)
             formData.append("duration", this.service_reg.duration)
@@ -178,10 +178,10 @@
           }
           return true
         }
-  
+
         e.preventDefault()
       },
     }
   };
   </script>
-  
+

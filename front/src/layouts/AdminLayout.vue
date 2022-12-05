@@ -3,13 +3,13 @@
     <sidebar
     :header="'DenSys Admin'"
     :subheader="'Admin Actions'"
-    :buttons="[ {name: 'Patient Registration', icon: 'fas fa-clipboard-user', link: '/admin/patient-register'},
-                {name: 'Doctor Registration',  icon: 'fas fa-stethoscope', link: '/admin/doctor-register'},
-                {name: 'Service Registration',  icon: 'fas fa-square-plus', link: '/admin/service-register'},
-                {name: 'Patients', icon: 'fas fa-user', link: '/admin/patients'},
-                {name: 'Doctors',  icon: 'fas fa-user-doctor', link: '/admin/doctors'},
-                {name: 'Services',  icon: 'fas fa-kit-medical', link: '/admin/service'},
-                {name: 'Logout',   icon: 'fas fa-right-from-bracket', link: '/admin/login', click:logout},
+    :buttons="[ {name: 'Patient Registration', icon: 'fas fa-clipboard-user',     link: '/admin/patient-register'},
+                {name: 'Doctor Registration',  icon: 'fas fa-stethoscope',        link: '/admin/doctor-register'},
+                {name: 'Service Registration', icon: 'fas fa-square-plus',        link: '/admin/service-register'},
+                {name: 'Patients',             icon: 'fas fa-user',               link: '/admin/patients'},
+                {name: 'Doctors',              icon: 'fas fa-user-doctor',        link: '/admin/doctors'},
+                {name: 'Services',             icon: 'fas fa-kit-medical',        link: '/admin/service'},
+                {name: 'Logout',               icon: 'fas fa-right-from-bracket', link: '/admin/login', click:logout},
               ]"
     />
     <div class="relative ml-64 bg-slate-100 py-10 min-h-screen">

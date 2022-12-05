@@ -36,7 +36,7 @@
             <td class="block p-4 px-6"> {{doctor.name}} {{doctor.middlename}} {{doctor.surname}} </td>
             <td class="p-4 px-6"> {{doctor.iin}} </td>
             <td class="p-4 px-6"> {{doctor.contact_number}} </td>
-            <td class="p-4 px-6"> {{doctor.departament}} </td>
+            <td class="p-4 px-6"> {{doctor.department}} </td>
             <td class="p-4 px-6"> {{doctor.specialization}} </td>
             <td class="p-4 text-right"> <table-dropdown /> </td>
           </tr>

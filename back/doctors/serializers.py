@@ -14,17 +14,23 @@ class DoctorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Doctor
-        fields = ["name", "surname", "middlename", "bddate", "iin", "id", "education", "departament", "specialization", "category", "photo", "working_hours", "duration", "price", "contact_number", "experience", "address", "password"]
+        fields = ["name", "surname", "middlename", "bddate", "iin", "id", "education", "department", "specialization", "category", "photo", "working_hours", "duration", "price", "contact_number", "experience", "address", "password"]
         extra_kwargs = {'password': {'write_only': True}}
 
 class AppointmentSerializer(serializers.ModelSerializer):
     doctor = DoctorSerializer()
     class Meta:
         model = Appointment
-        fields = ["when_made", "status", "patient", "doctor", "date", "time"]
+        fields = ["status", "patient", "doctor", "date", "time"]
 
 class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
-        fields = ["name", "department", "price", "working_hours", "duration"]
-    
+        fields = ["id", "name", "department", "price", "working_hours", "duration"]
+
+class ServiceRequestSerializer(serializers.ModelSerializer):
+    service = ServiceSerializer()
+    class Meta:
+        model = ServiceRequest
+        fields = '__all__'
+
