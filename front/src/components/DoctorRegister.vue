@@ -107,11 +107,11 @@
             <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
               Deparament <div class="text-rose-700 fa-2xs fa-solid fa-circle"></div>
               <div class="inline-block px-4 text-rose-700"
-                   v-if="errors.get('departament') && !(doctor_reg.departament)">
-                {{errors.get('departament')}}
+                   v-if="errors.get('department') && !(doctor_reg.department)">
+                {{errors.get('department')}}
               </div>
             </label>
-            <radio-form :class="[errors.size && !doctor_reg.departament ? 'border-2 border-rose-700' : 'border-0' ]" :buttons="['Cardiology', 'Surgery', 'Gynecology', 'Neurology', 'Oncology']" v-model:input_type="doctor_reg.departament"/>
+            <radio-form :class="[errors.size && !doctor_reg.department ? 'border-2 border-rose-700' : 'border-0' ]" :buttons="['Surgery','Gynecology', 'Obstetrics', 'Pediatrics', 'Radiology', 'Eye', 'ENT', 'Dental', 'Orthopedics', 'Neurology', 'Cardiology', 'Psychiatry', 'Skin']" v-model:input_type="doctor_reg.department"/>
           </div>
           <div class="px-4 relative w-full mb-3">
             <label class="block uppercase text-slate-600 text-xs font-bold mb-2">
@@ -324,7 +324,7 @@ export default {
         iin: '',
         id: '123456789123',
         education: 'PhD',
-        departament: 'Surgery',
+        department: 'Surgery',
         specialization: 'Surgeon',
         category: 'Second',
         contact_number: '87010001122',
@@ -446,8 +446,8 @@ export default {
       if (!this.doctor_reg.education) {
         this.errors.set('education', "required.")
       }
-      if (!this.doctor_reg.departament) {
-        this.errors.set('departament', "required.")
+      if (!this.doctor_reg.department) {
+        this.errors.set('department', "required.")
       }
       if (!this.doctor_reg.specialization) {
         this.errors.set('specialization', "required.")
@@ -480,7 +480,7 @@ export default {
           formData.append("iin", this.doctor_reg.iin)
           formData.append("id", this.doctor_reg.id)
           formData.append("education", this.doctor_reg.education)
-          formData.append("departament", this.doctor_reg.departament)
+          formData.append("department", this.doctor_reg.department)
           formData.append("specialization", this.doctor_reg.specialization)
           formData.append("category", this.doctor_reg.category)
           formData.append("contact_number", this.doctor_reg.contact_number)

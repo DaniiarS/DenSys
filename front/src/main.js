@@ -12,33 +12,33 @@ import App from "@/App.vue";
 
 // layouts
 
-import Admin from "@/layouts/AdminLayout.vue";
-import AdminLogin from "@/views/AdminLogin.vue";
-import UserLogin from "@/views/UserLogin.vue";
-import Patient from "@/layouts/PatientLayout.vue";
-import Doctor from "@/layouts/DoctorLayout.vue";
+import Admin           from "@/layouts/AdminLayout.vue";
+import AdminLogin      from "@/views/AdminLogin.vue";
+import UserLogin       from "@/views/UserLogin.vue";
+import Patient         from "@/layouts/PatientLayout.vue";
+import Doctor          from "@/layouts/DoctorLayout.vue";
 import MakeAppointment from "@/components/MakeAppointment.vue";
-import ServiceRequest     from "@/components/ServiceRequest.vue";
+import ServiceRequest  from "@/components/ServiceRequest.vue";
 
 // views for Admin layout
 import ServiceRegister from "@/components/ServiceRegister.vue";
 import PatientRegister from "@/components/PatientRegister.vue";
-import DoctorRegister from "@/components/DoctorRegister.vue";
+import DoctorRegister  from "@/components/DoctorRegister.vue";
 
-import ServiceTable   from "@/components/ServicesTable.vue";
+import ServiceTable    from "@/components/ServicesTable.vue";
 import PatientsTable   from "@/components/PatientsTable.vue";
-import Appointments    from "@/components/AppointmentTable.vue";
+import PatientRequests from "@/components/PatientRequests.vue";
 import AppointmentCard from "@/components/AppointmentCard.vue";
 import DoctorsTable    from "@/components/DoctorsTable.vue";
 
-import PatientInfo from "@/components/PatientProfile.vue";
-import DoctorInfo from "@/components/DoctorProfile.vue";
+import PatientInfo     from "@/components/PatientProfile.vue";
+import DoctorInfo      from "@/components/DoctorProfile.vue";
 // views without layouts
 
-import Index from "@/views/IndexPage.vue";
+import Index     from "@/views/IndexPage.vue";
 
 import ContactUs from "@/components/ContactUs.vue";
-import AboutUs from "@/components/AboutUs.vue";
+import AboutUs   from "@/components/AboutUs.vue";
 // routes
 
 const routes = [
@@ -105,8 +105,8 @@ const routes = [
         component: PatientInfo,
       },
       {
-        path: "/patient/appointments",
-        component: Appointments,
+        path: "/patient/requests",
+        component: PatientRequests,
       },
     ],
   },

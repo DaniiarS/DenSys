@@ -7,7 +7,7 @@
                  {name: 'Profile',          icon: 'fas fa-id-card',            link: '/patient/profile'},
                  {name: 'Services',         icon: 'fas fa-kit-medical',        link: '/patient/service-request'},
                  {name: 'Make Appointment', icon: 'fas fa-calendar-plus',      link: '/patient/make-appointment'},
-                 {name: 'Appointments',     icon: 'fas fa-clipboard-list',     link: '/patient/appointments'},
+                 {name: 'Requests',     icon: 'fas fa-clipboard-list',         link: '/patient/requests'},
                  {name: 'Logout',           icon: 'fas fa-right-from-bracket', link: '/login', click:logout},
                ]"
     />

@@ -14,7 +14,7 @@
 
             <radio-form :buttons="['General','Pediatrist', 'Surgeon', 'Oculist', 'Neurologist']" v-model:input_type="specialization" @click="UpdateSpecialization"/>
           </div>
-          <div v-if="doctors_iins.length > 1" class="w-full px-4 inline-block relative">
+          <div class="w-full px-4 inline-block relative">
             <div class="flex-wrap block uppercase text-slate-600 text-xs font-bold mb-2">
               Doctor <div class="inline-block text-rose-700 fa-2xs fa-solid fa-circle"></div>
             </div>
@@ -23,7 +23,7 @@
               @click="ChooseDoctor(doctor.iin)" :isActive="doctor.iin == chosen_iin"/>
           </div>
 
-          <div class="flex flex-nowrap px-4">
+          <div v-if="pages > 1" class="flex flex-nowrap px-4">
           <button class="flex-auto relative rounded transparent hover:shadow-lg py-3 w-3/12 fas fa-caret-left  fa-xl" @click="DecrementPage"></button>
           <div class="flex-none inline-block w-min-content">
             <button class="px-1 far fa-circle" :class="page == p ? 'fas' : ''" @click="UpdatePage(p)" v-for="(_, p) in pages" :key="p">
@@ -36,7 +36,7 @@
             <div class="flex-wrap block uppercase text-slate-600 text-xs font-bold mb-2">
               Time <div class="inline-block text-rose-700 fa-2xs fa-solid fa-circle"></div>
             </div>
-            <div v-if="doctors_iins.length > 0" >
+            <div>
               <div class="flex flex-nowrap">
               <button class="flex-auto relative rounded transparent hover:shadow-lg py-3 w-3/12 fas fa-caret-left  fa-xl" @click="PrevWeek"></button>
               <div class="flex-none inline-block w-min-content">
