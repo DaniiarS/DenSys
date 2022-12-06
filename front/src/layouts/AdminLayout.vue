@@ -34,6 +34,8 @@ export default {
   mounted() {
     if (!localStorage.access_token) {
       this.$router.push({ path: "/admin/login" });
+    } else if (localStorage.who !== 'admin') {
+      this.$router.push({ path: "/" });
     }
     console.log(localStorage.access_token);
   },
