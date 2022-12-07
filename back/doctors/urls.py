@@ -10,12 +10,13 @@ urlpatterns = [
     path('patient/requests/<iin>/', PatientRequestList.as_view(),    name='patient_request_list'),
     path('patient/history/<iin>/',  PatientHistoryList.as_view(),    name='patient_request_list'),
 
-    path('doctors/',            DoctorList.as_view(), name='doctors'),
-    path('doctor/<pk>/',        DoctorR.as_view(),    name='doctorR'),
-    path('doctor/update/<pk>/', DoctorU.as_view(),    name='doctorU'),
     path('doctor/schedule/<iin>/',  DoctorSchedule.as_view(),        name='doctor_schedule'),
     path('doctor/appointments/',    DoctorAppointmentList.as_view(), name='doctor_appointment_list'),
     path('doctor/patients/',        DoctorPatientList.as_view(),     name='doctor_patient_list'),
+
+    path('doctors/',            DoctorList.as_view(), name='doctors'),
+    path('doctor/<pk>/',        DoctorR.as_view(),    name='doctorR'),
+    path('doctor/update/<pk>/', DoctorU.as_view(),    name='doctorU'),
     path('doctors/<specialization>/<int:limit>/<int:offset>/', DoctorIINList.as_view(), name='doctors_spec_limit'),
 
     path('services/',                  ServiceList.as_view(),        name='services'),
