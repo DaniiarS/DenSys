@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-hidden h-screen">
+  <div class="pb-32">
     <div class="max-h-screen flex items-center justify-center">
       <img class="mx-auto max-w-5xl h-auto rounded-lg" :src="nulogo" />
       <img class="mx-auto max-w-5xl h-auto rounded-lg" :src="sedslogo" />
