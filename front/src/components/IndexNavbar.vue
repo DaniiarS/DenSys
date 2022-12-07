@@ -21,34 +21,6 @@
         :class="[navbarOpen ? 'block' : 'hidden']"
         id="example-navbar-warning"
       >
-        <ul class="flex flex-col lg:flex-row list-none mr-auto">
-          <li class="flex items-center">
-            <button
-              @click="selectButton('make-appointment')"
-              class="active:bg-emerald-600 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
-              :class="
-                selected == 'make-appointment'
-                  ? 'bg-slate-200 text-emerald-500'
-                  : 'bg-emerald-500 text-white'
-              "
-              type="button"
-            >
-              Make Appointment
-            </button>
-            <button
-              @click="selectButton('service-request')"
-              class="active:bg-emerald-600 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
-              :class="
-                selected == 'service-request'
-                  ? 'bg-slate-200 text-emerald-500'
-                  : 'bg-emerald-500 text-white'
-              "
-              type="button"
-            >
-              Service Request
-            </button>
-          </li>
-        </ul>
         <ul class="flex flex-col lg:flex-row list-none lg:ml-auto">
           <!-- <li class="flex items-center">
             <index-dropdown />
