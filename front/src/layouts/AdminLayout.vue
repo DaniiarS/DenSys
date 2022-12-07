@@ -9,6 +9,7 @@
                 {name: 'Patients',             icon: 'fas fa-user',               link: '/admin/patients'},
                 {name: 'Doctors',              icon: 'fas fa-user-doctor',        link: '/admin/doctors'},
                 {name: 'Services',             icon: 'fas fa-kit-medical',        link: '/admin/service'},
+                {name: 'Requests',             icon: 'fas fa-clipboard-list',     link: '/admin/requests'},
                 {name: 'Logout',               icon: 'fas fa-right-from-bracket', link: '/admin/login', click:logout},
               ]"
     />

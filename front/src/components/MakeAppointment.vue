@@ -241,17 +241,19 @@ export default {
         })
     },
     SendAppointment() {
-      console.log("token: " + localStorage.access_token)
-      axios
-        .post(`${server_url}/api/appointment/${this.patient_iin}/${this.chosen_iin}/${this.weekat}/${this.dateat}/${this.timeat}/`, { headers: {"Authorization": 'Token ' + localStorage.access_token} })
-        .then((response) => {
-          console.log(response.data)
-          alert("Success")
-        })
-        .catch(function (error) {
-          alert("Could not make appointment")
-          console.log(error)
-        })
+      if (this.chosen_iin && this.weekat>=0 && this.dateat >=0 && this.timeat) {
+        console.log("token: " + localStorage.access_token)
+        axios
+          .post(`${server_url}/api/appointment/make/${this.patient_iin}/${this.chosen_iin}/${this.weekat}/${this.dateat}/${this.timeat}/`, { headers: {"Authorization": 'Token ' + localStorage.access_token} })
+          .then((response) => {
+            console.log(response.data)
+            alert("Success")
+          })
+          .catch(function (error) {
+            alert("Could not make appointment")
+            console.log(error)
+          })
+      }
     },
   }
 };

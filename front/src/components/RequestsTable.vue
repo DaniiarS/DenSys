@@ -4,7 +4,7 @@
       <div class="flex flex-wrap items-center">
         <div class="relative w-full px-4 max-w-full flex-grow flex-1">
           <h3 class="font-semibold text-lg text-slate-800">
-            Patient Requests
+            Requests
           </h3>
         </div>
       </div>
@@ -15,9 +15,10 @@
         <thead>
           <tr class="align-middle border border-solid text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center text-slate-200 bg-slate-800 border-blueGray-100">
             <th class="px-6 py-3"> </th>
+            <th class="px-6 py-3"> Patient </th>
+            <th class="px-6 py-3"> IIN </th>
             <th class="px-6 py-3"> Date </th>
             <th class="px-6 py-3"> Time </th>
-            <th class="px-6 py-3"> Status </th>
           </tr>
         </thead>
         <tbody>
@@ -32,7 +33,7 @@
             <td class="block p-4 px-6">
               <div v-if="schedule.doctor" class="flex-wrap block uppercase text-slate-400 text-xs mb-2">
                 Appointment:
-                <a class="text-slate-600 font-bold normal-case">
+                <a class="text-slate-600 hover:text-slate-200 font-bold normal-case">
                   Doctor {{schedule.doctor.name}} {{schedule.doctor.surname}}
                 </a>
               </div>
@@ -44,10 +45,15 @@
               </div>
             </td>
             <td class="p-4 px-6">
+              {{schedule.patient.name}} {{schedule.patient.surname}}
+            </td>
+            <td class="p-4 px-6">
+              {{schedule.patient.iin}}
+            </td>
+            <td class="p-4 px-6">
               {{month[schedule.date.getMonth()]}} {{schedule.date.getDate()}}, {{schedule.date.getFullYear()}}
             </td>
             <td class="p-4 px-6"> {{schedule.time}} </td>
-            <td class="p-4 px-6"> {{status_map[schedule.status]}} </td>
           </tr>
         </tbody>
       </table>
@@ -89,9 +95,9 @@ export default {
     },
     PickedSchedule(schedule) {
       if (schedule.doctor) {
-        this.$router.push({path: `/patient/appointment/${schedule.id}`})
+        this.$router.push({path: `/admin/appointment/${schedule.id}`})
       } else {
-        this.$router.push({path: `/patient/service-request/${schedule.id}`})
+        this.$router.push({path: `/admin/service-request/${schedule.id}`})
       }
     },
     sort_schedules() {

@@ -4,24 +4,21 @@
       <div class="flex flex-wrap items-center">
         <div class="relative w-full px-4 max-w-full flex-grow flex-1">
           <h3 class="font-semibold text-lg text-slate-800">
-            Appointment with
-            <a v-if="appointment && (who=='doctor' || who=='admin')">{{appointment.patient.name}} {{appointment.patient.surname}}</a>
-            <a v-if="appointment && who=='admin'"> And </a>
-            <a v-if="appointment && (who=='patient' || who=='admin')">Doctor {{appointment.doctor.name}} {{appointment.doctor.surname}}</a>
-            <a v-if="appointment"> at {{appointment.time}} {{date(appointment.date)}}</a>
-            <button v-if="(who=='admin') && appointment && appointment.status === 0"
+            Service
+            <a v-if="request">{{request.service.name}} at {{request.time}} {{date(request.date)}}</a>
+            <button v-if="(who=='admin') && request && request.status === 0"
                     class="mx-2 text-slate-100 px-4 shadow-lg bg-emerald-500 rounded hover:shadow active:bg-emerald-600"
                     @click="ChangeAppointmentStatus(1)"
                     >
               Approve
             </button>
-            <button v-if="(who=='doctor') && appointment && appointment.status === 1"
+            <button v-if="(who=='doctor') && request && request.status === 1"
                     class="mx-2 text-slate-100 px-4 shadow-lg bg-emerald-500 rounded hover:shadow active:bg-emerald-600"
                     @click="ChangeAppointmentStatus(3)"
                     >
               Complete
             </button>
-            <button v-if="appointment && appointment.status !== 4 && appointment.status !== 3"
+            <button v-if="request && request.status !== 4 && request.status !== 3"
                     class="mx-2 text-slate-100 px-4 shadow-lg bg-rose-500 rounded hover:shadow active:bg-rose-600"
                     @click="ChangeAppointmentStatus(4)"
                     >
@@ -77,10 +74,10 @@ export default {
   data() {
     return {
       who: undefined,
-      aid: undefined,
+      srid: undefined,
       status_map:['Requested', 'Approved', 'Overdue', 'Completed', 'Canceled'],
       month:['January', 'Feburary', 'March', 'April', 'May','June','July', 'August', 'September', 'October', 'November', 'December'],
-      appointment:{patient:{name:'', surname:''}, date: new Date(), time:'11:41'},
+      request:{service: {name:''}, patient:{name:'', surname:''}, date: new Date(), time:'11:41'},
       history:null,
     };
   },
@@ -109,32 +106,14 @@ export default {
       a.date = new Date(a.date)
     },
     ChangeAppointmentStatus(status) {
-      this.appointment.status = status // 3 - Complete, 4 - Cancel
+      this.request.status = status //1-Approved 3-Complete 4-Cancel
       axios
-        .put(`${server_url}/api/appointment/${this.aid}`, this.appointment, { headers: {"Authorization": 'Token ' + localStorage.access_token} })
+        .put(`${server_url}/api/service/request/${this.srid}`, this.request, { headers: {"Authorization": 'Token ' + localStorage.access_token} })
         .then((response) => {
           console.log(response.data)
-          this.appointment = response.data.appointment
-          this.history     = response.data.history
-          this.formatDate(this.appointment)
-          this.formatHistory(this.history)
-          console.log(this.history)
-
-        })
-        .catch(function (error) {
-          alert("Could not load Doctor")
-          console.log(error)
-        })
-    },
-    CancelAppointment() {
-      this.appointment.status = 4 // Cancel
-      axios
-        .put(`${server_url}/api/appointment/${this.aid}`, this.appointment, { headers: {"Authorization": 'Token ' + localStorage.access_token} })
-        .then((response) => {
-          console.log(response.data)
-          this.appointment = response.data.appointment
-          this.history     = response.data.history
-          this.formatDate(this.appointment)
+          this.request = response.data.service_request
+          this.history = response.data.history
+          this.formatDate(this.request)
           this.formatHistory(this.history)
           console.log(this.history)
 
@@ -151,15 +130,15 @@ export default {
     }
   },
   mounted() {
-    this.aid = this.$route.params.aid
+    this.srid = this.$route.params.srid
     this.who = localStorage.who
     axios
-      .get(`${server_url}/api/appointment/${this.aid}`, { headers: {"Authorization": 'Token ' + localStorage.access_token} })
+      .get(`${server_url}/api/service/request/${this.srid}`, { headers: {"Authorization": 'Token ' + localStorage.access_token} })
       .then((response) => {
         console.log(response.data)
-        this.appointment = response.data.appointment
+        this.request = response.data.service_request
         this.history     = response.data.history
-        this.formatDate(this.appointment)
+        this.formatDate(this.request)
         this.formatHistory(this.history)
         console.log(this.history)
 

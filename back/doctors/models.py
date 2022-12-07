@@ -83,7 +83,7 @@ class AppointmentStatus(models.Model):
     use_in_migrations = True
     aid       = models.ForeignKey(Appointment, on_delete=models.CASCADE)
     when_made = models.DateTimeField(auto_now_add=True)
-    status    = models.IntegerField()
+    status    = models.IntegerField(default=0)
 
 class Service(models.Model):
     use_in_migrations = True
@@ -103,6 +103,6 @@ class ServiceRequest(models.Model):
 
 class ServiceRequestStatus(models.Model):
     use_in_migrations = True
-    srid      = models.ForeignKey(Appointment, on_delete=models.CASCADE)
+    srid      = models.ForeignKey(ServiceRequest, on_delete=models.CASCADE)
     when_made = models.DateTimeField(auto_now_add=True)
-    status    = models.IntegerField()
+    status    = models.IntegerField(default=0)

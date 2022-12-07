@@ -1,8 +1,11 @@
 # Create your views here.
 import math
-from datetime import datetime, timedelta, date
-from django.shortcuts   import Http404
-from django.http        import HttpResponse,JsonResponse
+from datetime         import datetime, timedelta, date
+from django.shortcuts import Http404
+from django.http      import HttpResponse,JsonResponse
+from django.db.models import Count
+from django.db.models import Q
+from django.db.models.functions import Lower
 
 from rest_framework import generics
 from rest_framework import status
@@ -16,13 +19,52 @@ from .models            import *
 from patients.models    import Patient
 from .serializers       import *
 
+class PatientHistoryList(generics.ListAPIView):
+    authentication_classes = [TokenAuthentication, BasicAuthentication]
+    permission_classes     = [IsAuthenticated,]
+
+    def get(self, request, iin, format=None):
+        patient      = Patient.objects.get(iin=iin)
+        appointments = AppointmentStatus.objects.filter( aid__patient=patient ).order_by(Lower('when_made').desc())
+        services     = ServiceRequestStatus.objects.filter(srid__patient=patient).order_by(Lower('when_made').desc())
+        p            = PatientSerializer(patient)
+        a            = AppointmentStatusSerializer(appointments, many=True)
+        s            = ServiceRequestStatusSerializer(services,  many=True)
+        return Response({'patient':p.data, 'appointments':a.data, 'services':s.data})
+
+class DoctorPatientList(generics.ListAPIView):
+    authentication_classes = [TokenAuthentication, BasicAuthentication]
+    permission_classes     = [IsAuthenticated,]
+
+    def get(self, request, format=None):
+        doctor      = Doctor.objects.get(iin=request.user.iin)
+        patients    = Appointment.objects.raw('SELECT id, DA.patient_id, COUNT() AS pcount FROM doctors_appointment AS DA GROUP BY DA.patient_id')
+        result      = DoctorPatientSerializer(patients, many=True)
+        print(result.data)
+        return Response(result.data)
+
+class DoctorAppointmentList(generics.ListAPIView):
+    authentication_classes = [TokenAuthentication, BasicAuthentication]
+    permission_classes     = [IsAuthenticated,]
+
+    def get(self, request, format=None):
+        doctor       = Doctor.objects.get(iin=request.user.iin)
+        appointments = Appointment.objects.filter(doctor=doctor).order_by('date', 'time')
+        a            = AppointmentSerializer(appointments, many=True)
+        return Response(a.data)
+
 class PatientRequestList(generics.ListAPIView):
-    queryset               = Appointment.objects.all()
-    serializer_class       = AppointmentSerializer
     authentication_classes = [TokenAuthentication, BasicAuthentication]
     permission_classes     = [IsAuthenticated,]
     def get(self, request, iin, format=None):
-        patient      = Patient.objects.get(iin=iin)
+        try:
+            patient      = Patient.objects.get(iin=iin)
+        except Patient.DoesNotExist:
+            appointments = Appointment.objects.filter(status=0).order_by('date', 'time')
+            service_reqs = ServiceRequest.objects.filter(status=0).order_by('date', 'time')
+            a            = AppointmentSerializer(appointments, many=True)
+            s            = ServiceRequestSerializer(service_reqs, many=True)
+            return Response({'appointments': a.data, 'service_requests': s.data})
         appointments = Appointment.objects.filter(patient=patient).order_by('date', 'time')
         service_reqs = ServiceRequest.objects.filter(patient=patient).order_by('date', 'time')
         a            = AppointmentSerializer(appointments, many=True)
@@ -49,21 +91,23 @@ class RequestService(generics.CreateAPIView):
         service     = Service.objects.get(id=sid)
         dateReq     = (today + timedelta(days=-today.weekday()+dateat, weeks=weekat))
         serviceReq  = ServiceRequest(patient=patient, service=service, date=dateReq, time=time)
-        status      = ServiceRequestStatus(srid=serviceReq.id)
         serviceReq.save()
-        #status.save()
+        status      = ServiceRequestStatus(srid=serviceReq)
+        status.save()
         #serializer = AppointmentSerializer(appointment, partial=True)
         return Response({'message':"ok"})
 
 class MakeAppointment(generics.CreateAPIView):
+
     def post(self, request, piin, diin, weekat, dateat, time, format=None):
         today       = date.today()
         patient     = Patient.objects.get(iin=piin)
         doctor      = Doctor.objects.get(iin=diin)
         dateReq     = (today + timedelta(days=-today.weekday()+dateat, weeks=weekat))
         appointment = Appointment(patient=patient, doctor=doctor, date=dateReq, time=time)
-        status      = AppointmentStatus(aid=appointment.id)
         appointment.save()
+        status      = AppointmentStatus(aid=appointment)
+        status.save()
         #serializer = AppointmentSerializer(appointment, partial=True)
         return Response({'message':"ok"})
 
@@ -121,7 +165,7 @@ def generate_schedule(working_hours, duration, busy):
                         if (m < 10):
                             sm = '0'+sm
                         time = sh+':'+sm
-                        if (not busy.filter(time=time).exists()) :
+                        if (not busy.filter(Q(time=time), Q(status=0) | Q(status=1) | Q(status=2)).exists()) :
                             times.append(sh+':'+sm)
                         m = m+int(duration)
                         if (m >= 60):
@@ -209,6 +253,84 @@ class ServiceList(generics.ListCreateAPIView):
             return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
         print(serializer.errors)
         return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ServiceRequestRU(generics.RetrieveUpdateAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes     = [IsAuthenticated,]
+
+    def put(self, request, srid, format=None):
+        try:
+            service_request = ServiceRequest.objects.get(id=srid)
+        except ServiceRequest.DoesNotExist:
+            raise Http404('Not found')
+
+        serializer = ServiceRequestUpdateStatusSerializer(service_request, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            service_request = ServiceRequest.objects.get(id = srid)
+            astatus     = ServiceRequestStatus(srid=service_request, status=service_request.status)
+            astatus.save()
+            history     = ServiceRequestStatus.objects.filter(srid=service_request).order_by(Lower('when_made').desc())
+            a = ServiceRequestSerializer(service_request)
+            h = ServiceRequestStatusSerializer(history, many=True)
+            print(history)
+            return JsonResponse({'service_request': a.data, 'history': h.data}, safe=False)
+
+        print(serializer.errors)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, srid, format=None):
+        try:
+            service_request = ServiceRequest.objects.get(id = srid)
+            history     = ServiceRequestStatus.objects.filter(srid=service_request).order_by(Lower('when_made').desc())
+            print(history)
+        except ServiceRequest.DoesNotExist:
+            raise Http404('Not found')
+        s = ServiceRequestSerializer(service_request)
+        h = ServiceRequestStatusSerializer(history, many=True)
+        print(h.data)
+        return JsonResponse({'service_request': s.data, 'history': h.data}, safe=False)
+
+class AppointmentRU(generics.RetrieveUpdateAPIView):
+    queryset               = Doctor.objects.all()
+    serializer_class       = DoctorSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes     = [IsAuthenticated,]
+
+    def put(self, request, aid, format=None):
+        try:
+            appointment = Appointment.objects.get(id = aid)
+        except Appointment.DoesNotExist:
+            raise Http404('Not found')
+
+        serializer = AppointmentUpdateStatusSerializer(appointment, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            appointment = Appointment.objects.get(id = aid)
+            astatus     = AppointmentStatus(aid=appointment, status=appointment.status)
+            astatus.save()
+            history     = AppointmentStatus.objects.filter(aid=appointment).order_by(Lower('when_made').desc())
+            a = AppointmentSerializer(appointment)
+            h = AppointmentStatusSerializer(history, many=True)
+            print(history)
+            return JsonResponse({'appointment': a.data, 'history': h.data}, safe=False)
+
+        print(serializer.errors)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, aid, format=None):
+        try:
+            appointment = Appointment.objects.get(id = aid)
+            history     = AppointmentStatus.objects.filter(aid=appointment).order_by(Lower('when_made').desc())
+            print(history)
+        except Appointment.DoesNotExist:
+            raise Http404('Not found')
+        a = AppointmentSerializer(appointment)
+        h = AppointmentStatusSerializer(history, many=True)
+        print(h.data)
+        return JsonResponse({'appointment': a.data, 'history': h.data}, safe=False)
 
 class DoctorR(generics.RetrieveAPIView):
     queryset               = Doctor.objects.all()

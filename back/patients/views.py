@@ -45,7 +45,7 @@ class PatientRUD(generics.RetrieveUpdateDestroyAPIView):
             patient = Patient.objects.get(iin = pk)
             print(request.user)
             print(patient)
-            if (patient.iin != request.user.iin):
+            if (patient.iin != request.user.iin and not request.user.is_superuser):
                 return Response({'response': "Not permitted"})
         except Patient.DoesNotExist:
             raise Http404('Not found')

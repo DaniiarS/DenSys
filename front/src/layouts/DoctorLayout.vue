@@ -4,23 +4,10 @@
       :header="'DenSys Doctor'"
       :subheader="'Doctor Actions'"
       :buttons="[
-        { name: 'Profile', icon: 'fas fa-id-card', link: '/doctor/profile' },
-        {
-          name: 'My Appointments',
-          icon: 'fas fa-clipboard-list',
-          link: '/doctor/my-appointment',
-        },
-        {
-          name: 'My Patients',
-          icon: 'fas fa-clipboard-list',
-          link: '/doctor/my-patients',
-        },
-        {
-          name: 'Logout',
-          icon: 'fas fa-right-from-bracket',
-          link: '/',
-          click: logout,
-        },
+        { name: 'Profile',         icon: 'fas fa-id-card',            link: '/doctor/profile' },
+        { name: 'My Appointments', icon: 'fas fa-clipboard-list',     link: '/doctor/my-appointments', },
+        { name: 'My Patients',     icon: 'fas fa-user-injured',     link: '/doctor/my-patients', },
+        { name: 'Logout',          icon: 'fas fa-right-from-bracket', link: '/', click: logout, },
       ]"
     />
     <div class="relative ml-64 bg-slate-100 py-10 min-h-screen">
