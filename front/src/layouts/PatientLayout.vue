@@ -38,6 +38,9 @@ export default {
     if (!localStorage.access_token) {
       this.$router.push({ path: "/login" });
     }
+    if (localStorage.who != 'patient') {
+      this.$router.push({ path: "/" });
+    }
     console.log(localStorage.access_token);
   },
   methods: {
