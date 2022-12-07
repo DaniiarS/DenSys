@@ -263,7 +263,7 @@ export default {
         this.page = 0
         this.UpdateServices()
       },
-      UpdateServices(){
+      UpdateServices() {
         this.chosen_service = ''
         if (!this.department) {
           this.services = []
@@ -281,17 +281,19 @@ export default {
           })
       },
       SendAppointment() {
-        console.log("token: " + localStorage.access_token)
-        axios
-          .post(`${server_url}/api/service/request/${this.patient_iin}/${this.chosen_service}/${this.weekat}/${this.dateat}/${this.timeat}/`, { headers: {"Authorization": 'Token ' + localStorage.access_token} })
-          .then((response) => {
-            console.log(response.data)
-            alert("Success")
-          })
-          .catch(function (error) {
-            alert("Could not make appointment")
-            console.log(error)
-          })
+        if (this.chosen_service && this.weekat>=0 && this.dateat >=0 && this.timeat) {
+          console.log("token: " + localStorage.access_token)
+          axios
+            .post(`${server_url}/api/service/request/${this.patient_iin}/${this.chosen_service}/${this.weekat}/${this.dateat}/${this.timeat}/`, { headers: {"Authorization": 'Token ' + localStorage.access_token} })
+            .then((response) => {
+              console.log(response.data)
+              alert("Success")
+            })
+            .catch(function (error) {
+              alert("Could not make appointment")
+              console.log(error)
+            })
+        }
       },
     }
 };
