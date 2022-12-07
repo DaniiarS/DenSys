@@ -4,7 +4,7 @@
       <div class="flex flex-wrap items-center">
         <div class="relative w-full px-4 max-w-full flex-grow flex-1">
           <h3 class="font-semibold text-lg text-slate-800">
-            Patient History <a v-if="patient">{{patient.name}} {{patient.surname}} {{patient.iin}}</a>
+            Patient History <a v-if="patient && who !== 'patient'">{{patient.name}} {{patient.surname}} {{patient.iin}}</a>
           </h3>
         </div>
       </div>
@@ -69,6 +69,7 @@ export default {
   data() {
     return {
       iin:undefined,
+      who:'',
       patient:{name:'', surname:'', iin:''},
       status_map:['Requested', 'Approved', 'Overdue', 'Completed', 'Canceled'],
       month:['January', 'Feburary', 'March', 'April', 'May','June','July', 'August', 'September', 'October', 'November', 'December'],
@@ -134,7 +135,11 @@ export default {
     }
   },
   mounted() {
-    this.iin = this.$route.params.iin
+    this.who = localStorage.who
+    this.iin = localStorage.user_iin
+    if (this.$route.params.iin) {
+      this.iin = this.$route.params.iin
+    }
     axios
       .get(`${server_url}/api/patient/history/${this.iin}`, { headers: {"Authorization": 'Token ' + localStorage.access_token} })
       .then((response) => {
