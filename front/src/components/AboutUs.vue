@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-hidden h-screen">
+  <div class="overflow-hidden">
     <img class="mx-auto max-w-5xl h-auto rounded-lg" :src="hospital" />
 
     <div class="text-center pt-10 px-4 text-lg">

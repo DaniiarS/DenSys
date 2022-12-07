@@ -5,6 +5,7 @@
         <div class="relative w-full px-4 max-w-full flex-grow flex-1">
           <h3 class="font-semibold text-lg text-slate-800">
             Appointments
+            <search-table :input="all_appointments" v-model:output="appointments"/>
           </h3>
         </div>
       </div>
@@ -36,10 +37,10 @@
             <td class="p-4 px-6"> {{appointment.patient.iin}} </td>
             <td class="p-4 px-6"> {{appointment.patient.contact_number}} </td>
             <td class="p-4 px-6">
-              {{month[appointment.date.getMonth()]}} {{appointment.date.getDate()}}, {{appointment.date.getFullYear()}}
+              {{appointment.date}}
             </td>
             <td class="p-4 px-6"> {{appointment.time}} </td>
-            <td class="p-4 px-6"> {{status_map[appointment.status]}} </td>
+            <td class="p-4 px-6"> {{appointment.status}} </td>
           </tr>
         </tbody>
       </table>
@@ -57,24 +58,35 @@
 </template>
 <script>
 
-import axios from 'axios'
+
+import axios        from 'axios'
 import {server_url} from '@/api.js'
+
+import SearchTable  from "@/components/SearchTable.vue";
 
 export default {
 
   data() {
     return {
       appointments:[],
+      all_appointments:[],
       status_map:['Requested', 'Approved', 'Overdue', 'Completed', 'Canceled'],
       month:['January', 'Feburary', 'March', 'April', 'May','June','July', 'August', 'September', 'October', 'November', 'December'],
     };
   },
   components: {
+    SearchTable,
   },
   methods: {
     formatDates(as) {
       for (const a of as) {
-        a.date = new Date(a.date)
+        let d = new Date(a.date)
+        a.date = this.month[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear()
+      }
+    },
+    formatStatuses(as) {
+      for (const a of as) {
+        a.status = this.status_map[a.status]
       }
     },
   },
@@ -87,6 +99,8 @@ export default {
           console.log(response.data)
           this.appointments = response.data
           this.formatDates(this.appointments)
+          this.formatStatuses(this.appointments)
+          this.all_appointments = this.appointments
         })
         .catch(function (error) {
           alert("Could not load appointments")

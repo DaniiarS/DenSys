@@ -345,6 +345,36 @@ class DoctorR(generics.RetrieveAPIView):
         serializer = DoctorSerializer(doctor)
         return JsonResponse(serializer.data, safe=False)
 
+class ServiceR(generics.RetrieveAPIView):
+    queryset               = Service.objects.all()
+    serializer_class       = ServiceSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes     = [IsAuthenticated,]
+    def get(self, request, pk, format=None):
+        try:
+            service = Service.objects.get(id = pk)
+        except Service.DoesNotExist:
+            raise Http404('Not found')
+        serializer = ServiceSerializer(service)
+        return JsonResponse(serializer.data, safe=False)
+
+class ServiceU(generics.RetrieveAPIView):
+    queryset               = Service.objects.all()
+    serializer_class       = ServiceSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes     = [IsAdminUser,]
+    def put(self, request, pk, format=None):
+        try:
+            service = Service.objects.get(id = pk)
+        except Service.DoesNotExist:
+            raise Http404('Not found')
+        serializer = ServiceSerializer(service, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        print(serializer.errors)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class DoctorU(generics.UpdateAPIView):
     queryset               = Doctor.objects.all()
     serializer_class       = DoctorSerializer

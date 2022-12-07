@@ -21,7 +21,7 @@ class PatientList(generics.ListCreateAPIView):
     def get(self, request, format=None):
         print(request.auth)
         patients = Patient.objects.all()
-        serializer = PatientSerializer(patients, many=True)
+        serializer = PatientListSerializer(patients, many=True)
         return JsonResponse(serializer.data, safe=False)
 
     def post(self, request, format=None):

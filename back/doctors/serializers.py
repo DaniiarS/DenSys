@@ -12,13 +12,18 @@ class DoctorIINSerializer(serializers.ModelSerializer):
 class DoctorPatientModel(models.Model):
     use_in_migrations = False
     patient     = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    pcount      = models.IntegerField()
+    pcount      = models.CharField(max_length=10)
 
 class DoctorPatientSerializer(serializers.ModelSerializer):
     patient = PatientSerializer()
     class Meta:
         model  = DoctorPatientModel
         fields = ['patient', 'pcount']
+
+class DoctorFieldSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Doctor
+        fields = ["name", "surname", "middlename", "iin", "department", "specialization", "duration", "price", "contact_number"]
 
 class DoctorSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
@@ -31,7 +36,7 @@ class DoctorSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
 class AppointmentSerializer(serializers.ModelSerializer):
-    doctor  = DoctorSerializer()
+    doctor  = DoctorFieldSerializer()
     patient = PatientSerializer()
     class Meta:
         model = Appointment

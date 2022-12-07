@@ -5,6 +5,7 @@
         <div class="relative w-full px-4 max-w-full flex-grow flex-1">
           <h3 class="font-semibold text-lg text-slate-800">
           Patients
+          <search-table :input="all_patients" v-model:output="patients"/>
           </h3>
         </div>
       </div>
@@ -13,40 +14,27 @@
       <!-- Projects table -->
       <table class="items-center w-full border-collapse">
         <thead>
-          <tr class="align-middle border border-solid text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center text-slate-200 bg-slate-800 border-blueGray-100">
-            <th class="px-6 py-3">
-              Name
-            </th>
-            <th class="px-6 py-3">
-              IIN
-            </th>
-            <th class="px-6 py-3">
-              Date of Birth
-            </th>
-            <th class="px-6 py-3">
-              Contact Number
-            </th>
-            <th class="px-6 py-3">
-              Address
-            </th>
-            <th class="px-6 py-3"></th>
+          <tr class="align-middle border border-solid text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center text-slate-200 bg-slate-800 border-slate-100">
+            <th class="px-6 py-3"> Name </th>
+            <th class="px-6 py-3"> IIN </th>
+            <th class="px-6 py-3"> Date of Birth </th>
+            <th class="px-6 py-3"> Contact Number </th>
+            <th class="px-6 py-3"> Address </th>
           </tr>
         </thead>
         <tbody>
           <tr class="
             text-xs text-center align-middle whitespace-nowrap
-            hover:text-slate-200 hover:bg-slate-800
-            focus:bg-slate-700 focus:text-slate-200 focus:outline-none focus:ring-0
-            active:bg-slate-600 transition duration-150 ease-in-out
+            hover:bg-slate-300
+            active:bg-slate-400 transition duration-150 ease-in-out
             border-t-1 border-solid border-slate-200 border-l-0 border-r-0"
               v-for="(patient, pidx) in patients" :key="pidx"
               @click="$router.push({path: `/admin/patients/${patient.iin}`})">
-            <td class="block p-4 px-6"> {{patient.name}} {{patient.middlename}} {{patient.surname}} </td>
+            <td class="p-4 px-6"> {{patient.name}} {{patient.middlename}} {{patient.surname}} </td>
             <td class="p-4 px-6"> {{patient.iin}} </td>
             <td class="p-4 px-6"> {{patient.bddate}} </td>
             <td class="p-4 px-6"> {{patient.contact_number}} </td>
             <td class="p-4 px-6"> {{patient.address}} </td>
-            <td class="p-4 text-right"> <table-dropdown /> </td>
           </tr>
         </tbody>
       </table>
@@ -64,21 +52,20 @@
 </template>
 <script>
 
-import axios from 'axios'
+import axios        from 'axios'
 import {server_url} from '@/api.js'
-
-import TableDropdown from "@/components/TableDropdown.vue";
+import SearchTable  from "@/components/SearchTable.vue";
 
 export default {
 
   data() {
     return {
-      patients:[
-      ],
+      patients:[ ],
+      all_patients:[ ],
     };
   },
   components: {
-    TableDropdown,
+    SearchTable
   },
   mounted () {
     if (localStorage.access_token) {
@@ -87,7 +74,8 @@ export default {
         .get(server_url+'/api/patients', { headers: {"Authorization": 'Token ' + localStorage.access_token} } )
         .then((response) => {
           console.log(response.data)
-          this.patients = response.data
+          this.patients     = response.data
+          this.all_patients = this.patients
         })
         .catch(function (error) {
           alert("Could not load patient")

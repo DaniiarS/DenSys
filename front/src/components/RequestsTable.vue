@@ -5,6 +5,7 @@
         <div class="relative w-full px-4 max-w-full flex-grow flex-1">
           <h3 class="font-semibold text-lg text-slate-800">
             Requests
+            <search-table :input="all_sorted_schedules" v-model:output="sorted_schedules"/>
           </h3>
         </div>
       </div>
@@ -24,20 +25,19 @@
         <tbody>
           <tr class="
             text-xs text-center align-middle whitespace-nowrap
-            hover:text-slate-200 hover:bg-slate-800
-            focus:bg-slate-700 focus:text-slate-200 focus:outline-none focus:ring-0
-            active:bg-slate-600 transition duration-150 ease-in-out
+            hover:bg-slate-300
+            active:bg-slate-400 transition duration-150 ease-in-out
             border-t-1 border-solid border-slate-200 border-l-0 border-r-0"
               v-for="(schedule, sidx) in sorted_schedules" :key="sidx"
               @click="PickedSchedule(schedule)">
             <td class="block p-4 px-6">
-              <div v-if="schedule.doctor" class="flex-wrap block uppercase text-slate-400 text-xs mb-2">
+              <div v-if="schedule.doctor" class="flex-wrap block uppercase text-slate-500 text-xs mb-2">
                 Appointment:
-                <a class="text-slate-600 hover:text-slate-200 font-bold normal-case">
+                <a class="text-slate-600 font-bold normal-case">
                   Doctor {{schedule.doctor.name}} {{schedule.doctor.surname}}
                 </a>
               </div>
-              <div v-if="!schedule.doctor" class="flex-wrap block uppercase text-slate-400 text-xs mb-2">
+              <div v-if="!schedule.doctor" class="flex-wrap block uppercase text-slate-500 text-xs mb-2">
                 Service:
                 <a class="text-slate-600 font-bold normal-case">
                   {{schedule.service.name}}
@@ -51,7 +51,7 @@
               {{schedule.patient.iin}}
             </td>
             <td class="p-4 px-6">
-              {{month[schedule.date.getMonth()]}} {{schedule.date.getDate()}}, {{schedule.date.getFullYear()}}
+              {{schedule.date}}
             </td>
             <td class="p-4 px-6"> {{schedule.time}} </td>
           </tr>
@@ -71,8 +71,9 @@
 </template>
 <script>
 
-import axios from 'axios'
+import axios        from 'axios'
 import {server_url} from '@/api.js'
+import SearchTable  from "@/components/SearchTable.vue";
 
 export default {
 
@@ -81,16 +82,24 @@ export default {
       appointments:[],
       service_requests:[],
       sorted_schedules:[],
+      all_sorted_schedules:[],
       status_map:['Requested', 'Approved', 'Overdue', 'Completed', 'Canceled'],
       month:['January', 'Feburary', 'March', 'April', 'May','June','July', 'August', 'September', 'October', 'November', 'December'],
     };
   },
   components: {
+    SearchTable
   },
   methods: {
     formatDates(as) {
       for (const a of as) {
-        a.date = new Date(a.date)
+        let d = new Date(a.date)
+        a.date = this.month[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear()
+      }
+    },
+    formatStatuses(as) {
+      for (const a of as) {
+        a.status = this.status_map[a.status]
       }
     },
     PickedSchedule(schedule) {
@@ -139,6 +148,8 @@ export default {
           this.service_requests = response.data.service_requests
           this.sorted_schedules = this.sort_schedules()
           this.formatDates(this.sorted_schedules)
+          this.formatStatuses(this.sorted_schedules)
+          this.all_sorted_schedules = this.sorted_schedules
           console.log(this.sorted_schedules)
         })
         .catch(function (error) {

@@ -5,6 +5,7 @@
           <div class="relative w-full px-4 max-w-full flex-grow flex-1">
             <h3 class="font-semibold text-lg text-slate-800">
             Services
+            <search-table :input="all_services" v-model:output="services"/>
             </h3>
           </div>
         </div>
@@ -14,35 +15,24 @@
         <table class="items-center w-full border-collapse">
           <thead>
             <tr class="align-middle border border-solid text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center text-slate-200 bg-slate-800 border-slate-100">
-              <th class="px-6 py-3">
-                Name
-              </th>
-              <th class="px-6 py-3">
-                Department
-              </th>
-              <th class="px-6 py-3">
-                Service Duration
-              </th>
-              <th class="px-6 py-3">
-                Service Price
-              </th>
-              <th class="px-6 py-3"></th>
+              <th class="px-6 py-3"> Name </th>
+              <th class="px-6 py-3"> Department </th>
+              <th class="px-6 py-3"> Service Duration </th>
+              <th class="px-6 py-3"> Service Price </th>
             </tr>
           </thead>
           <tbody>
             <tr class="
               text-xs text-center align-middle whitespace-nowrap
-              hover:text-slate-200 hover:bg-slate-800
-              focus:bg-slate-700 focus:text-slate-200 focus:outline-none focus:ring-0
-              active:bg-slate-600 transition duration-150 ease-in-out
+              hover:bg-slate-300
+              active:bg-slate-400 transition duration-150 ease-in-out
               border-t-1 border-solid border-slate-200 border-l-0 border-r-0"
                 v-for="(service, pidx) in services" :key="pidx"
-                @click="$router.push({path: `/admin/service/${service.id}`})">
+                @click="$router.push({path: `/admin/services/${service.id}`})">
               <td class="block p-4 px-6"> {{service.name}} </td>
               <td class="p-4 px-6"> {{service.department}} </td>
               <td class="p-4 px-6"> {{service.duration}} </td>
               <td class="p-4 px-6"> {{service.price}} </td>
-              <td class="p-4 text-right"> <table-dropdown /> </td>
             </tr>
           </tbody>
         </table>
@@ -57,33 +47,34 @@
         </div>
       </div>
     </div>
-  </template>
-  <script>
+</template>
+<script>
 
-  import axios from 'axios'
+  import axios        from 'axios'
   import {server_url} from '@/api.js'
 
-  import TableDropdown from "@/components/TableDropdown.vue";
+  import SearchTable  from "@/components/SearchTable.vue";
 
   export default {
 
     data() {
       return {
-        services:[
-        ],
+        services:[],
+        all_services:[],
       };
     },
     components: {
-      TableDropdown,
+      SearchTable,
     },
     mounted () {
       if (localStorage.access_token) {
         console.log({Authorization: 'Token ' + localStorage.access_token})
         axios
-          .get(server_url+'/api/service', { headers: {"Authorization": 'Token ' + localStorage.access_token} } )
+          .get(server_url+'/api/services', { headers: {"Authorization": 'Token ' + localStorage.access_token} } )
           .then((response) => {
             console.log(response.data)
-            this.services = response.data
+            this.services     = response.data
+            this.all_services = this.services
           })
           .catch(function (error) {
             alert("Could not load service")

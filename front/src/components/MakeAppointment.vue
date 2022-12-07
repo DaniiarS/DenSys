@@ -229,7 +229,8 @@ export default {
         this.doctors_iins = []
       }
       axios
-        .get(`${server_url}/api/doctors/${this.specialization}/${this.limit}/${this.limit*this.page}/`, { headers: {"Authorization": 'Token ' + localStorage.access_token} })
+        .get(`${server_url}/api/doctors/${this.specialization}/${this.limit}/${this.limit*this.page}/`,
+        { headers: {"Authorization": 'Token ' + localStorage.access_token} })
         .then((response) => {
           console.log(response.data)
           this.doctors_iins = response.data.doctors
@@ -244,7 +245,8 @@ export default {
       if (this.chosen_iin && this.weekat>=0 && this.dateat >=0 && this.timeat) {
         console.log("token: " + localStorage.access_token)
         axios
-          .post(`${server_url}/api/appointment/make/${this.patient_iin}/${this.chosen_iin}/${this.weekat}/${this.dateat}/${this.timeat}/`, { headers: {"Authorization": 'Token ' + localStorage.access_token} })
+          .post(`${server_url}/api/appointment/make/${this.patient_iin}/${this.chosen_iin}/${this.weekat}/${this.dateat}/${this.timeat}/`,
+          { headers: {"Authorization": 'Token ' + localStorage.access_token} })
           .then((response) => {
             console.log(response.data)
             alert("Success")

@@ -42,8 +42,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="
-                     text-xs text-center align-middle whitespace-nowrap
+          <tr class="text-xs text-center align-middle whitespace-nowrap
                      border-t-1 border-solid border-slate-200 border-l-0 border-r-0"
               v-for="h in history" :key="h.id">
             <td class="p-4 px-6"> {{status_map[h.status]}} </td>
@@ -80,7 +79,7 @@ export default {
       aid: undefined,
       status_map:['Requested', 'Approved', 'Overdue', 'Completed', 'Canceled'],
       month:['January', 'Feburary', 'March', 'April', 'May','June','July', 'August', 'September', 'October', 'November', 'December'],
-      appointment:{patient:{name:'', surname:''}, date: new Date(), time:'11:41'},
+      appointment:{patient:{name:'', surname:''}, doctor:{name:'', surname:''}, date: new Date(), time:'11:41'},
       history:null,
     };
   },

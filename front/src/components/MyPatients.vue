@@ -5,6 +5,7 @@
         <div class="relative w-full px-4 max-w-full flex-grow flex-1">
           <h3 class="font-semibold text-lg text-slate-800">
             Patients
+            <search-table :input="all_patients" v-model:output="patients"/>
           </h3>
         </div>
       </div>
@@ -12,7 +13,7 @@
     <div class="block w-full overflow-x-auto">
       <table class="items-center w-full border-collapse">
         <thead>
-          <tr class="align-middle border border-solid text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center text-slate-200 bg-slate-800 border-blueGray-100">
+          <tr class="align-middle border border-solid text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center text-slate-200 bg-slate-800 border-slate-100">
             <th class="px-6 py-3"> Name </th>
             <th class="px-6 py-3"> IIN </th>
             <th class="px-6 py-3"> Contact Number </th>
@@ -21,9 +22,8 @@
         </thead>
         <tbody>
           <tr class="text-xs text-center align-middle whitespace-nowrap
-                     hover:text-slate-200 hover:bg-slate-800
-                     focus:bg-slate-700 focus:text-slate-200 focus:outline-none focus:ring-0
-                     active:bg-slate-600 transition duration-150 ease-in-out
+                     hover:bg-slate-300
+                     active:bg-slate-400 transition duration-150 ease-in-out
                      border-t-1 border-solid border-slate-200 border-l-0 border-r-0"
               v-for="p in patients" :key="p.patient.iin"
               @click="$router.push({path: `/doctor/my-patients/${p.patient.iin}`})">
@@ -48,19 +48,22 @@
 </template>
 <script>
 
-import axios from 'axios'
+import axios        from 'axios'
 import {server_url} from '@/api.js'
+
+import SearchTable  from "@/components/SearchTable.vue";
 
 export default {
 
   data() {
     return {
-      patients:[
-      ],
+      patients:[ ],
+      all_patients:[ ],
       status_map:['Requested', 'Scheduled', 'Completed', 'Overdue', 'Canceled'],
     };
   },
   components: {
+    SearchTable,
   },
   methods: {
   },
@@ -71,8 +74,8 @@ export default {
         .get(server_url+'/api/doctor/patients/', { headers: {"Authorization": 'Token ' + localStorage.access_token} } )
         .then((response) => {
           console.log(response.data)
-          this.patients          = response.data
-          console.log(this.patients)
+          this.patients     = response.data
+          this.all_patients = this.patients
         })
         .catch(function (error) {
           alert("Could not load patients")

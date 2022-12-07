@@ -39,6 +39,7 @@ import MyPatients      from "@/components/MyPatients.vue";
 
 import PatientInfo     from "@/components/PatientProfile.vue";
 import DoctorInfo      from "@/components/DoctorProfile.vue";
+import ServiceInfo     from "@/components/ServiceInfo.vue";
 // views without layouts
 
 import Index     from "@/views/IndexPage.vue";
@@ -58,6 +59,7 @@ const routes = [
       { path: "/admin/doctor-register",       component: DoctorRegister, },
       { path: "/admin/doctors/:iin",          component: DoctorInfo, },
       { path: "/admin/patients/:iin",         component: PatientInfo, },
+      { path: "/admin/services/:sid",         component: ServiceInfo, },
       { path: "/admin/patients",              component: PatientsTable, },
       { path: "/admin/doctors",               component: DoctorsTable, },
       { path: "/admin/requests",              component: RequestsTable, },

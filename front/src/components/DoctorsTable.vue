@@ -5,6 +5,7 @@
         <div class="relative w-full px-4 max-w-full flex-grow flex-1">
           <h3 class="font-semibold text-lg text-slate-800">
           Doctors
+          <search-table :input="all_doctors" v-model:output="doctors"/>
           </h3>
         </div>
       </div>
@@ -26,9 +27,8 @@
           <tr
             class="my-table-row
             text-xs text-center align-middle whitespace-nowrap
-            group hover:text-slate-200 hover:bg-slate-800
-            focus:bg-slate-700 focus:text-slate-200 focus:outline-none focus:ring-0
-            active:bg-slate-600 transition duration-150 ease-in-out
+            hover:bg-slate-300
+            active:bg-slate-400 transition duration-150 ease-in-out
             border-t-1 border border-solid border-slate-200 border-l-0 border-r-0"
               v-for="(doctor, didx) in doctors" :key="didx" :id="'r'+didx"
               @mouseover="updatePhoto(didx)"
@@ -64,18 +64,19 @@
 import axios from 'axios'
 import {server_url} from '@/api.js'
 
-import TableDropdown from "@/components/TableDropdown.vue";
+import SearchTable from "@/components/SearchTable.vue";
 
 export default {
 
   data() {
     return {
       doctors:[],
+      all_doctors:[],
       activePhoto: null,
     };
   },
   components: {
-    TableDropdown,
+    SearchTable,
   },
   methods: {
     updatePhoto(didx) {
@@ -88,7 +89,8 @@ export default {
       axios
         .get( server_url+'/api'+'/doctors/', { headers: {"Authorization": 'Token ' + localStorage.access_token} } )
         .then((response) => {
-          this.doctors = response.data
+          this.doctors     = response.data
+          this.all_doctors = this.doctors
           //console.log(response)
         })
         .catch(function (error) {

@@ -5,6 +5,7 @@
         <div class="relative w-full px-4 max-w-full flex-grow flex-1">
           <h3 class="font-semibold text-lg text-slate-800">
             Patient History <a v-if="patient && who !== 'patient'">{{patient.name}} {{patient.surname}} {{patient.iin}}</a>
+            <search-table :input="all_history" v-model:output="history"/>
           </h3>
         </div>
       </div>
@@ -23,7 +24,7 @@
         <tbody>
           <tr class="text-xs text-center align-middle whitespace-nowrap
                      border-t-1 border-solid border-slate-200 border-l-0 border-r-0"
-              v-for="h in history" :key="h.id">
+              v-for="(h, hidx) in history" :key="hidx">
             <td class="p-4 px-6">
               <div v-if="h.aid" class="flex-wrap block uppercase text-slate-400 text-xs mb-2">
                 Appointment:
@@ -39,12 +40,12 @@
               </div>
             </td>
             <td class="p-4 px-6">
-              {{month[h.when_made.getMonth()]}} {{h.when_made.getDate()}}, {{h.when_made.getFullYear()}}
+              {{h.date}}
             </td>
             <td class="p-4 px-6">
-              {{hours(h.when_made)}}:{{minutes(h.when_made)}}
+              {{h.time}}
             </td>
-            <td class="p-4 px-6"> {{status_map[h.status]}} </td>
+            <td class="p-4 px-6"> {{h.status}} </td>
           </tr>
         </tbody>
       </table>
@@ -62,8 +63,10 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios        from 'axios'
 import {server_url} from '@/api.js'
+
+import SearchTable  from "@/components/SearchTable.vue";
 
 export default {
   data() {
@@ -74,6 +77,7 @@ export default {
       status_map:['Requested', 'Approved', 'Overdue', 'Completed', 'Canceled'],
       month:['January', 'Feburary', 'March', 'April', 'May','June','July', 'August', 'September', 'October', 'November', 'December'],
       history:[],
+      all_history:[],
       appointments:[],
       services:[],
     };
@@ -81,8 +85,7 @@ export default {
   props: {
   },
   components: {
-    //ToggleButton,
-    //DatePick,
+    SearchTable
   },
   methods: {
     hours(datetime) {
@@ -95,16 +98,12 @@ export default {
       result += datetime.getMinutes()
       return result
     },
-    date(d) {
-      var result = this.month[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear()
-      return result
-    },
-    formatDate(a) {
-      a.date = new Date(a.date)
-    },
     formatHistory(history) {
       for (const h of history) {
-        h.when_made = new Date(h.when_made)
+        h.status = this.status_map[h.status]
+        let d = new Date(h.when_made)
+        h['date'] = this.month[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear()
+        h['time'] = this.hours(d) + ':' + this.minutes(d)
       }
     },
     sort_history() {
@@ -147,7 +146,8 @@ export default {
         this.patient      = response.data.patient
         this.appointments = response.data.appointments
         this.services     = response.data.services
-        this.history = this.sort_history()
+        this.history      = this.sort_history()
+        this.all_history  = this.history
         console.log(this.history)
       })
       .catch(function (error) {
