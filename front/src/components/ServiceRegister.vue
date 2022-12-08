@@ -164,7 +164,7 @@
             console.log(formData)
             console.log(localStorage.access_token)
             axios
-              .post(server_url+'/api/service/',
+              .post(server_url+'/api/services/',
                 formData,
                 { headers: {"Authorization": 'Token ' + localStorage.access_token, "Content-Type": "multipart/form-data"} })
               .then((response) => {

@@ -25,9 +25,8 @@
         </thead>
         <tbody>
           <tr class="text-xs text-center align-middle whitespace-nowrap
-                     hover:text-slate-200 hover:bg-slate-800
-                     focus:bg-slate-700 focus:text-slate-200 focus:outline-none focus:ring-0
-                     active:bg-slate-600 transition duration-150 ease-in-out
+                     hover:bg-slate-300
+                     active:bg-slate-400 transition duration-150 ease-in-out
                      border-t-1 border-solid border-slate-200 border-l-0 border-r-0"
               v-for="appointment in appointments" :key="appointment.id"
               @click="$router.push({path: `/doctor/my-appointments/${appointment.id}`})">

@@ -77,7 +77,7 @@
                     :class="timeat==time
                                         ? 'shadow border-emerald-500 text-emerald-500'
                                         : 'hover:shadow hover:border-slate-500 hover:text-slate-500 text-slate-600' "
-                    v-for="(time,tidx) in week_schedules[weekat].days[dateat].times" :key="tidx" @click="timeat=time">{{time}}</button>
+                    v-for="(time,tidx) in week_schedules[weekat].days[dateat].times" :key="tidx" @click="ChooseTime(time, tidx)">{{time}}</button>
             <div v-if="week_schedules[weekat].days[dateat].times.length == 0">No time</div>
           </div>
           </div>
@@ -151,7 +151,8 @@ export default {
 
       weekat: 0,
       dateat: 0, // getDate starts from Sunday so make it 7 and substract 1
-      timeat: undefined,
+      timeat:  undefined,
+      timeidx: undefined,
 
 
       limit:  2,
@@ -166,6 +167,11 @@ export default {
     //DatePick,
   },
   methods: {
+    ChooseTime(time, tidx) {
+      this.timeat = time
+      this.timeidx   = tidx
+      console.log("tidx: ", this.timeidx)
+    },
     ChooseDoctor(iin) {
       this.chosen_iin = iin
       this.weekat=0
@@ -249,6 +255,11 @@ export default {
           { headers: {"Authorization": 'Token ' + localStorage.access_token} })
           .then((response) => {
             console.log(response.data)
+            this.week_schedules[this.weekat].days[this.dateat].times.splice(this.timeidx, 1)
+            this.choosen_iin=''
+            this.weekat=0
+            this.dateat=(today.getDay() || 7)-1
+            this.timeat=undefined
             alert("Success")
           })
           .catch(function (error) {

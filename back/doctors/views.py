@@ -38,7 +38,8 @@ class DoctorPatientList(generics.ListAPIView):
 
     def get(self, request, format=None):
         doctor      = Doctor.objects.get(iin=request.user.iin)
-        patients    = Appointment.objects.raw('SELECT id, DA.patient_id, COUNT() AS pcount FROM doctors_appointment AS DA GROUP BY DA.patient_id')
+        patients    = Appointment.objects.raw(f'SELECT id, DA.patient_id, COUNT() AS pcount FROM doctors_appointment AS DA WHERE DA.doctor_id=\'{doctor}\' GROUP BY DA.patient_id')
+        print(f'SELECT id, DA.patient_id, COUNT() AS pcount FROM doctors_appointment AS DA WHERE DA.doctor_id=\'{doctor}\' GROUP BY DA.patient_id')
         result      = DoctorPatientSerializer(patients, many=True)
         print(result.data)
         return Response(result.data)
